@@ -1,4 +1,5 @@
         <div class="col-md-2 col-xs-7 col-sm-3 sidebar sidebar-left sidebar-animate sidebar-md-show">
+            <!-- 목표 리스트 -->
         <div class="goal">
           <ul class="nav navbar-stacked">
             <li class="active">
@@ -14,41 +15,12 @@
               <a href="#">목표4</a>
             </li>
             <li>
-              <a href="#">목표5</a>
-            </li>
-            <li>
-              <a href="#">목표6</a>
-            </li>
-            <li>
-              <a href="#">목표7</a>
-            </li>
-            <li>
-              <a href="#">목표8</a>
-            </li>
-            <li>
-              <a href="#">목표9</a>
-            </li>
-            <li>
-              <a href="#">목표10</a>
-            </li>
-            <li>
-              <a href="#">목표11</a>
-            </li>
-            <li>
-              <a href="#">목표12</a>
-            </li>
-            <li>
-              <a href="#">목표13</a>
-            </li>
-            <li>
-              <a href="#">목표14</a>
-            </li>
-            <li>
-              <a href="#">목표15</a>
+              <i class="fas fa-plus" style="color: red; margin-left:15px;"> 추가하기</i>  
             </li>
           </ul>
         </div>
             <hr>
+            <!-- 리포트 리스트 -->
         <div class="report">
           <ul class="nav navbar-stacked">
             <li class="active">
@@ -63,41 +35,9 @@
             <li>
               <a href="#">리포트4</a>
             </li>
-            <li>
-              <a href="#">리포트5</a>
-            </li>
-            <li>
-              <a href="#">리포트6</a>
-            </li>
-            <li>
-              <a href="#">리포트7</a>
-            </li>
-            <li>
-              <a href="#">리포트8</a>
-            </li>
-            <li>
-              <a href="#">리포트9</a>
-            </li>
-            <li>
-              <a href="#">리포트10</a>
-            </li>
-            <li>
-              <a href="#">리포트11</a>
-            </li>
-            <li>
-              <a href="#">리포트12</a>
-            </li>
-            <li>
-              <a href="#">리포트13</a>
-            </li>
-            <li>
-              <a href="#">리포트14</a>
-            </li>
-            <li>
-              <a href="#">리포트15</a>
-            </li>
           </ul>
         </div>
+            <!-- 하단 버튼메뉴 -->
         <div class="setting">
           <a href="#"><i class="fas fa-cog pull-right fa-2"></i></a>  
           <a href="#"><i class="fas fa-question-circle pull-right fa-2"></i></a>  
