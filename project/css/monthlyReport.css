@@ -1,0 +1,77 @@
+#grade {
+
+    padding: 10px;
+    margin-bottom: 20px
+}
+#grade p {
+    font-size: 38px; 
+    margin: 20px;
+}
+#grade span {
+    
+    font-size: 40px;
+    border-bottom: 3px solid;
+}
+
+#chart {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+#fail{
+    padding: 10px;
+    text-align: center;
+    
+}
+#fail button {
+    width:80%;
+    height: 40px;
+    background-color: #560a86;
+    color: white;
+    font-size: 20px;
+    border: none;
+}
+
+#fail p:nth-child(1){
+    font-size: 30px;
+    font-weight: bold;
+
+    
+}
+#fail p:nth-child(2){
+    font-size: 25px;
+    
+}
+#fail p:nth-child(3){
+    font-size: 30px;
+    
+}
+#success{
+    padding: 10px;
+    text-align: center;
+    
+    
+}
+#success button{
+    width:80%;
+    height: 40px;
+    background-color: #560a86;
+    background-color: #ef6d79;
+    color: white;
+    font-size: 20px;
+    border: none;
+}
+#success p:nth-child(1){
+    font-size: 30px;
+    font-weight: bold;
+
+    
+}
+#success p:nth-child(2){
+    font-size: 25px;
+    
+}
+#success p:nth-child(3){
+    font-size: 30px;
+    
+}
