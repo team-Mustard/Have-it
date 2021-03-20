@@ -15,7 +15,7 @@
               <a href="#">목표4</a>
             </li>
             <li>
-              <i class="fas fa-plus" style="color: red; margin-left:15px;"> 추가하기</i>  
+              <a href="#"><i class="fas fa-plus" style="color: red;"> 추가하기</i></a>
             </li>
           </ul>
         </div>
