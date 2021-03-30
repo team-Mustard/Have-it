@@ -92,6 +92,226 @@ input {
     border-radius: 30px;
 }
 
+
+/* weekly Report Css start */
+
+
+#calender {
+    padding: 15px;
+    padding-right: 30px;
+    height: 280px;
+    border:5px solid;
+    margin: 10px;
+    border-radius: 20px;
+    
+}
+
+#image {
+    padding: 15px;
+    height: 280px;
+    border:5px solid;
+    margin: 10px;
+    border-radius: 20px;
+}
+
+#score {
+
+    padding: 15px;
+    text-align: center;
+    padding-top: 80px;
+    height: 280px;
+
+}
+
+#score span {
+
+    font-size: 25px;
+    
+}
+
+#score input {
+
+    margin-top: 10px;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    text-align: center;
+    width: 150px;
+
+}
+#score input:focus {
+
+    outline: none;
+}
+.bottom {
+    text-align: center;
+}
+#good {
+    padding: 10px;
+    border:5px solid;
+    margin: 10px;
+    border-radius: 20px;
+    border-color: #d2c5e1;
+    
+    
+}
+#good p{
+    font-size: 20px;
+    font-weight: bold;
+    
+}
+
+textarea{
+    width:100%;
+    height:200px;
+    border: none;
+    font-size: 20px;
+
+}
+textarea:focus{
+
+     outline: none;
+
+}
+
+#bad {
+    padding: 10px;
+    border:5px solid;
+    border-color: #d2c5e1;
+    margin: 10px;
+    border-radius: 20px;
+    
+}
+
+#bad p{
+    font-size: 20px;
+    font-weight: bold;
+    
+}
+
+
+.year-month {
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+
+.days {
+    display: flex;
+    margin: 25px 0 10px;
+}
+
+.day {
+    width: calc(100% / 7);
+    text-align: center;
+}
+
+.dates {
+    display: flex;
+    text-align: center;
+    flex-flow: row wrap;
+    height: 200px;
+   
+}
+
+.date {
+    width: calc(100% / 7);
+    padding: 5px;
+    text-align: right;
+
+}
+/* Weekly Report css end */
+
+
+/* Monthly Report css start */
+
+
+
+
+#grade {
+
+    padding: 10px;
+    margin-bottom: 20px
+}
+#grade p {
+    font-size: 38px; 
+    margin: 20px;
+}
+#grade span {
+    
+    font-size: 40px;
+    border-bottom: 3px solid;
+}
+
+#chart {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+#fail{
+    padding: 10px;
+    text-align: center;
+    
+}
+#fail button {
+    width:80%;
+    height: 40px;
+    background-color: #560a86;
+    color: white;
+    font-size: 20px;
+    border: none;
+}
+
+#fail p:nth-child(1){
+    font-size: 30px;
+    font-weight: bold;
+
+    
+}
+#fail p:nth-child(2){
+    font-size: 25px;
+    
+}
+#fail p:nth-child(3){
+    font-size: 30px;
+    
+}
+#success{
+    padding: 10px;
+    text-align: center;
+    
+    
+}
+#success button{
+    width:80%;
+    height: 40px;
+    background-color: #560a86;
+    background-color: #ef6d79;
+    color: white;
+    font-size: 20px;
+    border: none;
+}
+#success p:nth-child(1){
+    font-size: 30px;
+    font-weight: bold;
+
+    
+}
+#success p:nth-child(2){
+    font-size: 25px;
+    
+}
+#success p:nth-child(3){
+    font-size: 30px;
+    
+}
+
+
+/* Monthly Report css end */
+
+
+/* goal css start */
 .container{
     background-color: #ea3d0b;
             }
@@ -130,3 +350,4 @@ input {
 .bTitle{
     display: block;
 }
+/* goal css end */
