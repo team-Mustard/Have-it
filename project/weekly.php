@@ -18,7 +18,7 @@
 
 <body>
     <div class="main col-md-10 col-md-offset-2">
-        <div class="container">
+        <div class="container" id = "weekButton">
             <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
             <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
         </div>
@@ -44,11 +44,11 @@
         </div>
         <div class="container writeEval">
             <row>
-                <div id="good" class="col-md-5">
+                <div id="good" class="col-md-6">
                     <p>칭찬</p>
                     <textarea name="good"></textarea>
                 </div>
-                <div id="bad" class="col-md-5">
+                <div id="bad" class="col-md-6">
                     <p>반성</p>
                     <textarea name="bad"></textarea>
                 </div>
