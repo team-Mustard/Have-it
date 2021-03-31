@@ -337,12 +337,12 @@ input.time {
 /* Monthly Report css end */
 
 
-/* goal css start 
+/* goal css start */
 .container{
     background-color: #ea3d0b;
             }
 @media (min-width: 760px){
-.container{ width: 550px; } /* 모바일 화면에 맞춰서 변하는거.. 슬쩍.. 넣어봄
+.container{ width: 550px; } /* 모바일 화면에 맞춰서 변하는거.. 슬쩍.. 넣어봄 */
 }
 @media (min-width: 1200px){
 .container{ width: 680px; }
@@ -376,4 +376,4 @@ input.time {
 .bTitle{
     display: block;
 }
- goal css end */
+ /* goal css end */
