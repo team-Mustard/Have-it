@@ -1,0 +1,50 @@
+.container-fluid {
+    padding:0;
+}
+
+img.logo {
+    width: 180px;
+}
+
+.sign form input {
+    margin:5px;
+}
+
+.sign form:after {
+    content: "";
+    display: block;
+    width: 350px;
+    border-bottom: 5px solid #04005E;
+    margin: 25px auto 10px auto;
+}
+
+.sign .btn {
+    display: inline-block;
+    width: 200px;
+    border: 0px;
+    border-radius: 8px;
+    color: white;
+    padding: 5px;
+    margin: 5px 5px 30px 5px;
+}
+
+.fa-2 {
+  font-size: 1.3em;
+  margin: 3px;
+}
+
+.purple {
+    background-color: #EC56FC;
+}
+
+.pink {
+    background-color: #FF1F78;
+}
+
+.blue {
+    color: #8181C1;
+}
+
+.babypink {
+    color: #E080C0;
+}
