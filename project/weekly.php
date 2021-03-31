@@ -1,61 +1,61 @@
-
 <?php
 
     include_once "./head.php";
     include_once "./leftside.php";
     include_once "./rightside.php";
 ?>
+
 <head>
- 
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
 
 </head>
 <style>
-    
+
 
 </style>
 
 <body>
-    <div class="container">
-        <div class="col-md-10">
+    <div class="main col-md-10 col-md-offset-2">
+        <div class="container">
             <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
             <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
+        </div>
+        <div class="container">
+            <row>
+                <div id="calender" class="col-md-4">
+                    <div class="year-month"></div>
+                    <div class="dates"></div>
+                </div>
+                <div id="image" class="col-md-4">
+                    <img src="noimage.png" width="250px" alt="이미지 없음">
+                </div>
+                <div id="score" class="col-md-3">
+                    <span class="mScore">이번 주 나의 점수
+                        <input type="text" name=weeklyScore>
+                        점</span>
 
+                </div>
+            </row>
         </div>
-    </div>
-    <div class="container">
-       <div id="calender" class="col-md-4">
-            <div class="year-month"></div>
-            <div class="dates"></div>
-        </div>
-        <div id="image" class="col-md-3">
-            <img src="noimage.png" width="250px" alt="이미지 없음">
-        </div>
-        <div id="score" class="col-md-3">
-            <span class="mScore">이번 주 나의 점수
-                <input type="text" name=weeklyScore>
-                점</span>
-
-        </div>
-    </div>
-    <div class="container">
-        <div class="col-md-10">
+        <div class="container">
             <canvas id="myChart"></canvas>
         </div>
-    </div>
-    <div class="container writeEval">
-        <div id="good" class="col-md-5">
-            <p>칭찬</p>
-            <textarea name="good"></textarea>
-        </div>
-        <div id="bad" class="col-md-5">
-            <p>반성</p>
-            <textarea name="bad"></textarea>
-        </div>
+        <div class="container writeEval">
+            <row>
+                <div id="good" class="col-md-5">
+                    <p>칭찬</p>
+                    <textarea name="good"></textarea>
+                </div>
+                <div id="bad" class="col-md-5">
+                    <p>반성</p>
+                    <textarea name="bad"></textarea>
+                </div>
 
+            </row>
+        </div>
     </div>
-
 
 
 
