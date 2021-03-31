@@ -1,0 +1,66 @@
+.container-fluid {
+    padding:0;
+}
+
+img.logo {
+    width: 180px;
+}
+
+.sign .btn {
+    display: inline-block;
+    width: 150px;
+    border: 0px;
+    border-radius: 8px;
+    color: white;
+    padding: 5px;
+    margin: 5px 5px 30px 5px;
+}
+
+.sign h1:after {
+    content: "";
+    display: block;
+    width: 350px;
+    border-bottom: 5px solid #04005E;
+    margin: 25px auto 10px auto;
+}
+
+h6.loc:after {
+    content: "";
+    display: block;
+    width: 500px;
+    border-bottom: 5px solid #04005E;
+    margin: 25px auto 10px auto;
+}
+
+.footer .btn {
+    width: 150px;
+    border: 0px;
+    border-radius: 8px;
+    color: white;
+    padding: 5px;
+    margin: 5px;
+}
+
+a {
+    color: black;
+}
+
+a:visited {
+    color: black;
+}
+
+.purple {
+    background-color: #EC56FC;
+}
+
+.pink {
+    background-color: #FF1F78;
+}
+
+.blue {
+    background-color: #8181C1;
+}
+
+.babypink {
+    background-color: #E080C0;
+}
