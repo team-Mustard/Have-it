@@ -3,16 +3,16 @@
         <div class="goal">
           <ul class="nav navbar-stacked">
             <li class="active">
-              <a href="#">목표1</a>
+              <a href="/?page=goal">목표1</a>
             </li>
             <li>
-              <a href="#">목표2</a>
+              <a href="/?page=goal">목표2</a>
             </li>
             <li>
-              <a href="#">목표3</a>
+              <a href="/?page=goal">목표3</a>
             </li>
             <li>
-              <a href="#">목표4</a>
+              <a href="/?page=goal">목표4</a>
             </li>
             <li>
               <a href="#"><i class="fas fa-plus" style="color: red;"> 추가하기</i></a>
@@ -24,16 +24,19 @@
         <div class="report">
           <ul class="nav navbar-stacked">
             <li class="active">
-              <a href="#">리포트1</a>
+              <a href="/?page=weekly">리포트1</a>
             </li>
             <li>
-              <a href="#">리포트2</a>
+              <a href="/?page=weekly">리포트2</a>
             </li>
             <li>
-              <a href="#">리포트3</a>
+              <a href="/?page=weekly">리포트3</a>
             </li>
             <li>
-              <a href="#">리포트4</a>
+              <a href="/?page=weekly">리포트4</a>
+            </li>
+            <li>
+              <a href="/?page=monthly">리포트5</a>
             </li>
           </ul>
         </div>
