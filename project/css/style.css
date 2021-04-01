@@ -338,22 +338,22 @@ input.time {
 
 
 /* goal css start */
-.container{
+.cart{
     background-color: #ea3d0b;
             }
 @media (min-width: 760px){
-.container{ width: 550px; } /* 모바일 화면에 맞춰서 변하는거.. 슬쩍.. 넣어봄 */
+.cart{ width: 550px; } /* 모바일 화면에 맞춰서 변하는거.. 슬쩍.. 넣어봄 */
 }
 @media (min-width: 1200px){
-.container{ width: 680px; }
+.cart{ width: 680px; }
 }
             
-.row{
+.incart{
     padding-left: 5px;
     padding-bottom: 5px;               
 }
 
-.col-md-1{
+.con{
     background-color: white;
     margin-right: 5px;
     margin-top: 5px;
