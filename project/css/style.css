@@ -111,7 +111,13 @@ input.time {
 
 /* weekly Report Css start */
 
-
+#weekButton .glyphicon{
+    font-size: 30px;
+    
+}
+#weekButton{
+    text-align: right;
+}
 #calender {
     padding: 15px;
     padding-right: 30px;
@@ -163,43 +169,47 @@ input.time {
     text-align: center;
 }
 #good {
+    box-sizing: border-box; 
     padding: 10px;
     border:5px solid;
-    margin: 10px;
     border-radius: 20px;
     border-color: #d2c5e1;
     
     
 }
 #good p{
+    text-align: center;
     font-size: 20px;
     font-weight: bold;
     
 }
 
-textarea{
+.writeEval textarea{
     width:100%;
     height:200px;
     border: none;
     font-size: 20px;
 
 }
-textarea:focus{
+.writeEval textarea:focus{
 
      outline: none;
 
 }
 
+
 #bad {
+    box-sizing: border-box; 
     padding: 10px;
     border:5px solid;
     border-color: #d2c5e1;
-    margin: 10px;
     border-radius: 20px;
+    
     
 }
 
 #bad p{
+    text-align: center;
     font-size: 20px;
     font-weight: bold;
     
@@ -366,4 +376,4 @@ textarea:focus{
 .bTitle{
     display: block;
 }
-/* goal css end */
+ /* goal css end */
