@@ -14,7 +14,7 @@
             <img class="logo img-circle" src="img/logoRail.jpg">
             <h2>' Have it '</h2>
             <p style="font-size: 3.5em;">회 원 가 입</p>
-            <form>
+            <form action="db/insertuserinfo.php" method="post" id="signupform">
                 <label><i class="fas fa-at babypink"></i></label>
                 <input type="email" name="email" placeholder="e-mail"><br>
                 <label><i class="fas fa-key blue"></i></label>
@@ -22,7 +22,7 @@
                 <label><i class="fas fa-check-double blue"></i></label>
                 <input type="password" name="password_check" placeholder="password double check">
             </form>
-            <a class="btn purple fa-2" href="javascript:location.replace('./login.php')">가입하기</a>
+            <a class="btn purple fa-2" onclick="document.getElementById('signupform').submit();">가입하기</a>
         </div>
     </div>
   </body>
