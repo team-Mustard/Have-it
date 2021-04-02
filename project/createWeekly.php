@@ -6,14 +6,10 @@ if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
 include "db/dbconn.php";
 $today = date("Y-m-d");
 
-/*
-$year = date("Y",strtotime($today));
-$month = date("m",strtotime($today));
-$day = date("d",strtotime($today));*/
 
 $year = date("Y",strtotime($today));
-$month = 3;
-$day = 8;
+$month = date("m",strtotime($today));
+$day = date("d",strtotime($today));
 
 $preLastday = date('t',mktime(0, 0, 1, $month-1, $day, $year));
 
@@ -29,7 +25,6 @@ if($day > 1)
 }else {
     $endTerm = date('Y-m-d',mktime(0,0,0,$month-1,$preLastday,$year));
 }
-echo "$startTerm <br> $endTerm <br>";
 $trackerSql = "select * from timetracker where userID = '$userid' 
         and date(date) between '$startTerm' and '$endTerm'";
 $trackerResult = mysqli_query($conn,$trackerSql);
@@ -38,8 +33,6 @@ if($trackerResult){
     
     while($trackerRow = mysqli_fetch_array($trackerResult, MYSQLI_ASSOC)){
         $trackerID = $trackerRow['trackerID'];
-        echo $trackerID;
-        echo "<br>";
         $t_routineSql = "select * from t_routine where trackerID = $trackerID";
         $t_routineResult = mysqli_query($conn, $t_routineSql);
         if($t_routineResult){
@@ -66,10 +59,10 @@ if($trackerResult){
 }
 
 $insertSql = "insert into WeeklyReport (userID, date, routineAchieve) 
-            values($userid,'2021-03-08','$achieveRoutine')";
+            values($userid,'$today','$achieveRoutine')";
 
-//mysqli_query($conn, $insertSql);
-//mysqli_close($conn);
+mysqli_query($conn, $insertSql);
+mysqli_close($conn);
 
 
 ?>
