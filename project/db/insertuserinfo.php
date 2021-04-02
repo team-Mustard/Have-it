@@ -11,15 +11,31 @@ if($email !=null){
     if($password != null){
         if($passwordCheck!=null){
             if($password==$passwordCheck){
+                
+                    $checkSql = "select * from userinfo where email = '$email'";
+                    $result = mysqli_query($conn,$checkSql);
+                    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+                        if(isset($row['email'])){
+                            echo("
+                            <script>
+                                alert('이미 존재하는 이메일입니다.');
+                                history.back();
+                            </script>"
+                    );    
+                                 
+                    }else{
+                    
                     $sql = "insert into userinfo(email,pw) values('$email','$password')";
-                    mysqli_query($conn,$sql);
+                    if(mysqli_query($conn,$sql)){
+                            echo("
+                                <script>
+                                    alert('가입이 완료되었습니다!');
+                                    location.href='../login.php';
+                                </script>"
+                            );
+                        }
                     mysqli_close($conn);
-                    echo("
-                    <script>
-                        alert('가입이 완료되었습니다!');
-                        location.href='./login.php';
-                    </script>"
-                    );
+                        }
                 }else {
                 echo("
                    <script>

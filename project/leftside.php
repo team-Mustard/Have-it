@@ -25,40 +25,39 @@
         </div>
             <hr>
             <!-- 리포트 리스트 -->
+
+        <div class="report">
+          <ul class="nav navbar-stacked">
 <?php
         
         include "db/dbconn.php";
         $sql = "select * from WeeklyReport where userID = $userid";
         $result =  mysqli_query($conn, $sql);
         if($result){
-            $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+ 
+            while( $row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                          
             $weeklyID = $row['weeklyID'];
             $date = $row['date'];
+                
+            
               
         
 ?>
-        <div class="report">
-          <ul class="nav navbar-stacked">
             <li class="active">
-              <a href="?page=weekly&weeklyID=<?=$weeklyID?>">리포트1</a>
+              <a href="?page=weekly&weeklyID=<?=$weeklyID?>">[주] <?=$date?> 리포트</a>
             </li>
-            <li>
-              <a href="?page=weekly&weeklyID=2">리포트2</a>
-            </li>
-            <li>
-              <a href="?page=weekly&weeklyID=3">리포트3</a>
-            </li>
-            <li>
-              <a href="?page=weekly">리포트4</a>
-            </li>
-            <li>
-              <a href="?page=monthly">리포트5</a>
-            </li>
+              
+      
+        
+        <?php 
+            }
+        }
+        ?>
+                      
+              
           </ul>
         </div>
-        
-        <?php }
-        ?>
             <!-- 하단 버튼메뉴 -->
         <div class="setting">
           <a href="#"><i class="fas fa-cog pull-right fa-2"></i></a>  
