@@ -1,3 +1,11 @@
+<?php
+
+    include_once "./head.php";
+    include_once "./leftside.php";
+    include_once "./rightside.php";
+?>
+
+
         <div class="main col-md-10 col-md-offset-2">
           <div class="page-header">
             
@@ -21,15 +29,22 @@
     <?php
         include "./db/dbconn.php";
         $goal_title = "SELECT * FROM goal WHERE userID = 1";
-        $routine_title = "SELECT * FROM Routine WHERE goalID = 1";
-              
+        $routine = "SELECT * FROM Routine WHERE goalID = 1";
+        
+            
         $result = mysqli_query($conn, $goal_title);
-        $result2 = mysqli_query($conn, $routine_title);
-          
+        $result2 = mysqli_query($conn, $routine);
+        
+        
+              
         $row = mysqli_fetch_array($result);
         echo '<h3>'.$row['goalName'].'</h3>';
-              
+        
         while($row2 = mysqli_fetch_array($result2)){
+        
+            $routineID = $row2['routineID'];
+            $checkRoutine = "SELECT * FROM t_routine WHERE routineID = '$routineID'";
+            $result3 = mysqli_query($conn, $checkRoutine);
             
             echo '<div class="container cart" style="background-color: white; margin-top: 20px;">
           <div class="con1" style="float: left; margin-right: 40px;">
@@ -45,27 +60,40 @@
           </div>
           <div class="con1" style="margin-top: 8px; float: left;">
               <h3>'.$row2['routineName'].'</div></div>';
+    ?>
             
-         echo '<div id="basket" class="container cart">
-            <div class="row incart no-gutters">             
-                <div class="col-xs-1 col-md-1 con"><i id="jew" class="jew fa fa-trophy fa-3x" style="margin-top:7px; margin-left:7px" aria-hidden="true"></i></div>
-                <div class="col-xs-1 col-md-1 con"></div>
-                <div class="col-xs-1 col-md-1 con"></i></div>
-                <div class="col-xs-1 col-md-1 con"></div>
+         <div id="basket" class="container cart">
+            <div class="row incart no-gutters">
                 
-                <div class="col-xs-1 col-md-1 con"> </div>
-                <div class="col-xs-1 col-md-1 con"> </div>
-                <div class="col-xs-1 col-md-1 con"> </div>
-                <div class="col-xs-1 col-md-1 con"> </div>
-                <div class="col-xs-1 col-md-1 con"> </div>
-                <div class="col-xs-1 col-md-1 con"> </div>
-                <div class="col-xs-1 col-md-1 con"> </div>                
+               <?php    
+                $check = 1;
+                while($row3 = mysqli_fetch_array($result3)){
+                    if($row3['checkRoutine'] == 0){
+                        $check = 0;
+                    }
+                }
+            
+                $dayNum = 0;
+                while($dayNum<7){
+                    $IntervalNum = $row2['rInterval'];
+                    $interval = explode(';', $IntervalNum);
+                    
+                    if($interval[$dayNum] == 1){
+                       echo '<div class="col-xs-1 col-md-1 con">';
+                       if($check == 1){
+                           echo '<i id="jew" class="jew fa fa-trophy fa-3x" style="margin-top:7px; margin-left:7px" aria-hidden="true"></i>';
+                       }                       
+                       echo '</div>'; 
+                    }
+                $dayNum += 1;    
+                }
+            
+                ?>
                 
             </div>
-        </div> ';
-        }
-    ?>
-  
+        </div>
+              
+  <?php } ?>
               
               
     <!-- 위에 들어가있는 코드 (보기 편한 버전 냄겨놓음..)
@@ -102,8 +130,7 @@
                 <div class="col-xs-1 col-md-1 con"> </div>  
 
             </div>
-        </div> 
-   -->         
-              
-          </div>          
         </div>
+-->
+</div>
+</div>

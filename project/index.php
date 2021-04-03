@@ -6,8 +6,6 @@ if($_login == false){
 else {
     include_once "head.php";
     include_once "leftside.php";
-    if($_page == 0){
-        include_once "goal.php";
     if(empty($_GET['page'])){
         include_once "example.php";
     } else if($_GET['page'] == 'goal') {
@@ -19,5 +17,5 @@ else {
     }
     include_once "rightside.php";
     include_once "bottom.php";
-}
+    }
 ?>
