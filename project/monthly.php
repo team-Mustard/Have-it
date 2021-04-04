@@ -1,9 +1,3 @@
-<?php
-
-    include_once "./head.php";
-    include_once "./leftside.php";
-?>
-
 <head>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
@@ -42,9 +36,6 @@
 
 
 </body>
-<?php 
- include_once "./rightside.php";
-include_once "./bottom.php";?>
 
 <script>
     var ctx = document.getElementById('myChart').getContext('2d');

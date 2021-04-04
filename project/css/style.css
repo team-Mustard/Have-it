@@ -111,10 +111,13 @@ input.time {
 
 /* weekly Report Css start */
 
-#weekButton .glyphicon{
+#weekButton a{
     font-size: 30px;
+    color: black;
+    text-decoration:none
     
 }
+
 #weekButton{
     text-align: right;
 }

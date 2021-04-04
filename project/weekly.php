@@ -1,29 +1,17 @@
-<?php
-    include_once "./head.php";
-    include_once "./leftside.php";
-    include_once "./rightside.php";    
-    include "db/dbconn.php";
-
-?>
-
 <head>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
 
 </head>
-<style>
 
-
-</style>
-
-<body>
     <div class="main col-md-10 col-md-offset-2">
         <div class="container" id = "weekButton">
-            <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
+            <a class="glyphicon glyphicon-remove-circle" aria-hidden="true"></a>
+            <a class="glyphicon glyphicon-ok-circle" aria-hidden="true" onclick="document.getElementById('weeklyform').submit();"></a>
         </div>
 <?php 
+        include "db/dbconn.php";
         error_reporting(E_ALL);
         ini_set("display_errors", 1);
         
@@ -44,6 +32,7 @@
 
         
 ?>
+        <form action="adminWeekly.php?mode=2" method="POST" id = "weeklyform">
         
         <div class="container">
             <row>
@@ -54,12 +43,14 @@
                 <div id="image" class="col-md-4">
                     <img src="noimage.png" width="250px" alt="이미지 없음">
                 </div>
+                
                 <div id="score" class="col-md-3">
                     <span class="mScore">이번 주 나의 점수
                         <input type="text" name="weeklyScore" value="<?=$score?>">
                         점</span>
 
                 </div>
+              
             </row>
         </div>
         <div class="container">
@@ -75,16 +66,13 @@
                     <p>반성</p>
                     <textarea name="bad"><?=$bad?></textarea>
                 </div>
-
             </row>
         </div>
+         <input type="hidden" name = "weeklyID" value = "<?=$weeklyID?>">
+        </form>
     </div>
 
-
-
-</body>
 <?php 
-    include_once "./bottom.php";
     $weeklyRoutine = explode(';',$routineAchieve);
     
 ?>
