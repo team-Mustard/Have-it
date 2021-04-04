@@ -1,4 +1,8 @@
-        <div class="col-md-2 col-xs-7 col-sm-3 sidebar sidebar-left sidebar-animate sidebar-md-show">
+<?php
+    if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
+?>
+
+    <div class="col-md-2 col-xs-7 col-sm-3 sidebar sidebar-left sidebar-animate sidebar-md-show">
             <!-- 목표 리스트 -->
         <div class="goal">
           <ul class="nav navbar-stacked">
@@ -21,9 +25,28 @@
         </div>
             <hr>
             <!-- 리포트 리스트 -->
+
         <div class="report">
           <ul class="nav navbar-stacked">
+<?php
+        
+        include "db/dbconn.php";
+        $sql = "select * from WeeklyReport where userID = $userid";
+        $result =  mysqli_query($conn, $sql);
+        if($result){
+ 
+            while( $row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                          
+            $weeklyID = $row['weeklyID'];
+            $date = $row['date'];
+                
+            
+              
+        
+?>
             <li class="active">
+
+              <a href="?page=weekly&weeklyID=<?=$weeklyID?>">[주] <?=$date?> 리포트</a>              
               <a href="/?page=weekly">리포트1</a>
             </li>
             <li>
@@ -38,6 +61,15 @@
             <li>
               <a href="/?page=monthly">리포트5</a>
             </li>
+              
+      
+        
+        <?php 
+            }
+        }
+        ?>
+                      
+              
           </ul>
         </div>
             <!-- 하단 버튼메뉴 -->
