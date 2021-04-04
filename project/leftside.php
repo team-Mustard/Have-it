@@ -45,7 +45,21 @@
         
 ?>
             <li class="active">
-              <a href="?page=weekly&weeklyID=<?=$weeklyID?>">[주] <?=$date?> 리포트</a>
+
+              <a href="?page=weekly&weeklyID=<?=$weeklyID?>">[주] <?=$date?> 리포트</a>              
+              <a href="/?page=weekly">리포트1</a>
+            </li>
+            <li>
+              <a href="/?page=weekly">리포트2</a>
+            </li>
+            <li>
+              <a href="/?page=weekly">리포트3</a>
+            </li>
+            <li>
+              <a href="/?page=weekly">리포트4</a>
+            </li>
+            <li>
+              <a href="/?page=monthly">리포트5</a>
             </li>
               
       
