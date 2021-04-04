@@ -27,25 +27,29 @@
      
               
     <?php
-        include "./db/dbconn.php";
-        $goal_title = "SELECT * FROM goal WHERE userID = 1";
-        $routine = "SELECT * FROM Routine WHERE goalID = 1";
-        
-            
-        $result = mysqli_query($conn, $goal_title);
-        $result2 = mysqli_query($conn, $routine);
-        
-        
+        include "./db/dbconn.php";              
+        $goal = "SELECT * FROM goal WHERE userID = 1";
               
+              
+        $result = mysqli_query($conn, $goal);
+        
         $row = mysqli_fetch_array($result);
-        echo '<h3>'.$row['goalName'].'</h3>';
+            echo '<div class="container cart" style="background-color: white; margin-top: 20px;"><h3>'.$row['goalName'].'</h3></div>';
+            $goalID = $row['goalID']; //leftside에서 goalID값 받아와서 넣기
+            
+            $routine = "SELECT * FROM Routine WHERE goalID ='$goalID'";
+            $result2 = mysqli_query($conn, $routine);
+            
+                  
+        
         
         while($row2 = mysqli_fetch_array($result2)){
         
             $routineID = $row2['routineID'];
-            $checkRoutine = "SELECT * FROM t_routine WHERE routineID = '$routineID'";
-            $result3 = mysqli_query($conn, $checkRoutine);
+            $tRoutine = "SELECT * FROM t_routine WHERE routineID = '$routineID'";
+            $result3 = mysqli_query($conn, $tRoutine);
             
+            //루틴 제목 출력
             echo '<div class="container cart" style="background-color: white; margin-top: 20px;">
           <div class="con1" style="float: left; margin-right: 40px;">
               <form>
@@ -61,7 +65,8 @@
           <div class="con1" style="margin-top: 8px; float: left;">
               <h3>'.$row2['routineName'].'</div></div>';
     ?>
-            
+              
+        <!-- 해빗 트래커 칸 생성 -->    
          <div id="basket" class="container cart">
             <div class="row incart no-gutters">
                 
@@ -93,7 +98,10 @@
             </div>
         </div>
               
-  <?php } ?>
+  <?php } echo '<br><br><br>'; ?>
+              
+  
+              
               
               
     <!-- 위에 들어가있는 코드 (보기 편한 버전 냄겨놓음..)

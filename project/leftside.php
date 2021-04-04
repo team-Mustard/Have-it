@@ -1,5 +1,6 @@
         <div class="col-md-2 col-xs-7 col-sm-3 sidebar sidebar-left sidebar-animate sidebar-md-show">
             <!-- 목표 리스트 -->
+
         <div class="goal">
           <ul class="nav navbar-stacked">
             <li class="active">
@@ -19,6 +20,7 @@
             </li>
           </ul>
         </div>
+        
             <hr>
             <!-- 리포트 리스트 -->
         <div class="report">

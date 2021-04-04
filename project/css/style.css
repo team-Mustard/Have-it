@@ -339,7 +339,7 @@ input.time {
 
 /* goal css start */
 .cart{
-    background-color: #ea3d0b;
+    background-color: #e0e0e0;
             }
 @media (min-width: 760px){
 .cart{ width: 550px; } /* 모바일 화면에 맞춰서 변하는거.. 슬쩍.. 넣어봄 */
