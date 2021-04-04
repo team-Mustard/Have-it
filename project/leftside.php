@@ -3,16 +3,16 @@
         <div class="goal">
           <ul class="nav navbar-stacked">
             <li class="active">
-              <a href="/?page=goal">목표1</a>
+              <a href="?page=goal">목표1</a>
             </li>
             <li>
-              <a href="/?page=goal">목표2</a>
+              <a href="?page=goal">목표2</a>
             </li>
             <li>
-              <a href="/?page=goal">목표3</a>
+              <a href="?page=goal">목표3</a>
             </li>
             <li>
-              <a href="/?page=goal">목표4</a>
+              <a href="?page=goal">목표4</a>
             </li>
             <li>
               <a href="#"><i class="fas fa-plus" style="color: red;"> 추가하기</i></a>

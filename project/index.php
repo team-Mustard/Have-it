@@ -17,5 +17,5 @@ else {
     }
     include_once "rightside.php";
     include_once "bottom.php";
-}
+    }
 ?>
