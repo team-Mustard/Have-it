@@ -1,5 +1,11 @@
 <?php
-$_login = true; // 로그인 안돼있으면 소개 페이지로
+
+session_start();
+if(isset($_SESSION['userid']))
+    $_login = true; // 로그인 안돼있으면 소개 페이지로
+else
+    $_login = false;
+
 if($_login == false){
     include_once "intro.php";
 }

@@ -7,17 +7,10 @@ include "db/dbconn.php";
 switch($mode){
         
     case 1:{
-        $today = date("Y-m-d");
-
-        /*
+        $today = date("Y-m-d");       
         $year = date("Y",strtotime($today));
         $month = date("m",strtotime($today));
         $day = date("d",strtotime($today));
-        */
-
-        $year = date("Y",strtotime($today));
-        $month =3;
-        $day = 8;
 
         $preLastday = date('t',mktime(0, 0, 1, $month-1, $day, $year));
 
@@ -74,11 +67,11 @@ switch($mode){
         echo "$achieveRoutine <br>";
         $insertSql = "insert into WeeklyReport (userID, date, routineAchieve) 
                     values($userid,'$today','$achieveRoutine')";
-
+        
         //mysqli_query($conn, $insertSql);
         //mysqli_close($conn);
 
-        
+        break;
         
     }
     case 2:{
@@ -99,7 +92,7 @@ switch($mode){
                 </script>
         ");
         
-        
+        break;
     }
 }
 

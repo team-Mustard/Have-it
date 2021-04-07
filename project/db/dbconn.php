@@ -1,6 +1,6 @@
 <?php 
 
-$conn = mysqli_connect('localhost', 'root', 'root','haveit'); 
+$conn = mysqli_connect('localhost', 'mutanxx', '0627','mustard'); 
 // localhost, ID, PW, DB name
 
 /*
