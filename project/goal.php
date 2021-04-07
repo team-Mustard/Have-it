@@ -10,7 +10,6 @@
           <div class="page-header">
             
     <script>
-<<<<<<< HEAD
         function changeColor(change,i){
             var temp = 'basket' + i;
             var temp2 = 'jew' + i;
@@ -19,22 +18,7 @@
             color.style.backgroundColor = change;
             color2.style.color = change;                       
         }
-        
-        function changeColor2(change,i){
-            var color = document.getElementById("basket2");
-            var color2 = document.getElementById("jew2");
-            color.style.backgroundColor = change;
-            color2.style.color = change;
-        }
-=======
-        function changeColor(change){
-            var ba = $ba;
-            var color = document.getElementsByClassName("basket");
-            var color2 = document.getElementById("jew");
-            color.style.backgroundColor = change;
-            color2.style.color = change;                       
-        }
->>>>>>> upstream/main
+
     </script>
      
               
@@ -52,15 +36,8 @@
             $result2 = mysqli_query($conn, $routine);
             
                   
-        
-        
-<<<<<<< HEAD
-              
-        $row = mysqli_fetch_array($result);
-        echo '<h3>'.$row['goalName'].'</h3>';
         $i = 1;
-=======
->>>>>>> upstream/main
+        
         while($row2 = mysqli_fetch_array($result2)){
             
             $routineID = $row2['routineID'];
@@ -82,16 +59,10 @@
           </div>
           <div class="con1" style="margin-top: 8px; float: left;">
               <h3>'.$row2['routineName'].'</div></div>';
-<<<<<<< HEAD
-    ?>
-            
-         <div id="basket<?=$i?>" class="container cart">
-=======
         ?>
               
         <!-- 해빗 트래커 칸 생성 -->    
-         <div id="basket" class="container cart">
->>>>>>> upstream/main
+         <div id="basket<?=$i?>" class="container cart">
             <div class="row incart no-gutters">
                 
                <?php    
@@ -122,15 +93,12 @@
             </div>
         </div>
               
-<<<<<<< HEAD
-  <?php $i++;
-        } ?>
-=======
-  <?php } echo '<br><br><br>'; ?>
+  <?php 
+        $i++;
+        } echo '<br><br><br>'; ?>
               
   
               
->>>>>>> upstream/main
               
               
     <!-- 위에 들어가있는 코드 (보기 편한 버전 냄겨놓음..)
@@ -165,7 +133,6 @@
                 <div class="col-xs-1 col-md-1 con"> </div>
                 <div class="col-xs-1 col-md-1 con"> </div>
                 <div class="col-xs-1 col-md-1 con"> </div>  
-
             </div>
         </div>
 -->
