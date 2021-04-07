@@ -11,32 +11,25 @@
             
     <script>
         function changeColor(change){
-            var color = document.getElementById("basket");
+            var ba = $ba;
+            var color = document.getElementsByClassName("basket");
             var color2 = document.getElementById("jew");
             color.style.backgroundColor = change;
             color2.style.color = change;                       
-        }
-        
-        function changeColor2(change){
-            var color = document.getElementById("basket2");
-            var color2 = document.getElementById("jew2");
-            color.style.backgroundColor = change;
-            color2.style.color = change;
         }
     </script>
      
               
     <?php
-        include "./db/dbconn.php";              
-        $goal = "SELECT * FROM goal WHERE userID = 1";
+        include "./db/dbconn.php";
+        if(isset($_GET['goalID'])) $goalID = $_GET['goalID'];
+        $goal = "SELECT * FROM goal WHERE goalID = '$goalID'";
               
               
         $result = mysqli_query($conn, $goal);
         
         $row = mysqli_fetch_array($result);
             echo '<div class="container cart" style="background-color: white; margin-top: 20px;"><h3>'.$row['goalName'].'</h3></div>';
-            $goalID = $row['goalID']; //leftside에서 goalID값 받아와서 넣기
-            
             $routine = "SELECT * FROM Routine WHERE goalID ='$goalID'";
             $result2 = mysqli_query($conn, $routine);
             
@@ -64,7 +57,7 @@
           </div>
           <div class="con1" style="margin-top: 8px; float: left;">
               <h3>'.$row2['routineName'].'</div></div>';
-    ?>
+        ?>
               
         <!-- 해빗 트래커 칸 생성 -->    
          <div id="basket" class="container cart">
