@@ -10,14 +10,16 @@
           <div class="page-header">
             
     <script>
-        function changeColor(change){
-            var color = document.getElementById("basket");
-            var color2 = document.getElementById("jew");
+        function changeColor(change,i){
+            var temp = 'basket' + i;
+            var temp2 = 'jew' + i;
+            var color = document.getElementById(temp);
+            var color2 = document.getElementById(temp2);
             color.style.backgroundColor = change;
             color2.style.color = change;                       
         }
         
-        function changeColor2(change){
+        function changeColor2(change,i){
             var color = document.getElementById("basket2");
             var color2 = document.getElementById("jew2");
             color.style.backgroundColor = change;
@@ -39,9 +41,9 @@
               
         $row = mysqli_fetch_array($result);
         echo '<h3>'.$row['goalName'].'</h3>';
-        
+        $i = 1;
         while($row2 = mysqli_fetch_array($result2)){
-        
+            
             $routineID = $row2['routineID'];
             $checkRoutine = "SELECT * FROM t_routine WHERE routineID = '$routineID'";
             $result3 = mysqli_query($conn, $checkRoutine);
@@ -51,7 +53,7 @@
               <form>
                   <div class="colors">
                       <p> 색깔 설정 </p>
-                      <input type=\'color\' id=\'myColor\' onclick="changeColor(this.value)">
+                      <input type=\'color\' id=\'myColor\' onclick="changeColor(this.value,'.$i.')">
                   </div>
               </form>
           </div>
@@ -62,7 +64,7 @@
               <h3>'.$row2['routineName'].'</div></div>';
     ?>
             
-         <div id="basket" class="container cart">
+         <div id="basket<?=$i?>" class="container cart">
             <div class="row incart no-gutters">
                 
                <?php    
@@ -81,7 +83,7 @@
                     if($interval[$dayNum] == 1){
                        echo '<div class="col-xs-1 col-md-1 con">';
                        if($check == 1){
-                           echo '<i id="jew" class="jew fa fa-trophy fa-3x" style="margin-top:7px; margin-left:7px" aria-hidden="true"></i>';
+                           echo '<i id="jew'.$i.'" class="jew fa fa-trophy fa-3x" style="margin-top:7px; margin-left:7px" aria-hidden="true"></i>';
                        }                       
                        echo '</div>'; 
                     }
@@ -93,7 +95,8 @@
             </div>
         </div>
               
-  <?php } ?>
+  <?php $i++;
+        } ?>
               
               
     <!-- 위에 들어가있는 코드 (보기 편한 버전 냄겨놓음..)
