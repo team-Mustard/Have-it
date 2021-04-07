@@ -10,6 +10,7 @@
           <div class="page-header">
             
     <script>
+<<<<<<< HEAD
         function changeColor(change,i){
             var temp = 'basket' + i;
             var temp2 = 'jew' + i;
@@ -25,29 +26,48 @@
             color.style.backgroundColor = change;
             color2.style.color = change;
         }
+=======
+        function changeColor(change){
+            var ba = $ba;
+            var color = document.getElementsByClassName("basket");
+            var color2 = document.getElementById("jew");
+            color.style.backgroundColor = change;
+            color2.style.color = change;                       
+        }
+>>>>>>> upstream/main
     </script>
      
               
     <?php
         include "./db/dbconn.php";
-        $goal_title = "SELECT * FROM goal WHERE userID = 1";
-        $routine = "SELECT * FROM Routine WHERE goalID = 1";
+        if(isset($_GET['goalID'])) $goalID = $_GET['goalID'];
+        $goal = "SELECT * FROM goal WHERE goalID = '$goalID'";
+              
+              
+        $result = mysqli_query($conn, $goal);
         
+        $row = mysqli_fetch_array($result);
+            echo '<div class="container cart" style="background-color: white; margin-top: 20px;"><h3>'.$row['goalName'].'</h3></div>';
+            $routine = "SELECT * FROM Routine WHERE goalID ='$goalID'";
+            $result2 = mysqli_query($conn, $routine);
             
-        $result = mysqli_query($conn, $goal_title);
-        $result2 = mysqli_query($conn, $routine);
+                  
         
         
+<<<<<<< HEAD
               
         $row = mysqli_fetch_array($result);
         echo '<h3>'.$row['goalName'].'</h3>';
         $i = 1;
+=======
+>>>>>>> upstream/main
         while($row2 = mysqli_fetch_array($result2)){
             
             $routineID = $row2['routineID'];
-            $checkRoutine = "SELECT * FROM t_routine WHERE routineID = '$routineID'";
-            $result3 = mysqli_query($conn, $checkRoutine);
+            $tRoutine = "SELECT * FROM t_routine WHERE routineID = '$routineID'";
+            $result3 = mysqli_query($conn, $tRoutine);
             
+            //루틴 제목 출력
             echo '<div class="container cart" style="background-color: white; margin-top: 20px;">
           <div class="con1" style="float: left; margin-right: 40px;">
               <form>
@@ -62,9 +82,16 @@
           </div>
           <div class="con1" style="margin-top: 8px; float: left;">
               <h3>'.$row2['routineName'].'</div></div>';
+<<<<<<< HEAD
     ?>
             
          <div id="basket<?=$i?>" class="container cart">
+=======
+        ?>
+              
+        <!-- 해빗 트래커 칸 생성 -->    
+         <div id="basket" class="container cart">
+>>>>>>> upstream/main
             <div class="row incart no-gutters">
                 
                <?php    
@@ -95,8 +122,15 @@
             </div>
         </div>
               
+<<<<<<< HEAD
   <?php $i++;
         } ?>
+=======
+  <?php } echo '<br><br><br>'; ?>
+              
+  
+              
+>>>>>>> upstream/main
               
               
     <!-- 위에 들어가있는 코드 (보기 편한 버전 냄겨놓음..)
