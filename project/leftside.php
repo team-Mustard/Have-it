@@ -25,7 +25,7 @@
         
         <?php } } ?>
             <li>
-              <a href="#"><i class="fas fa-plus" style="color: red;"> 추가하기</i></a>
+              <a href="?page=goal_set"><i class="fas fa-plus" style="color: red;"> 추가하기</i></a>
             </li>
           </ul>
         </div>
