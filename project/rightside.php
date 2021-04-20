@@ -3,8 +3,24 @@
           <input class="time" type="text"/><input class="time" type="button" value="+" style="color: red; margin-left: 5px;"/>
            <table class="time">
             <?php
-              $is_data = 0; // DB와 연동해서 루틴 데이터 있는 시간인지 불러와주세요
-              $data_color = 'gray'; // DB와 연동해서 루틴별 고유 색을 불러와주세요
+              include "./db/dbconn.php";
+              if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
+              
+              $ttracker = "SELECT * FROM timetracker WHERE userID= $userid";
+               
+              $result = mysqli_query($conn, $ttracker);
+              $row = mysqli_fetch_array($result);
+               
+              $ttrackerID = $row['trackerID'];
+              $trackerDate = $row['date'];
+              $schedule = "SELECT * FROM schedule WHERE trackerID=$ttrackerID";
+              
+              $result2 = mysqli_query($conn, $schedule);
+              $row2 = mysqli_fetch_array($result2);
+               
+              $is_data = $trackerDate; // DB와 연동해서 루틴 데이터 있는 시간인지 불러와주세요
+              $data_color = $row2['color']; // DB와 연동해서 루틴별 고유 색을 불러와주세요
+               
               for($i=0; $i<24; $i++){
                   echo "<tr> <th scope='row'>".$i."</th>";
                       for($j=0; $j<6; $j++) {
