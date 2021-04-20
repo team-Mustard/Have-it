@@ -261,15 +261,15 @@ input.time {
 #grade {
 
     padding: 10px;
-    margin-bottom: 20px
+    margin-bottom: 10px
 }
 #grade p {
-    font-size: 38px; 
-    margin: 20px;
+    font-size: 25px; 
+    margin: 15px;
 }
 #grade span {
     
-    font-size: 40px;
+    font-size: 30px;
     border-bottom: 3px solid;
 }
 

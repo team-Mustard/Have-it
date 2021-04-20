@@ -16,7 +16,8 @@ else {
         include_once "example.php";
     } else if($_GET['page'] == 'goal') {
         include_once "goal.php";
-    } else if($_GET['page'] == 'monthly') {
+    }
+    else if($_GET['page'] == 'monthly') {
         include_once "monthly.php";
     } else if($_GET['page'] == 'weekly') {
         include_once "weekly.php";
