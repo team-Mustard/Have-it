@@ -4,9 +4,20 @@
     if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
     $goal_name = $_POST['goal_name'];
     $term = $_POST['term'];
-    if($term = "term_sel"){
+    $time = time();
+    $term_s_date = date("Y-m-d", $time);
+    if($term == "select"){
         $term_s_date = $_POST['term_s_date'];
         $term_e_date = $_POST['term_e_date'];
+    }
+    else if($term == "a-month"){
+        $term_e_date = date("Y-m-d", strtotime("+1 month", $time));
+    }  
+    else if($term == "3-month"){
+        $term_e_date = date("Y-m-d", strtotime("+3 month", $time));
+    }
+    else if($term == "year"){
+        $term_e_date = date("Y-m-d", strtotime("+1 year", $time));
     }
 
     $sql = "INSERT INTO goal(goalName, startTerm, endTerm, achievement, userID) VALUES('$goal_name', '$term_s_date', '$term_e_date', '0', '$userid')";
@@ -28,10 +39,10 @@
     
     for($i=0;$i<$routineNum; $i++) {
         $name = "routine_name".$i;
-        $weak = "routine".$i;
+        $week = "routine".$i;
         $color = "colors".$i;
         $routine_name[$i] = $_POST[$name];
-        $repeats = $_POST[$weak];
+        $repeats = $_POST[$week];
         $colors = $_POST[$color];
 
         
@@ -61,8 +72,8 @@
             $arr[6] = "1"; 
         }
         
-        $Interval = implode($arr, ";");
     }
+    $Interval = implode(";", $arr);
         
           $sql3 = "INSERT INTO routine(routineName, color, rInterval, habbitTracker, goalID) VALUES('$routine_name[$i]', '$colors', '$Interval', '0', '$goalID')";
         
