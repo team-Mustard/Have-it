@@ -12,8 +12,6 @@
     </div>
     <?php 
         include "db/dbconn.php";
-        error_reporting(E_ALL);
-        ini_set("display_errors", 1);
         
         if(isset($_GET['weeklyID'])) $weeklyID = $_GET['weeklyID'];
         $sql = "select * from WeeklyReport where weeklyID = $weeklyID";
@@ -29,10 +27,16 @@
             $month = date("m",strtotime($date));
             $year = date("Y",strtotime($date));
             $day = date("d",strtotime($date));
+            
+            if($row['image'] != null){
+                $image = $row['image'];
+            }else{
+                $image = "img/logoRail.jpg";
+            }
 
         
 ?>
-    <form action="adminWeekly.php?mode=2" method="POST" id="weeklyform">
+    <form action="adminWeekly.php?mode=2" method="POST" id="weeklyform" enctype="multipart/form-data">
 
         <div class="container">
             <row>
@@ -41,8 +45,8 @@
                     <div class="dates"></div>
                 </div>
                 <div id="image" class="col-md-4">
-                    <input type=file name='file1' style='display: none;' accept="image/*">
-                    <img src='img/logoRail.jpg' width="280px"height="250px" id = 'weeklyImg' onclick='document.all.file1.click();'>
+                    <input type="file" name="inputImg" id = "inputImg" style='display: none;' accept="image/*">
+                    <img src='<?=$image?>' width="280px"height="250px" id = 'weeklyImg' onclick='document.all.inputImg.click();'>
 
 
                 </div>
@@ -156,8 +160,8 @@
         }
     }
 
-    $(":input[name='file1']").change(function() {
-        if ($(":input[name='file1']").val() == '') {
+    $(":input[name='inputImg']").change(function() {
+        if ($(":input[name='inputImg']").val() == '') {
             $('#weeklyImg').attr('src', '');
         }
         $('#image').css({
@@ -171,6 +175,7 @@
             'display': 'none'
         });
     }
-
+    
+    
 </script>
 <?php }?>
