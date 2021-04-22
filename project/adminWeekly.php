@@ -80,8 +80,29 @@ switch($mode){
         if(isset($_POST['good'])) $good = $_POST['good'];
         if(isset($_POST['bad'])) $bad = $_POST['bad'];
         if(isset($_POST['weeklyID'])) $weeklyID = $_POST['weeklyID'];
-        $updateSql = "update weeklyreport set goodEvaluation = '$good', badEvaluation = '$bad', score = $weeklyScore where weeklyID = $weeklyID";
+        if(isset($_POST['inputWeeklyImg'])) $weeklyImg = $_POST['inputWeeklyImg'];
+        $uploadDir = "upload/$userid/";
+        $datetime = date("YmdHis");
+        if(!is_dir(!$uploadDir)){
+            mkdir($uploadDir, 0777,true);
+        }
         
+        
+        
+        if(isset($_FILES['inputImg'])){
+        
+            $inputImg = "$uploadDir$datetime.png";
+            
+            move_uploaded_file($_FILES["inputImg"]['tmp_name'], $inputImg); 
+            $updateSql = "update weeklyreport set goodEvaluation = '$good', badEvaluation = '$bad', score = $weeklyScore, image = '$inputImg'  where weeklyID = $weeklyID";
+        
+            
+        }else {
+            $updateSql = "update weeklyreport set goodEvaluation = '$good', badEvaluation = '$bad', score = $weeklyScore where weeklyID = $weeklyID";
+        
+            
+        }
+        echo $updateSql;
         mysqli_query($conn, $updateSql);
         mysqli_close($conn);
         

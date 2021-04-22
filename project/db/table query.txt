@@ -115,11 +115,73 @@ constraint t_routine_t_routineID_PK primary key (t_routineID),
 constraint t_routine_routineID_FK Foreign Key (routineID) references Routine(routineID) on delete cascade,
 constraint t_routine_trackerID_FK Foreign Key (trackerID) references timetracker(trackerID) on delete cascade
 );
- /*
- 1 - 운동
- 2 - 아침밥
- 3- 영양제
- */
+
+
+
+create table MonthlyReport (
+monthlyID int auto_increment,
+lowestRoutine varchar(10),
+highestRoutine varchar(10),
+grade int,
+date date,
+userID int,
+constraint MonthlyReport_monthlyID_PK primary key (monthlyID),
+constraint MonthlyReport_userID_FK Foreign Key (userID) references userinfo(userID) on delete cascade
+
+);
+
+create table achieve_time(
+achieveTimeID int auto_increment,
+goalID int,
+monthlyID int,
+achieveTime varchar(150),
+constraint achieveTime_achieveTimeID_PK primary key (achieveTimeID),
+constraint achieveTime_goalID_FK Foreign Key (goalID) references goal(goalID) on delete set null,
+constraint achieveTime_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
+);
+
+create table achieve_week(
+achieveWeekID int auto_increment,
+goalID int,
+monthlyID int,
+achieveWeek varchar(150),
+constraint achieveWeek_achieveWeekID_PK primary key (achieveWeekID),
+constraint achieveWeek_goalID_FK Foreign Key (goalID) references goal(goalID) on delete set null,
+constraint achieveWeek_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
+);
+
+create table achieve_dayweek(
+achieveDayweekID int auto_increment,
+goalID int,
+monthlyID int, 
+achieveDayWeek varchar(150),
+constraint achieveDayweek_achieveDayweekID_PK primary key (achieveDayweekID),
+constraint achieveDayweek_goalID_FK Foreign Key (goalID) references goal(goalID) on delete set null,
+constraint achieveDayweek_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
+);
+
+
+create table WeeklyReport(
+weeklyID int auto_increment,
+goodEvaluation text,
+badEvaluation text, 
+score int,
+date date,
+userID int,
+image text,
+routineAchieve varchar(50),
+constraint WeeklyReport_weeklyID_PK primary key (weeklyID),
+constraint WeeklyReport_userID_FK Foreign Key (userID) references userinfo(userID) on delete cascade
+
+);
+
+
+insert into WeeklyReport(goodEvaluation, badEvaluation, score, date, routineAchieve,userID)
+values("2월 잘한점","2월 못한점",100,"2021-02-28","15;7;3;2;11;9;13;2;5;1;2;0;5;3",1);
+
+insert into WeeklyReport(goodEvaluation, badEvaluation, score, date, routineAchieve,userID)
+values("잘한점이에유","못한점이에유",50,"2021-03-04","10;8;6;5;15;10;13;11;20;5;10;9;5;3",1);
+
 
 /*3월 1일 월요일 */
 
@@ -774,47 +836,6 @@ values ('3','7','2021-03-07 19:50:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
 values ('6','7','2021-03-07 16:20:00',1);
-
-
-
-
-
-
-create table MonthlyReport (
-monthlyID int auto_increment,
-lowestRoutine int,
-highestRoutine int,
-frequency varchar(60),
-averageScore int,
-grade int,
-date date,
-userID int,
-constraint MonthlyReport_monthlyID_PK primary key (monthlyID),
-constraint MonthlyReport_lowestRoutine_FK Foreign Key (lowestRoutine) references Routine(routineID) on delete set null,
-constraint MonthlyReport_userID_FK Foreign Key (userID) references userinfo(userID) on delete cascade
-);
-
-create table WeeklyReport(
-weeklyID int auto_increment,
-goodEvaluation text,
-badEvaluation text, 
-score int,
-date date,
-userID int,
-image text,
-routineAchieve varchar(50),
-constraint WeeklyReport_weeklyID_PK primary key (weeklyID),
-constraint WeeklyReport_userID_FK Foreign Key (userID) references userinfo(userID) on delete cascade
-
-);
-
-
-insert into WeeklyReport(goodEvaluation, badEvaluation, score, date, routineAchieve,userID)
-values("2월 잘한점","2월 못한점",100,"2021-02-28","15;7;3;2;11;9;13;2;5;1;2;0;5;3",1);
-
-insert into WeeklyReport(goodEvaluation, badEvaluation, score, date, routineAchieve,userID)
-values("잘한점이에유","못한점이에유",50,"2021-03-04","10;8;6;5;15;10;13;11;20;5;10;9;5;3",1);
-
 
 
 
@@ -2807,79 +2828,79 @@ values (1,'2021-03-31');
 
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','31','2021-03-30 12:00:00',0);
+values ('1','31','2021-03-31 12:00:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','31','2021-03-30 12:10:00',0);
+values ('1','31','2021-03-31 12:10:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','31','2021-03-30 12:20:00',0);
+values ('1','31','2021-03-31 12:20:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','31','2021-03-30 12:30:00',0);
+values ('1','31','2021-03-31 12:30:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','31','2021-03-30 12:40:00',0);
+values ('1','31','2021-03-31 12:40:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','31','2021-03-30 12:50:00',0);
+values ('1','31','2021-03-31 12:50:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','31','2021-03-30 13:00:00',0);
+values ('1','31','2021-03-31 13:00:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','31','2021-03-30 13:10:00',0);
+values ('1','31','2021-03-31 13:10:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','31','2021-03-30 13:20:00',0);
+values ('1','31','2021-03-31 13:20:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','31','2021-03-30 09:20:00',1);
+values ('2','31','2021-03-31 09:20:00',1);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','31','2021-03-30 09:30:00',1);
+values ('2','31','2021-03-31 09:30:00',1);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','31','2021-03-30 09:40:00',1);
+values ('2','31','2021-03-31 09:40:00',1);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','31','2021-03-30 18:20:00',1);
+values ('3','31','2021-03-31 18:20:00',1);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-30 03:00:00',0);
+values ('5','31','2021-03-31 03:00:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-30 03:10:00',0);
+values ('5','31','2021-03-31 03:10:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-30 03:20:00',0);
+values ('5','31','2021-03-31 03:20:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-30 03:30:00',0);
+values ('5','31','2021-03-31 03:30:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-30 03:40:00',0);
+values ('5','31','2021-03-31 03:40:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-30 03:50:00',0);
+values ('5','31','2021-03-31 03:50:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-30 04:00:00',0);
+values ('5','31','2021-03-31 04:00:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-30 04:10:00',0);
+values ('5','31','2021-03-31 04:10:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-30 04:20:00',0);
+values ('5','31','2021-03-31 04:20:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-30 04:30:00',0);
+values ('5','31','2021-03-31 04:30:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-30 04:40:00',0);
+values ('5','31','2021-03-31 04:40:00',0);
 
 insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-30 04:50:00',0);
+values ('5','31','2021-03-31 04:50:00',0);
 
 
 
