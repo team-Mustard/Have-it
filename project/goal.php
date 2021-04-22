@@ -10,14 +10,20 @@
           <div class="page-header">
             
     <script>
-        function changeColor(change,i){
+       /* function changeColor(change,i){
             var temp = 'basket' + i;
-            var temp2 = 'jew' + i;
             var color = document.getElementById(temp);
-            var color2 = document.getElementById(temp2);
-            color.style.backgroundColor = change;
-            color2.style.color = change;                       
+            color.style.backgroundColor = change;                    
         }
+        
+        function changeColor2(change2, j){
+            var temp2 = 'jew' + j;
+            var color2 = document.getElementById(temp2);
+            color2.style.color = change2;
+            
+    
+            
+        }*/
 
     </script>
      
@@ -37,10 +43,12 @@
             
                   
         $i = 1;
-        
+        $j = 0;
+                          
         while($row2 = mysqli_fetch_array($result2)){
             
             $routineID = $row2['routineID'];
+            $color = $row2['color'];
             $tRoutine = "SELECT * FROM t_routine WHERE routineID = '$routineID'";
             $result3 = mysqli_query($conn, $tRoutine);
             
@@ -50,19 +58,19 @@
               <form>
                   <div class="colors">
                       <p> 색깔 설정 </p>
-                      <input type=\'color\' id=\'myColor\' onclick="changeColor(this.value,'.$i.')">
+                      <input type=\'color\' disabled  id=\'myColor\' value="'.$color.'">
                   </div>
               </form>
           </div>
           <div class="con1" style="float: left; margin-top: 12px; margin-right: 15px;">
-              <img src="title.png" width="52px" height="50px">
+              <i class="fas fa-tools fa-4x" style="width:72px; height:70px; color:'.$color.';"></i>
           </div>
           <div class="con1" style="margin-top: 8px; float: left;">
               <h3>'.$row2['routineName'].'</div></div>';
         ?>
               
         <!-- 해빗 트래커 칸 생성 -->    
-         <div id="basket<?=$i?>" class="container cart">
+         <div id="basket<?=$i?>" class="container cart" style="background-color: <?=$color?>;">
             <div class="row incart no-gutters">
                 
                <?php    
@@ -74,6 +82,7 @@
                 }
             
                 $dayNum = 0;
+            
                 while($dayNum<7){
                     $IntervalNum = $row2['rInterval'];
                     $interval = explode(';', $IntervalNum);
@@ -81,7 +90,8 @@
                     if($interval[$dayNum] == 1){
                        echo '<div class="col-xs-1 col-md-1 con">';
                        if($check == 1){
-                           echo '<i id="jew'.$i.'" class="jew fa fa-trophy fa-3x" style="margin-top:7px; margin-left:7px" aria-hidden="true"></i>';
+                           $j++;
+                           echo '<i id="jew'.$j.'" class="fa fa-trophy fa-3x" style="margin-top:7px; margin-left:7px; color:'.$color.'; aria-hidden="true"></i>';
                        }                       
                        echo '</div>'; 
                     }
