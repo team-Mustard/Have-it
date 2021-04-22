@@ -1,9 +1,11 @@
 <?php
     if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
 ?>
-
-<div class="main col-md-8 col-md-offset-2">
-    <div style="margin:25px 20%;">
+<div class="col-md-1">
+    <!-- 빈 공간 -->
+</div>
+<div class="main col-md-7 col-md-offset-2">
+    <div style="margin:25px 10%;">
         <h2 style="margin-bottom:25px;">목표 추가하기</h2>
         <form class="goal_set_form" name="goal_set_form" method="post" action="db/goal_save.php">
             <input id="goal_name" name="goal_name" type="text" placeholder="새로운 목표 이름" required/><br/>
