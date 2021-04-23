@@ -1,44 +1,9 @@
-<div class="main col-md-10 col-md-offset-2">
-    <div class="page-header">
-        <h1>Left Sidebar</h1><hr>
-        <div class="left-info">
-            <h2>나만의 목표 세우기✨</h2>
-            <div class="indent">
-                <h4>'+ 추가하기'를 누르면 새로운 목표를 추가할 수 있습니다.</h4>
-                <div class="indent">
-                    <p>① 목표의 이름을 지정해 주세요.</p>
-                    <p>② 목표를 성취하기까지 걸릴 기간을 하나만☝🏻 선택해 주세요.<br>
-                        　한 달, 세 달, 일년 또는 직접 기간을 선택할 수도 있습니다.<br>
-                        　목표를 성취하기 위해 한주 한주 지켜야 할 일들을 <b>'루틴'</b>이라고 부른답니다!
-                    </p>
-                    <p>③ '+ 루틴 추가하기'버튼을 눌러 루틴을 추가해 주세요.<br>
-                        　루틴별로 색상과 루틴을 실천할 요일을 모두 지정해주어야 합니다.
-                    </p>
-                    <p>④ '삭제'버튼을 누르면 입력 정보가 모두 초기화 되고,<br>
-                        　'저장'버튼을 누르면 목표가 새롭게 추가되어 사이드바에 나타납니다.
-                    </p>
-                </div>
-                <h4>항목을 클릭하면 해당 목표의 상세 페이지로 이동합니다.</h4>
-                <h4>목표를 이루기 위해 한 주의 계획을 세워보세요!</h4>
-            </div>
-            <h2><br>한눈👀에 보는 진행 상황</h2>
-            <div class="indent">
-                <h4>매주 일요일, 주간 보고서를 생성해요.</h4>
-                <div class="indent">
-                    <p>한 주간 목표 성취도를 확인하고, 스스로에게 점수를 줘보세요.</p>
-                    <p>나를 칭찬하는 말 한 마디! ❤<br>
-                        반성하는 말 한 마디! 💦
-                    </p>
-                    <p>그래프로 나의 일주일을 기록합니다.</p>
-                </div>
-            </div>
-            <h2><br>📅월별 보고서 받아보기</h2>
-            <div class="indent">
-                <h4>매월, 나의 목표 진행 사항을 검토해요.</h4>
-                <div class="indent">
-                    <p></p>
-                </div>
-            </div>
-        </div>
+<div class="col-md-1">
+</div>
+<div class="main col-md-8 col-md-offset-2">
+    <div class="page-header no-drag text-center">
+        <img width="850px" src="img/example-leftside.png">
     </div>
+</div>
+<div class="col-md-1">
 </div>

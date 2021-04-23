@@ -5,10 +5,32 @@ body {
 
 /* navbar-top */
 
+span.navbar-brand a {
+    color: #777;
+    text-decoration: none;
+}
+
+span.navbar-brand a:visited {
+    color: #777;
+    text-decoration: none;
+}
+
+span.navbar-brand a:hover {
+    color: #777;
+    text-decoration: none;
+}
+
+.logout {
+    color: #777;
+    float: right;
+    margin-right: 15px;
+    height: 45px;
+    line-height: 45px;
+}
+
 .navbar-toggle {
     padding: 5px 5px;
 }
-
 
 /* font-size */
 
@@ -436,3 +458,17 @@ input.time {
 
 
 /* goal_set css end */
+
+
+
+
+/* example css start */
+
+.no-drag {
+    -ms-user-select: none; -moz-user-select: -moz-none; -webkit-user-select: none; -khtml-user-select: none; user-select:none;
+}
+
+/* example css end */
+
+
+
