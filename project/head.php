@@ -20,11 +20,12 @@
           <button type="button" class="navbar-toggle toggle-left hidden-md hidden-lg" data-toggle="sidebar" data-target=".sidebar-left">
             <i class="fas fa-bookmark" style="color: dimgray; margin: 0 5px;"></i>
           </button>
-          <span class="navbar-brand">Have it</span>
+          <span class="navbar-brand"><a href="/">Have it</a></span>
         </div>
         <button type="button" class="navbar-toggle toggle-right" data-toggle="sidebar" data-target=".sidebar-right">
           <i class="fas fa-dolly-flatbed" style="color: dimgray; margin: 0 2px;"></i>
         </button>
+        <a class="logout" href="logout.php">[로그아웃]</a>
       </div>
     </div>
     <!-- "((" (leftside)(example)(rightside) )) -->
