@@ -1,11 +1,3 @@
-<?php
-
-    include_once "./head.php";
-    include_once "./leftside.php";
-    include_once "./rightside.php";
-?>
-
-
         <div class="main col-md-10 col-md-offset-2">
           <div class="page-header">
             
