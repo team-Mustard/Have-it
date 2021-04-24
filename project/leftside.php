@@ -47,20 +47,23 @@
         <div class="report">
           <ul class="nav navbar-stacked">
 <?php
+        /*
+            TODO: 월간 리포트 주간 리포트 날짜 별로 출력
         
-        $sql = "select * from WeeklyReport where userID = $userid";
-        $result =  mysqli_query($conn, $sql);
-        if($result){
+        */
+        $weeklySql = "select weeklyID, date from WeeklyReport where userID = $userid";
+        $weeklyResult =  mysqli_query($conn, $weeklySql);
+        if($weeklyResult){
  
-            while( $row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+            while( $weeklyRow = mysqli_fetch_array($weeklyResult,MYSQLI_ASSOC)){
                           
-            $weeklyID = $row['weeklyID'];
-            $date = $row['date'];
+            $weeklyID = $weeklyRow['weeklyID'];
+            $weeklyDate = $weeklyRow['date'];
                          
         
 ?>
             <li class="active">
-              <a href="?page=weekly&weeklyID=<?=$weeklyID?>">[주] <?=$date?> 리포트</a>
+              <a href="?page=weekly&weeklyID=<?=$weeklyID?>">[주] <?=$weeklyDate?> 리포트</a>
             </li>
               
       
@@ -68,8 +71,28 @@
         <?php 
             }
         }
-        ?>
-                      
+        
+        $monthlySql = "select monthlyID, date from MonthlyReport where userID = $userid";
+        $monthlyResult = mysqli_query($conn,$monthlySql);    
+        if($monthlyResult){
+ 
+            while( $monthlyRow = mysqli_fetch_array($monthlyResult,MYSQLI_ASSOC)){
+                          
+            $monthlyID = $monthlyRow['monthlyID'];
+            $monthlyDate = $monthlyRow['date'];
+                         
+        
+?>
+            <li class="active">
+              <a href="?page=monthly&monthlyID=<?=$monthlyID?>">[월] <?=$monthlyDate?> 리포트</a>
+            </li>
+              
+      
+        
+        <?php 
+            }
+        }      
+          ?>   
               
           </ul>
         </div>
