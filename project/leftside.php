@@ -13,17 +13,27 @@
         $goal = "select * from goal where userID = $userid";
         $result2 = mysqli_query($conn, $goal);
         
+        $today = date("Y-m-d");      
+                    
         if($result2){
             while($row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC)){
                 $goalID = $row2['goalID'];
                 $goalName = $row2['goalName'];
+
+                $start = $row2['startTerm'];
+                $end = $row2['endTerm'];
+                $str_now = strtotime($today);
+                $str_target = strtotime($start);
+                $str_target2 = strtotime($end);
+
+                if($str_now >= $str_target && $str_now <= $str_target2){        
 ?>
         <li class="active">
             <a href="?page=goal&goalID=<?=$goalID?>"> <?=$goalName?></a>
         </li>
             <!-- 목표 리스트 -->
         
-        <?php } } ?>
+        <?php } } } ?>
             <li>
               <a href="?page=goal_set"><i class="fas fa-plus" style="color: red;"> 추가하기</i></a>
             </li>
