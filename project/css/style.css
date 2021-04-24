@@ -61,6 +61,10 @@ hr {
   height: 44.2%;
 }
 
+.list-header {
+    color: white;
+}
+
 .goal a, .report a, .goal a:visited, .report a:visited{
   color: white;
 }
@@ -133,14 +137,13 @@ input.time {
 
 /* weekly Report Css start */
 
-#weekButton a{
+#weekButton a {
     font-size: 30px;
     color: black;
     text-decoration:none
-    
 }
 
-#weekButton{
+#weekButton {
     text-align: right;
 }
 #calender {

@@ -7,6 +7,7 @@
 
  
         <div class="goal">
+          <h5 class="list-header text-center"><b>💎나의 보석함💎</b></h5>
           <ul class="nav navbar-stacked">
 <?php
         include "db/dbconn.php";
@@ -35,6 +36,7 @@
             <!-- 리포트 리스트 -->
 
         <div class="report">
+          <h5 class="list-header text-center"><b>📃품질 보증서📃</b></h5>
           <ul class="nav navbar-stacked">
 <?php
         /*
