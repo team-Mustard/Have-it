@@ -56,7 +56,7 @@ routineID int auto_increment,
 routineName varchar(30),
 color char(7),
 rInterval varchar(14) default 0,
-habbitTracker varchar(50) default 0,
+habbitTracker int default 0,
 goalID int,
 constraint routine_routineID_PK primary key (routineID),
 constraint routine_goalID_FK Foreign Key (goalID) references goal(goalID) on delete cascade
