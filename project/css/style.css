@@ -281,8 +281,6 @@ input.time {
 /* Monthly Report css start */
 
 
-
-
 #grade {
 
     padding: 10px;
@@ -366,9 +364,9 @@ input.time {
 
 
 /* goal css start */
-.cart{
-    background-color: #ea3d0b;
-            }
+.cart {
+    color: #3D3D3D; 
+}
 @media (min-width: 760px){
 .cart{ width: 550px; } /* 모바일 화면에 맞춰서 변하는거.. 슬쩍.. 넣어봄 */
 }
@@ -385,8 +383,8 @@ input.time {
     background-color: white;
     margin-right: 5px;
     margin-top: 5px;
-    width: 58px;
-    height: 50px;
+    width: 38px;
+    height: 35px;
             }
             
 .no-gutters {
