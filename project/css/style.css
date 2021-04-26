@@ -5,10 +5,32 @@ body {
 
 /* navbar-top */
 
+span.navbar-brand a {
+    color: #777;
+    text-decoration: none;
+}
+
+span.navbar-brand a:visited {
+    color: #777;
+    text-decoration: none;
+}
+
+span.navbar-brand a:hover {
+    color: #777;
+    text-decoration: none;
+}
+
+.logout {
+    color: #777;
+    float: right;
+    margin-right: 15px;
+    height: 45px;
+    line-height: 45px;
+}
+
 .navbar-toggle {
     padding: 5px 5px;
 }
-
 
 /* font-size */
 
@@ -37,6 +59,10 @@ hr {
   overflow-y: auto;
   overflow-x: hidden;
   height: 44.2%;
+}
+
+.list-header {
+    color: white;
 }
 
 .goal a, .report a, .goal a:visited, .report a:visited{
@@ -111,14 +137,13 @@ input.time {
 
 /* weekly Report Css start */
 
-#weekButton a{
+#weekButton a {
     font-size: 30px;
     color: black;
     text-decoration:none
-    
 }
 
-#weekButton{
+#weekButton {
     text-align: right;
 }
 #calender {
@@ -256,8 +281,6 @@ input.time {
 /* Monthly Report css start */
 
 
-
-
 #grade {
 
     padding: 10px;
@@ -341,9 +364,9 @@ input.time {
 
 
 /* goal css start */
-.cart{
-    background-color: #ea3d0b;
-            }
+.cart {
+    color: #3D3D3D; 
+}
 @media (min-width: 760px){
 .cart{ width: 550px; } /* 모바일 화면에 맞춰서 변하는거.. 슬쩍.. 넣어봄 */
 }
@@ -360,8 +383,8 @@ input.time {
     background-color: white;
     margin-right: 5px;
     margin-top: 5px;
-    width: 58px;
-    height: 50px;
+    width: 38px;
+    height: 35px;
             }
             
 .no-gutters {
@@ -436,3 +459,17 @@ input.time {
 
 
 /* goal_set css end */
+
+
+
+
+/* example css start */
+
+.no-drag {
+    -ms-user-select: none; -moz-user-select: -moz-none; -webkit-user-select: none; -khtml-user-select: none; user-select:none;
+}
+
+/* example css end */
+
+
+

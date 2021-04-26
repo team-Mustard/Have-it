@@ -1,13 +1,6 @@
-<?php
-
-    include_once "./head.php";
-    include_once "./leftside.php";
-    include_once "./rightside.php";
-?>
-
-
-        <div class="main col-md-10 col-md-offset-2">
-          <div class="page-header">
+<div class="col-md-1">
+</div>
+<div class="main col-md-8 col-md-offset-2">
             
     <script>
        /* function changeColor(change,i){
@@ -33,6 +26,7 @@
         error_reporting(E_ALL);
         ini_set("display_errors", 1);
         if(isset($_GET['goalID'])) $goalID = $_GET['goalID'];
+<<<<<<< HEAD
         $goal = "SELECT * FROM goal WHERE goalID = '$goalID'";
         $today = date("Y-m-d"); //오늘의 날짜      
               
@@ -47,6 +41,18 @@
               
         if($str_now >= $str_target && $str_now <= $str_target2){
             echo '<div class="container cart" style="background-color: white; margin-top: 20px;"><h3>'.$row['goalName'].'</h3></div>';
+=======
+        $goal = "SELECT * FROM goal WHERE goalID = '$goalID'";              
+              
+        $result = mysqli_query($conn, $goal);
+        
+        $row = mysqli_fetch_array($result); 
+        $term_s = $row['startTerm'];
+        $term_e = $row['endTerm'];
+            echo '<div style="margin-top:20px;"><h3 style="display:inline;"><b>'.$row['goalName'].'</b></h3>
+            <span style="float:right;">'.$term_s.' ~ '.$term_e.'</span>
+            </div><hr style="border:0; height:3px;background: #04005E;">';
+>>>>>>> upstream/main
             $routine = "SELECT * FROM Routine WHERE goalID ='$goalID'";
             $result2 = mysqli_query($conn, $routine);
             
@@ -60,20 +66,15 @@
             $result3 = mysqli_query($conn, $tRoutine);
             
             //루틴 제목 출력
-            echo '<div class="container cart" style="background-color: white; margin-top: 20px;">
-          <div class="con1" style="float: left; margin-right: 40px;">
-              <form>
-                  <div class="colors">
-                      <p> 색깔 설정 </p>
-                      <input type=\'color\' disabled  id=\'myColor\' value="'.$color.'">
-                  </div>
-              </form>
+            echo '<div class="container cart" style="margin-top: 20px;">
+          
+          <div class="con1 text-center" style="float: left; margin-top: 12px; margin-right: 15px;">
+              <i class="fas fa-tools" style="font-size:30px; color:'.$color.';"></i>
+              <p style="color: '.$color.';">'.$color.'</p>
           </div>
-          <div class="con1" style="float: left; margin-top: 12px; margin-right: 15px;">
-              <i class="fas fa-tools fa-4x" style="width:72px; height:70px; color:'.$color.';"></i>
-          </div>
-          <div class="con1" style="margin-top: 8px; float: left;">
-              <h3>'.$row2['routineName'].'</div></div>';
+          <div class="con1" style="margin-top: 8px; float: left; line-height: 45px;">
+              <p class="fa-2" style="color:'.$color.'">'.$row2['routineName'].'</p></div></div>
+          <div class="con1" style="float:right;"></div>';
         ?>
               
         <!-- 해빗 트래커 칸 생성 -->    
@@ -114,9 +115,15 @@
                     
                     if($interval[$dayNum] == 1){
                        echo '<div class="col-xs-1 col-md-1 con">';
+
                        if($habbit>=1){
                            echo '<i id="jew" class="fa fa-trophy fa-3x" style="margin-top:7px; margin-left:7px; color:'.$color.'; aria-hidden="true"></i>';
                            $habbit--;
+                           
+                       if($check == 1){
+                           $j++;
+                           echo '<i id="jew'.$j.'" class="fa fa-trophy fa-2x" style="margin-top:3px; margin-left:3px; color:'.$color.'; aria-hidden="true"></i>';
+
                        }                       
                        echo '</div>'; 
                     }
@@ -172,4 +179,5 @@
         </div>
 -->
 </div>
+<div class="col-md-1">
 </div>
