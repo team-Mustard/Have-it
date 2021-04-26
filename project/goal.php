@@ -23,25 +23,7 @@
               
     <?php
         include "./db/dbconn.php";
-        error_reporting(E_ALL);
-        ini_set("display_errors", 1);
         if(isset($_GET['goalID'])) $goalID = $_GET['goalID'];
-<<<<<<< HEAD
-        $goal = "SELECT * FROM goal WHERE goalID = '$goalID'";
-        $today = date("Y-m-d"); //오늘의 날짜      
-              
-        $result = mysqli_query($conn, $goal);
-        
-        $row = mysqli_fetch_array($result);
-        $start = $row['startTerm'];
-        $end = $row['endTerm'];
-        $str_now = strtotime($today);
-        $str_target = strtotime($start);
-        $str_target2 = strtotime($end);
-              
-        if($str_now >= $str_target && $str_now <= $str_target2){
-            echo '<div class="container cart" style="background-color: white; margin-top: 20px;"><h3>'.$row['goalName'].'</h3></div>';
-=======
         $goal = "SELECT * FROM goal WHERE goalID = '$goalID'";              
               
         $result = mysqli_query($conn, $goal);
@@ -49,15 +31,14 @@
         $row = mysqli_fetch_array($result); 
         $term_s = $row['startTerm'];
         $term_e = $row['endTerm'];
+        $today = date("Y-m-d");
+    
             echo '<div style="margin-top:20px;"><h3 style="display:inline;"><b>'.$row['goalName'].'</b></h3>
             <span style="float:right;">'.$term_s.' ~ '.$term_e.'</span>
             </div><hr style="border:0; height:3px;background: #04005E;">';
->>>>>>> upstream/main
             $routine = "SELECT * FROM Routine WHERE goalID ='$goalID'";
             $result2 = mysqli_query($conn, $routine);
-            
-                  
-         
+                          
         while($row2 = mysqli_fetch_array($result2)){
             
             $routineID = $row2['routineID'];
@@ -82,49 +63,19 @@
             <div class="row incart no-gutters">
                 
                <?php    
-                $count2 = 0;
-                $count = 0;
-                $b = 0;
-                while($row3 = mysqli_fetch_array($result3)){
-                    $a = $row3['datetime'];
-                    $routineData = date('Y-m-d', (int)$a);
-                    $str_target3 = strtotime($routineData);
-                    
-                    if($str_target3 == $str_now){
-                        $count++;
-                        if($row3['checkRoutine'] == 0)
-                            { }
-                        else if($row3['checkRoutine'] == 1)
-                            { $count2++; }
-                    }
-                }
-            
-                if($count == $count2){
-                    $b = $row2['habbitTracker'] + 1;
-                    $up = "UPDATE routine SET habbitTracker='$b' WHERE routineID='$routineID'";
-                    $result4 = $conn->query($up);
-                    
-                }
+                $check = $row2['habbitTracker'];
             
                 $dayNum = 0;
-                $habbit = $row2['habbitTracker'];
-                echo $habbit;
+            
                 while($dayNum<7){
                     $IntervalNum = $row2['rInterval'];
                     $interval = explode(';', $IntervalNum);
                     
                     if($interval[$dayNum] == 1){
                        echo '<div class="col-xs-1 col-md-1 con">';
-
-                       if($habbit>=1){
-                           echo '<i id="jew" class="fa fa-trophy fa-3x" style="margin-top:7px; margin-left:7px; color:'.$color.'; aria-hidden="true"></i>';
-                           $habbit--;
-                           
-                       if($check == 1){
-                           $j++;
-                           echo '<i id="jew'.$j.'" class="fa fa-trophy fa-2x" style="margin-top:3px; margin-left:3px; color:'.$color.'; aria-hidden="true"></i>';
-
-                       }                       
+                       for($i=$check; $i>0; $i--){
+                           echo '<i id="jew" class="fa fa-trophy fa-2x" style="margin-top:3px; margin-left:3px; color:'.$color.'; aria-hidden="true"></i>';
+                            }                       
                        echo '</div>'; 
                     }
                 $dayNum += 1;    
@@ -136,8 +87,8 @@
         </div>
               
   <?php 
-        $i++;
-        } echo '<br><br><br>'; }?>
+        
+        } echo '<br><br><br>'; ?>
               
   
               
@@ -181,3 +132,16 @@
 </div>
 <div class="col-md-1">
 </div>
+© 2021 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+Loading complete
