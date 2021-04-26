@@ -31,7 +31,6 @@
         $row = mysqli_fetch_array($result); 
         $term_s = $row['startTerm'];
         $term_e = $row['endTerm'];
-        $today = date("Y-m-d");
     
             echo '<div style="margin-top:20px;"><h3 style="display:inline;"><b>'.$row['goalName'].'</b></h3>
             <span style="float:right;">'.$term_s.' ~ '.$term_e.'</span>
@@ -62,7 +61,17 @@
          <div id="basket" class="container cart" style="background-color: <?=$color?>;">
             <div class="row incart no-gutters">
                 
-               <?php    
+               <?php
+                /* 루틴 시작후 일주일 지났을 때 마다 check 초기화 */
+                $today = date("Y-m-d");
+                $start_yoli = date('w', strtotime($term_s)); //시작한 날의 요일
+                $today_yoli = date('w', strtotime($today)); //현재 요일
+                
+                if($start_yoli == $today_yoli && $term_s != $today){
+                    //시작한 요일과 현재 요일이 같고 && 지금이 시작일이 아니라면
+                    $up = "update routine set habbitTracker='0' where routineID = '$routineID'";
+                    $upresult = $conn->query($up); }
+            
                 $check = $row2['habbitTracker'];
             
                 $dayNum = 0;
@@ -73,8 +82,9 @@
                     
                     if($interval[$dayNum] == 1){
                        echo '<div class="col-xs-1 col-md-1 con">';
-                       for($i=$check; $i>0; $i--){
+                       if($check>0){
                            echo '<i id="jew" class="fa fa-trophy fa-2x" style="margin-top:3px; margin-left:3px; color:'.$color.'; aria-hidden="true"></i>';
+                            $check--;
                             }                       
                        echo '</div>'; 
                     }
@@ -132,16 +142,3 @@
 </div>
 <div class="col-md-1">
 </div>
-© 2021 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-Loading complete
