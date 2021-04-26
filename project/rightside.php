@@ -27,14 +27,6 @@
                           echo "<td";
                           if ($is_data != 0) {
                               echo " style='background-color:".$data_color.";'";
-                          } else {
-                              
-                              if(($i==4 || $i==1) && ($j==2 || $j==3) ||($i==6 && $j==1)){
-                                  echo " style='background-color: red;'";
-                              }
-                              else{
-                                  echo " style='background-color: gray;'";
-                              }
                           }
                           echo "></td>";
                       }
