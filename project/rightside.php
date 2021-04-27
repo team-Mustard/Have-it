@@ -1,39 +1,47 @@
+<head>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+</head>
+
         <div class="col-xs-12 col-sm-7 col-md-4 sidebar sidebar-right sidebar-animate text-center">
           <h2 class="right-header"><i class="fas fa-dolly-flatbed"></i>광산수레</h2>
-          <input class="time" type="text"/><input class="time" type="button" value="+" style="color: red; margin-left: 5px;"/>
-           <table class="time">
             <?php
-              include "./db/dbconn.php";
-              if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
-              
-              $ttracker = "SELECT * FROM timetracker WHERE userID= $userid";
-               
-              $result = mysqli_query($conn, $ttracker);
-              $row = mysqli_fetch_array($result);
-               
-              $ttrackerID = $row['trackerID'];
-              $trackerDate = $row['date'];
-              $schedule = "SELECT * FROM schedule WHERE trackerID=$ttrackerID";
-              
-              $result2 = mysqli_query($conn, $schedule);
-              $row2 = mysqli_fetch_array($result2);
-               
-              $is_data = 1; // DB와 연동해서 루틴 데이터 있는 시간인지 불러와주세요
-              $data_color = $row2['color']; // DB와 연동해서 루틴별 고유 색을 불러와주세요
-               
-              for($i=0; $i<24; $i++){
-                  echo "<tr> <th scope='row'>".$i."</th>";
-                      for($j=0; $j<6; $j++) {
-                          echo "<td";
-                          if ($is_data != 0) {
-                              echo " style='background-color:".$data_color.";'";
-                          }
-                          echo "></td>";
-                      }
-                  $is_data = 0;
-                  echo "</tr>";
-              }
+                $today = date("Y-m-d");
+                echo '<h4 style="color:white;">'.$today.'</h3>';
             ?>
+           <table class="time">
+
+            <div class="chart">
+                <canvas id="myChart" width="300" height="300"></canvas>
+            </div>
+
+            <?php
+                include "./db/dbconn.php";
+                if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
+                
+                //if($today == $term_s)
+            
+            ?>
+               
+            <script>
+                var ctx = document.getElementById('myChart');
+                var backColor = [];
+                //backColor[1] = '#1a53ff';
+                
+                var data = {
+                    datasets: [{
+                        backgroundColor: backColor,
+                        data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    }],
+                };
+                var myPieChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: data,
+                    options: {
+                        responsive: false
+                    }
+                })
+            </script>
+               
             </table>
             <!-- 이 div는 지우면 right side bar가 밀립니다. 지우지 마세요 -->
             <div style="margin-top: 51px;"></div>
