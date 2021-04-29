@@ -272,7 +272,7 @@ function showRoutineWeek(){
                 for($i=0;$i<$weekGoalIDCount;$i++){
                     $goalID = $weekGoalIDArr[$i];
                 
-               echo " {
+               echo "{
                     data: [$week[$goalID]],
                     backgroundColor: '$weekGoalColor[$goalID]'
                 },";
