@@ -1,4 +1,4 @@
-//create schema mustard;
+create schema mustard;
 use mustard;
 
 create table userinfo(
@@ -37,8 +37,22 @@ constraint goal_userID_FK Foreign Key (userID) references userinfo(userID) on de
 /* 1111@naver.com */
 insert into goal(goalName, startTerm,endTerm, userID) 
 values ('팀프로젝트', '2021-03-17','2021-06-21','1');
+
 insert into goal(goalName, startTerm,endTerm, userID) 
 values ('건강하게 살기', '2021-03-1','2021-04-1','1');
+
+insert into goal(goalName,startTerm,endTerm,userID)
+values('토익 800점','2021-01-01','2021-02-01',1);
+
+insert into goal(goalName,startTerm,endTerm,userID)
+values('유기동물 검색 사이트 구현','2020-12-01','2021-02-01',1);
+
+insert into goal(goalName,startTerm,endTerm,userID)
+values('학점 4.0 이상 받기','2020-10-05','2020-12-31',1);
+
+insert into goal(goalName,startTerm,endTerm,userID)
+values('기말 프로젝트','2020-11-10','2020-12-15',1);
+
 
 
 
@@ -56,7 +70,7 @@ routineID int auto_increment,
 routineName varchar(30),
 color char(7),
 rInterval varchar(14) default 0,
-habbitTracker varchar(50) default 0,
+habbitTracker int default 0,
 goalID int,
 constraint routine_routineID_PK primary key (routineID),
 constraint routine_goalID_FK Foreign Key (goalID) references goal(goalID) on delete cascade
@@ -76,13 +90,58 @@ values ('영양제 먹기','#FFFF00' ,'1;1;1;1;1;1;1',2);
 /*goal 1 팀 프로젝트 */
 
 insert into Routine(routineName, color,rInterval, goalID) 
-values ('팀 정기회의','#660099' ,'0;0;1;0;0;0;0',1);
+values ('팀 정기회의','#660099' ,'0;1;0;0;0;0;0',1);
 
 insert into Routine(routineName, color,rInterval, goalID) 
-values ('코딩하기','#584329' ,'0;1;1;1;1;1;1',1);
+values ('코딩하기','#584329' ,'1;1;1;1;1;1;0',1);
 
 insert into Routine(routineName, color,rInterval, goalID) 
-values ('주간 결과물 깃허브 업로드','#584329' ,'1;0;0;0;0;0;0',1);
+values ('주간 결과물 깃허브 업로드','#584329' ,'0;0;0;0;0;0;1',1);
+
+/* goal 3 토익 800점 */
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('단어 암기','#6937a1' ,'1;1;1;1;1;0;0',3);
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('LC 공부','#8977ad' ,'1;1;1;1;1;1;0',3);
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('RC 공부','#8b00ff' ,'1;1;1;1;1;1;0',3);
+
+
+/* goal 4 유기동물 검색 사이트 구현 */
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('페이지 구현','#00498c' ,'1;1;1;1;1;1;0',4);
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('진척도 보고서 작성','#0099a4' ,'0;0;0;0;0;0;1',4);
+
+
+/* goal 5 학점 4.0 이상 받기 */
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('수업 내용 복습','#edacb1' ,'1;1;1;1;1;0;0',5);
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('다음 날 내용 예습','#f29886' ,'1;1;1;1;1;0;0',5);
+
+
+/* goal 6 기말 프로젝트 */
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('프로젝트 회의','#83dcb7' ,'0;0;1;0;0;0;0',6);
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('프로젝트 구현','#f5f5dc' ,'1;1;1;1;1;1;1',6);
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('주간 보고서 작성','#f7e600' ,'0;0;0;0;0;0;1',6);
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('회의록 작성','#464964','0;0;1;0;0;0;0',6);
+
 
 
 create table timetracker (
@@ -97,7 +156,8 @@ constraint timetracker_userID_FK Foreign Key (userID) references userinfo(userID
 create table schedule (
 scheduleID int auto_increment,
 scheduleName varchar(30),
-datetime datetime,
+startTime time,
+endTime time,
 trackerID int,
 color char(7),
 constraint schedule_scheduleID_PK primary key (scheduleID),
@@ -109,7 +169,8 @@ create table t_routine (
 t_routineID int auto_increment,
 routineID int,
 trackerID int,
-datetime datetime,
+startTime time,
+endTime time,
 checkRoutine boolean default 0,
 constraint t_routine_t_routineID_PK primary key (t_routineID),
 constraint t_routine_routineID_FK Foreign Key (routineID) references Routine(routineID) on delete cascade,
@@ -130,34 +191,34 @@ constraint MonthlyReport_userID_FK Foreign Key (userID) references userinfo(user
 
 );
 
-create table achieve_time(
-achieveTimeID int auto_increment,
+create table monthly_achieveTime(
+monthlyTimeID int auto_increment,
 goalID int,
 monthlyID int,
 achieveTime varchar(150),
-constraint achieveTime_achieveTimeID_PK primary key (achieveTimeID),
-constraint achieveTime_goalID_FK Foreign Key (goalID) references goal(goalID) on delete set null,
-constraint achieveTime_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
+constraint monthly_achieveTime_achieveTimeID_PK primary key (monthlyTimeID),
+constraint monthly_achieveTime_goalID_FK Foreign Key (goalID) references goal(goalID) on delete set null,
+constraint monthly_achieveTime_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
 );
 
-create table achieve_week(
-achieveWeekID int auto_increment,
+create table monthly_achieveWeek(
+monthlyWeekID int auto_increment,
 goalID int,
 monthlyID int,
 achieveWeek varchar(150),
-constraint achieveWeek_achieveWeekID_PK primary key (achieveWeekID),
-constraint achieveWeek_goalID_FK Foreign Key (goalID) references goal(goalID) on delete set null,
-constraint achieveWeek_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
+constraint monthly_achieveWeek_achieveWeekID_PK primary key (monthlyWeekID),
+constraint monthly_achieveWeek_goalID_FK Foreign Key (goalID) references goal(goalID) on delete set null,
+constraint monthly_achieveWeek_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
 );
 
-create table achieve_dayweek(
-achieveDayweekID int auto_increment,
+create table monthly_achieveDayofweek(
+monthlyDayofweekID int auto_increment,
 goalID int,
 monthlyID int, 
-achieveDayWeek varchar(150),
-constraint achieveDayweek_achieveDayweekID_PK primary key (achieveDayweekID),
-constraint achieveDayweek_goalID_FK Foreign Key (goalID) references goal(goalID) on delete set null,
-constraint achieveDayweek_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
+achieveDayofWeek varchar(150),
+constraint monthly_achieveDayofweek_achieveDayweekID_PK primary key (monthlyDayofweekID),
+constraint monthly_achieveDayofweek_goalID_FK Foreign Key (goalID) references goal(goalID) on delete set null,
+constraint monthly_achieveDayofweek_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
 );
 
 
@@ -169,18 +230,26 @@ score int,
 date date,
 userID int,
 image text,
-routineAchieve varchar(50),
 constraint WeeklyReport_weeklyID_PK primary key (weeklyID),
 constraint WeeklyReport_userID_FK Foreign Key (userID) references userinfo(userID) on delete cascade
 
 );
 
+create table weekly_achieveDayofweek(
+weeklyDayofweekID int auto_increment,
+goalID int,
+weeklyID int, 
+achieveDayofWeek varchar(150),
+constraint weekly_achieveDayofweek_weeklyDayofweekID_PK primary key (weeklyDayofweekID),
+constraint weekly_achieveDayofweek_goalID_FK Foreign Key (goalID) references goal(goalID) on delete set null,
+constraint weekly_achieveDayofweek_weeklyID_FK Foreign Key (weeklyID) references weeklyreport(weeklyID) on delete cascade
+);
 
-insert into WeeklyReport(goodEvaluation, badEvaluation, score, date, routineAchieve,userID)
-values("2월 잘한점","2월 못한점",100,"2021-02-28","15;7;3;2;11;9;13;2;5;1;2;0;5;3",1);
+insert into WeeklyReport(goodEvaluation, badEvaluation, score, date, userID)
+values("2월 잘한점","2월 못한점",100,"2021-02-28",1);
 
-insert into WeeklyReport(goodEvaluation, badEvaluation, score, date, routineAchieve,userID)
-values("잘한점이에유","못한점이에유",50,"2021-03-04","10;8;6;5;15;10;13;11;20;5;10;9;5;3",1);
+insert into WeeklyReport(goodEvaluation, badEvaluation, score, date, userID)
+values("잘한점이에유","못한점이에유",50,"2021-03-04",1);
 
 
 /*3월 1일 월요일 */
@@ -189,127 +258,20 @@ values("잘한점이에유","못한점이에유",50,"2021-03-04","10;8;6;5;15;10
 insert into timetracker(userID,date) 
 values (1,'2021-03-01');
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('저녁 약속','2021-03-01 20:00:00',1, '#298D52');
+insert into schedule(scheduleName, startTime,endTime, trackerID,color) 
+values ('저녁 약속','20:00:00','23:00:00',1, '#298D52');
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('저녁 약속','2021-03-01 20:10:00',1, '#298D52');
+insert into t_routine(routineID, trackerID, startTime, endTime,checkRoutine) 
+values ('1','1','14:00:00','16:20:00',1);
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('저녁 약속','2021-03-01 20:20:00',1, '#298D52');
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','1','09:30:00','10:00:00',1);
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('저녁 약속','2021-03-01 20:30:00',1, '#298D52');
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('3','1','18:40:00','18:50:00',1);
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('저녁 약속','2021-03-01 20:40:00',1, '#298D52');
-
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('저녁 약속','2021-03-01 20:50:00',1, '#298D52');
-
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','1','2021-03-01 14:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','1','2021-03-01 14:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','1','2021-03-01 14:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','1','2021-03-01 14:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','1','2021-03-01 14:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','1','2021-03-01 14:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','1','2021-03-01 15:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','1','2021-03-01 15:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','1','2021-03-01 15:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','1','2021-03-01 15:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','1','2021-03-01 15:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','1','2021-03-01 15:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','1','2021-03-01 16:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','1','2021-03-01 16:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','1','2021-03-01 16:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','1','2021-03-01 09:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','1','2021-03-01 18:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','1','2021-03-01 01:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','1','2021-03-01 01:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','1','2021-03-01 01:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','1','2021-03-01 01:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','1','2021-03-01 01:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','1','2021-03-01 01:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','1','2021-03-01 02:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','1','2021-03-01 02:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','1','2021-03-01 02:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','1','2021-03-01 02:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','1','2021-03-01 02:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','1','2021-03-01 02:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','1','2021-03-01 03:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','1','2021-03-01 03:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','1','2021-03-01 03:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','1','2021-03-01 03:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','1','2021-03-01 03:40:00',1);
-
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('5','1','01:00:00','03:40:00',1);
 
 
 
@@ -317,120 +279,27 @@ values ('5','1','2021-03-01 03:40:00',1);
 /* 3월 2일 화요일 */
 
 insert into timetracker(userID,date) 
-values (1,'2021-03-02' );
+values (1,'2021-03-02');
 
 
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('1','2','20:00:00','21:30:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','2','2021-03-02 20:00:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','2','2021-03-02 20:10:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)   
+values ('2','2','06:20:00','06:50:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','2','2021-03-02 20:20:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('3','2','17:00:00','17:10:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','2','2021-03-02 20:30:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('4','2','14:00:00','15:20:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','2','2021-03-02 20:40:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','2','2021-03-02 20:50:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('5','2','02:00:00','04:20:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','2','2021-03-02 21:00:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','2','2021-03-02 21:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','2','2021-03-02 21:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','2','2021-03-02 21:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','2','2021-03-02 06:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','2','2021-03-02 06:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','2','2021-03-02 17:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','2','2021-03-02 14:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','2','2021-03-02 14:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','2','2021-03-02 14:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','2','2021-03-02 14:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','2','2021-03-02 14:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','2','2021-03-02 14:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','2','2021-03-02 15:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','2','2021-03-02 15:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','2','2021-03-02 15:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','2','2021-03-02 02:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','2','2021-03-02 02:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','2','2021-03-02 02:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','2','2021-03-02 02:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','2','2021-03-02 02:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','2','2021-03-02 02:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','2','2021-03-02 03:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','2','2021-03-02 03:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','2','2021-03-02 03:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','2','2021-03-02 03:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','2','2021-03-02 03:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','2','2021-03-02 03:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','2','2021-03-02 04:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','2','2021-03-02 04:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','2','2021-03-02 04:20:00',0);
 
 
 /* 3월 3일 수요일 */
@@ -439,116 +308,23 @@ insert into timetracker(userID,date)
 values (1,'2021-03-03');
 
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('교수님 면담','2021-03-03 11:30:00',3, '#ADF333');
+insert into schedule(scheduleName, startTime,endTime, trackerID,color) 
+values ('교수님 면담','11:30:00','12:50:00',3, '#ADF333');
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('교수님 면담','2021-03-03 11:40:00',3, '#ADF333');
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('교수님 면담','2021-03-03 11:50:00',3, '#ADF333');
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('1','3','16:00:00','18:20:00',0);
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('교수님 면담','2021-03-03 12:00:00',3, '#ADF333');
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('교수님 면담','2021-03-03 12:10:00',3, '#ADF333');
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('2','3','07:30:00','07:50:00',0);
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('교수님 면담','2021-03-03 12:20:00',3, '#ADF333');
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('교수님 면담','2021-03-03 12:30:00',3, '#ADF333');
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('3','3','18:20:00','18:30:00',0);
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('교수님 면담','2021-03-03 12:40:00',3, '#ADF333');
-
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('교수님 면담','2021-03-03 12:50:00',3, '#ADF333');
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','3','2021-03-03 16:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','3','2021-03-03 16:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','3','2021-03-03 16:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','3','2021-03-03 16:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','3','2021-03-03 16:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','3','2021-03-03 16:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','3','2021-03-03 17:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','3','2021-03-03 17:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','3','2021-03-03 17:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','3','2021-03-03 17:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','3','2021-03-03 17:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','3','2021-03-03 17:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','3','2021-03-03 18:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','3','2021-03-03 18:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','3','2021-03-03 18:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','3','2021-03-03 07:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','3','2021-03-03 07:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','3','2021-03-03 07:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','3','2021-03-03 18:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','3','2021-03-03 00:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','3','2021-03-03 00:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','3','2021-03-03 00:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','3','2021-03-03 00:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','3','2021-03-03 00:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','3','2021-03-03 00:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','3','2021-03-03 01:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','3','2021-03-03 01:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','3','2021-03-03 01:30:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','3','00:00:00','01:30:00',0);
 
 
 /* 3월 4일 목요일 */
@@ -557,102 +333,17 @@ insert into timetracker(userID,date)
 values (1,'2021-03-04');
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','4','2021-03-04 11:00:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('1','4','11:00:00','12:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','4','2021-03-04 11:10:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('2','4','09:40:00','10:00:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','4','2021-03-04 11:20:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('3','4','17:20:00','17:30:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','4','2021-03-04 11:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','4','2021-03-04 11:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','4','2021-03-04 11:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','4','2021-03-04 12:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','4','2021-03-04 12:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','4','2021-03-04 12:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','4','2021-03-04 12:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','4','2021-03-04 09:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','4','2021-03-04 09:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','4','2021-03-04 17:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 01:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 01:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 02:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 02:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 02:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 02:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 02:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 02:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 03:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 03:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 03:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 03:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 03:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 03:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 04:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 04:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 04:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 04:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','4','2021-03-04 04:40:00',1);
-
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('5','4','01:40:00','04:40:00',1);
 
 
 /* 3월 5일 금요일 */
@@ -661,81 +352,23 @@ insert into timetracker(userID,date)
 values (1,'2021-03-05');
 
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('친구 만나기','2021-03-05 23:00:00',5, '#ADF333');
-
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('친구 만나기','2021-03-05 23:10:00',5, '#ADF333');
-
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('친구 만나기','2021-03-05 23:20:00',5, '#ADF333');
-
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('친구 만나기','2021-03-05 23:30:00',5, '#ADF333');
-
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('친구 만나기','2021-03-05 23:40:00',5, '#ADF333');
-
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('친구 만나기','2021-03-05 23:50:00',5, '#ADF333');
+insert into schedule(scheduleName, startTime,endTime, trackerID,color) 
+values ('친구 만나기','23:00:00','23:50:00',5, '#ADF333');
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','5','2021-03-05 10:00:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','5','2021-03-05 10:10:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('1','5','10:00:00','10:50:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','5','2021-03-05 10:20:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','5','2021-03-05 10:30:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','5','09:10:00','09:20:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','5','2021-03-05 10:40:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('3','5','19:50:00','20:00:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','5','2021-03-05 10:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','5','2021-03-05 09:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','5','2021-03-05 09:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','5','2021-03-05 09:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','5','2021-03-05 19:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','5','2021-03-05 15:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','5','2021-03-05 15:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','5','2021-03-05 15:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','5','2021-03-05 15:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','5','2021-03-05 15:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','5','2021-03-05 16:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','5','2021-03-05 16:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','5','2021-03-05 16:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','5','2021-03-05 16:30:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','5','15:10:00','16:30:00',1);
 
 
 /* 3월 6일 토요일 */
@@ -744,74 +377,21 @@ insert into timetracker(userID,date)
 values (1,'2021-03-06');
 
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('산책가기','2021-03-06 17:20:00',6, '#ADF333');
+insert into schedule(scheduleName, startTime,endTime, trackerID,color) 
+values ('산책가기','17:20:00','17:40:00',6, '#ADF333');
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('산책가기','2021-03-06 17:30:00',6, '#ADF333');
+insert into schedule(scheduleName, startTime,endTime, trackerID,color) 
+values ('카페가기','21:10:00','22:00:00',6, '#CCD322');
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('산책가기','2021-03-06 17:40:00',6, '#ADF333');
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('카페가기','2021-03-06 21:10:00',6, '#CCD322');
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','6','11:20:00','12:00:00',0);
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('카페가기','2021-03-06 21:20:00',6, '#CCD322');
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('3','6','19:30:00','19:50:00',1);
 
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('카페가기','2021-03-06 21:30:00',6, '#CCD322');
-
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('카페가기','2021-03-06 21:40:00',6, '#CCD322');
-
-insert into schedule(scheduleName, datetime, trackerID,color) 
-values ('카페가기','2021-03-06 21:50:00',6, '#CCD322');
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','6','2021-03-06 11:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','6','2021-03-06 11:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','6','2021-03-06 11:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','6','2021-03-06 11:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','6','2021-03-06 19:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','6','2021-03-06 02:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','6','2021-03-06 02:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','6','2021-03-06 02:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','6','2021-03-06 02:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','6','2021-03-06 02:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','6','2021-03-06 02:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','6','2021-03-06 03:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','6','2021-03-06 03:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','6','2021-03-06 03:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','6','2021-03-06 03:30:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','6','02:00:00','03:30:00',1);
 
 
 /* 3월 7일 일요일 */
@@ -819,23 +399,14 @@ insert into timetracker(userID,date)
 values (1,'2021-03-07');
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','7','2021-03-07 10:00:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','7','10:00:00','10:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','7','2021-03-07 10:10:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('3','7','19:50:00','20:00:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','7','2021-03-07 10:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','7','2021-03-07 10:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','7','2021-03-07 19:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('6','7','2021-03-07 16:20:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('6','7','16:20:00','16:40:00',1);
 
 
 
@@ -846,65 +417,18 @@ insert into timetracker(userID,date)
 values (1, '2021-03-08');
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','8','2021-03-08 11:00:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('1','8','11:00:00','12:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','8','2021-03-08 11:10:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','8','2021-03-08 11:20:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('2','8','08:20:00','08:40:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','8','2021-03-08 11:30:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('3','8','19:20:00','19:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','8','2021-03-08 11:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','8','2021-03-08 11:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','8','2021-03-08 12:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','8','2021-03-08 12:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','8','2021-03-08 12:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','8','2021-03-08 12:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','8','2021-03-08 08:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','8','2021-03-08 08:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','8','2021-03-08 08:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','8','2021-03-08 19:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','8','2021-03-08 02:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','8','2021-03-08 02:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','8','2021-03-08 02:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','8','2021-03-08 03:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','8','2021-03-08 03:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','8','2021-03-08 03:20:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','8','02:30:00','03:20:00',1);
 
 
 /* 3월 9일 화요일 */
@@ -913,119 +437,21 @@ insert into timetracker(userID,date)
 values (1,'2021-03-09');
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','9','2021-03-09 12:30:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('1','9','12:30:00','14:30:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','9','2021-03-09 12:40:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('2','9','09:00:00','09:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','9','2021-03-09 12:50:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('3','9','20:40:00','20:50:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','9','2021-03-09 13:00:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('4','9','17:00:00','18:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','9','2021-03-09 13:10:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','9','22:00:00','23:30:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','9','2021-03-09 13:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','9','2021-03-09 13:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','9','2021-03-09 13:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','9','2021-03-09 13:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','9','2021-03-09 14:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','9','2021-03-09 14:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','9','2021-03-09 14:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','9','2021-03-09 14:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','9','2021-03-09 09:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','9','2021-03-09 09:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','9','2021-03-09 09:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','9','2021-03-09 09:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','9','2021-03-09 20:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','9','2021-03-09 17:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','9','2021-03-09 17:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','9','2021-03-09 17:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','9','2021-03-09 17:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','9','2021-03-09 17:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','9','2021-03-09 17:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','9','2021-03-09 18:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','9','2021-03-09 18:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','9','2021-03-09 18:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','9','2021-03-09 18:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','9','2021-03-09 22:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','9','2021-03-09 22:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','9','2021-03-09 22:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','9','2021-03-09 22:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','9','2021-03-09 22:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','9','2021-03-09 22:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','9','2021-03-09 23:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','9','2021-03-09 23:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','9','2021-03-09 23:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','9','2021-03-09 23:30:00',0);
 
 
 /* 3월 10일 수요일 */
@@ -1034,107 +460,19 @@ insert into timetracker(userID, date)
 values (1, '2021-03-10');
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','10','2021-03-10 12:00:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('1','10','12:00:00','14:50:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','10','2021-03-10 12:10:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','10','08:30:00','09:00:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','10','2021-03-10 12:20:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('3','10','18:30:00','18:40:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','10','2021-03-10 12:30:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','10','01:00:00','03:00:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','10','2021-03-10 12:40:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','10','2021-03-10 12:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','10','2021-03-10 13:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','10','2021-03-10 13:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','10','2021-03-10 13:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','10','2021-03-10 13:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','10','2021-03-10 13:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','10','2021-03-10 13:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','10','2021-03-10 14:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','10','2021-03-10 14:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','10','2021-03-10 14:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','10','2021-03-10 14:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','10','2021-03-10 14:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','10','2021-03-10 14:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','10','2021-03-10 08:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','10','2021-03-10 08:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','10','2021-03-10 08:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','10','2021-03-10 18:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','10','2021-03-10 01:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','10','2021-03-10 01:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','10','2021-03-10 01:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','10','2021-03-10 01:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','10','2021-03-10 01:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','10','2021-03-10 01:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','10','2021-03-10 02:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','10','2021-03-10 02:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','10','2021-03-10 02:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','10','2021-03-10 02:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','10','2021-03-10 02:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','10','2021-03-10 02:50:00',1);
 
 
 
@@ -1144,90 +482,22 @@ insert into timetracker(userID,date)
 values (1,'2021-03-11');
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','11','2021-03-11 10:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','11','2021-03-11 10:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','11','2021-03-11 10:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','11','2021-03-11 10:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','11','2021-03-11 10:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','11','2021-03-11 10:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','11','2021-03-11 11:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','11','2021-03-11 11:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','11','2021-03-11 11:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','11','2021-03-11 11:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','11','2021-03-11 08:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','11','2021-03-11 08:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','11','2021-03-11 08:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','11','2021-03-11 08:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','11','2021-03-11 17:00:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('1','11','10:00:00','11:30:00',0);
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','11','2021-03-11 21:20:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','11','08:20:00','09:00:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','11','2021-03-11 21:30:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','11','2021-03-11 21:40:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','11','2021-03-11 21:50:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('3','11','17:00:00','17:10:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','11','2021-03-11 22:00:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','11','2021-03-11 22:10:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','11','21:30:00','23:30:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','11','2021-03-11 22:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','11','2021-03-11 22:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','11','2021-03-11 22:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','11','2021-03-11 22:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','11','2021-03-11 23:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','11','2021-03-11 23:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','11','2021-03-11 23:20:00',0);
 
 
 /* 3월 12일 금요일 */
@@ -1235,69 +505,20 @@ values ('5','11','2021-03-11 23:20:00',0);
 insert into timetracker(userID,date) 
 values (1, '2021-03-12');
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','12','2021-03-12 11:00:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('1','12','11:00:00','12:00:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','12','2021-03-12 11:10:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','12','08:00:00','08:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','12','2021-03-12 11:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','12','2021-03-12 11:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','12','2021-03-12 11:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','12','2021-03-12 11:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','12','2021-03-12 08:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','12','2021-03-12 08:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','12','2021-03-12 08:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','12','2021-03-12 08:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','12','2021-03-12 19:20:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('3','12','19:30:00','19:40:00',0);
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','12','2021-03-12 22:00:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('5','12','22:00:00','23:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','12','2021-03-12 22:10:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','12','2021-03-12 22:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','12','2021-03-12 22:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','12','2021-03-12 22:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','12','2021-03-12 22:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','12','2021-03-12 23:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','12','2021-03-12 23:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','12','2021-03-12 23:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','12','2021-03-12 23:30:00',1);
 
 
 
@@ -1307,90 +528,14 @@ values ('5','12','2021-03-12 23:30:00',1);
 insert into timetracker(userID,date) 
 values (1, '2021-03-13');
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','13','2021-03-13 08:00:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','13','08:00:00','08:30:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','13','2021-03-13 08:10:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('3','13','19:00:00','19:10:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','13','2021-03-13 08:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','13','2021-03-13 19:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 14:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 14:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 14:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 14:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 14:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 14:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 15:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 15:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 15:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 15:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 15:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 15:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 16:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 16:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 16:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 16:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 16:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 16:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 17:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 17:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 17:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 17:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 17:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','13','2021-03-13 17:50:00',1);
-
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','13','14:00:00','18:00:00',1);
 
 
 
@@ -1399,27 +544,15 @@ insert into timetracker(userID,date)
 values (1, '2021-03-14');
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','14','2021-03-14 09:00:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','14','09:00:00','09:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','14','2021-03-14 09:10:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('3','14','18:40:00','18:50:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','14','2021-03-14 09:20:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('6','14','16:00:00','16:30:00',1);
 
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','14','2021-03-14 18:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('6','14','2021-03-13 16:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('6','14','2021-03-13 16:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('6','14','2021-03-13 16:20:00',1);
 
 
 /* 3월 15일 월요일 */
@@ -1428,101 +561,18 @@ insert into timetracker(userID,date)
 values (1, '2021-03=15');
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','15','2021-03-15 09:30:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('1','15','09:30:00','12:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','15','2021-03-15 09:40:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('2','15','07:00:00','07:30:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','15','2021-03-15 09:50:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('3','15','19:50:00','20:00:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','15','2021-03-15 10:00:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('5','15','22:00:00','23:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','15','2021-03-15 10:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','15','2021-03-15 10:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','15','2021-03-15 10:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','15','2021-03-15 10:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','15','2021-03-15 10:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','15','2021-03-15 11:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','15','2021-03-15 11:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','15','2021-03-15 11:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','15','2021-03-15 11:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','15','2021-03-15 11:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','15','2021-03-15 11:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','15','2021-03-15 12:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','15','2021-03-15 12:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','15','2021-03-15 12:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','15','2021-03-15 07:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','15','2021-03-15 07:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','15','2021-03-15 07:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','15','2021-03-15 19:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','15','2021-03-15 22:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','15','2021-03-15 22:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','15','2021-03-15 22:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','15','2021-03-15 22:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','15','2021-03-15 22:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','15','2021-03-15 22:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','15','2021-03-15 23:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','15','2021-03-15 23:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','15','2021-03-15 23:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','15','2021-03-15 23:30:00',1);
 
 
 /* 3월 16일 화요일 */
@@ -1531,89 +581,21 @@ insert into timetracker(userID,date)
 values (1,'2021-03-16');
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','16','2021-03-16 10:30:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('1','16','10:30:00','11:30:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','16','2021-03-16 10:40:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','16','2021-03-16 10:50:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','16','07:30:00','08:00:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','16','2021-03-16 11:00:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('3','16','18:30:00','18:40:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','16','2021-03-16 11:10:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('4','16','14:00:00','15:00:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','16','2021-03-16 11:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','16','2021-03-16 11:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','16','2021-03-16 07:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','16','2021-03-16 07:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','16','2021-03-16 07:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','16','2021-03-16 18:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','16','2021-03-16 14:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','16','2021-03-16 14:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','16','2021-03-16 14:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','16','2021-03-16 14:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','16','2021-03-16 14:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','16','2021-03-16 14:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','16','2021-03-16 21:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','16','2021-03-16 21:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','16','2021-03-16 21:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','16','2021-03-16 21:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','16','2021-03-16 21:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','16','2021-03-16 21:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','16','2021-03-16 22:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','16','2021-03-16 22:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','16','2021-03-16 22:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','16','2021-03-16 22:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','16','2021-03-16 22:40:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','16','21:00:00','23:00:00',1);
 
 
 /* 3월 17일 수요일 */
@@ -1621,89 +603,18 @@ values ('5','16','2021-03-16 22:40:00',1);
 insert into timetracker(userID,date) 
 values (1,'2021-03-17');
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','17','2021-03-17 06:30:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','17','06:30:00','07:00:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','17','2021-03-17 06:40:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('3','17','19:30:00','19:40:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','17','2021-03-17 06:50:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('1','17','17:00:00','19:00:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','17','2021-03-17 19:30:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','17','01:00:00','03:00:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','17','2021-03-17 17:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','17','2021-03-17 17:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','17','2021-03-17 17:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','17','2021-03-17 17:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','17','2021-03-17 17:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','17','2021-03-17 17:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','17','2021-03-17 18:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','17','2021-03-17 18:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','17','2021-03-17 18:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','17','2021-03-17 18:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','17','2021-03-17 18:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','17','2021-03-17 18:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','17','2021-03-17 01:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','17','2021-03-17 01:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','17','2021-03-17 01:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','17','2021-03-17 01:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','17','2021-03-17 01:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','17','2021-03-17 01:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','17','2021-03-17 02:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','17','2021-03-17 02:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','17','2021-03-17 02:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','17','2021-03-17 02:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','17','2021-03-17 02:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','17','2021-03-17 02:50:00',0);
 
 
 /* 3월 18일 목요일 */
@@ -1712,105 +623,17 @@ insert into timetracker(userID,date)
 values (1, '2021-03-18');
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','18','2021-03-18 05:30:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('1','18','05:30:00','07:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','18','2021-03-18 05:40:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('2','18','09:00:00','09:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','18','2021-03-18 05:50:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('3','18','19:30:00','19:40:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','18','2021-03-18 06:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','18','2021-03-18 06:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','18','2021-03-18 06:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','18','2021-03-18 06:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','18','2021-03-18 06:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','18','2021-03-18 06:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','18','2021-03-18 07:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','18','2021-03-18 07:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','18','2021-03-18 07:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','18','2021-03-18 07:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','18','2021-03-18 09:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','18','2021-03-18 09:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','18','2021-03-18 09:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','18','2021-03-18 19:30:00',1);
-
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','18','2021-03-18 21:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','18','2021-03-18 21:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','18','2021-03-18 21:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','18','2021-03-18 21:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','18','2021-03-18 21:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','18','2021-03-18 21:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','18','2021-03-18 22:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','18','2021-03-18 22:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','18','2021-03-18 22:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','18','2021-03-18 22:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','18','2021-03-18 22:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','18','2021-03-18 22:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','18','2021-03-18 23:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','18','2021-03-18 23:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','18','2021-03-18 23:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','18','2021-03-18 23:30:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','18','21:00:00','23:30:00',0);
 
 
 /* 3월 19일 금요일 */
@@ -1818,71 +641,17 @@ values ('5','18','2021-03-18 23:30:00',0);
 insert into timetracker(userID,date) 
 values (1,'2021-03-19');
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','19','2021-03-19 09:00:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('2','19','09:00:00','09:30:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','19','2021-03-19 09:10:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('1','19','15:00:00','17:00:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','19','2021-03-19 09:20:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('3','19','19:20:00','19:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','19','2021-03-19 15:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','19','2021-03-19 15:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','19','2021-03-19 15:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','19','2021-03-19 15:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','19','2021-03-19 15:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','19','2021-03-19 15:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','19','2021-03-19 16:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','19','2021-03-19 16:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','19','2021-03-19 16:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','19','2021-03-19 16:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','19','2021-03-19 16:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','19','2021-03-19 16:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','19','2021-03-19 19:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','19','2021-03-19 22:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','19','2021-03-19 22:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','19','2021-03-19 22:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','19','2021-03-19 22:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','19','2021-03-19 22:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','19','2021-03-19 22:50:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','19','22:00:00','23:00:00',0);
 
 
 
@@ -1891,61 +660,14 @@ values ('5','19','2021-03-19 22:50:00',0);
 insert into timetracker(userID,date) 
 values (1,'2021-03-20');
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','20','2021-03-20 11:20:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('2','20','11:20:00','12:00:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','20','2021-03-20 11:30:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('3','20','18:10:00','18:20:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','20','2021-03-20 11:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','20','2021-03-20 11:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','20','2021-03-20 18:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','20','2021-03-20 13:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','20','2021-03-20 13:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','20','2021-03-20 13:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','20','2021-03-20 14:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','20','2021-03-20 14:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','20','2021-03-20 14:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','20','2021-03-20 14:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','20','2021-03-20 14:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','20','2021-03-20 14:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','20','2021-03-20 15:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','20','2021-03-20 15:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','20','2021-03-20 15:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','20','2021-03-20 15:30:00',1);
-
-
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','20','13:30:00','15:30:00',1);
 
 
 
@@ -1956,27 +678,14 @@ values ('5','20','2021-03-20 15:30:00',1);
 insert into timetracker(userID,date) 
 values (1,'2021-03-21');
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','21','2021-03-21 10:00:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('2','21','10:00:00','10:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','21','2021-03-21 10:10:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('3','21','18:00:00','18:10:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','21','2021-03-21 10:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','21','2021-03-21 18:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('6','21','2021-03-21 16:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('6','21','2021-03-21 16:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('6','21','2021-03-21 16:50:00',0);
-
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('6','21','16:30:00','17:00:00',0);
 
 
 
@@ -1988,99 +697,19 @@ insert into timetracker(userID,date)
 values (1,'2021-03-22');
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','22','2021-03-22 09:00:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('1','22','09:00:00','11:00:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','22','2021-03-22 09:10:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','22','2021-03-22 09:20:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','22','07:00:00','07:30:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','22','2021-03-22 09:30:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','22','2021-03-22 09:40:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('3','22','21:00:00','21:10:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','22','2021-03-22 09:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','22','2021-03-22 10:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','22','2021-03-22 10:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','22','2021-03-22 10:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','22','2021-03-22 10:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','22','2021-03-22 10:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','22','2021-03-22 10:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','22','2021-03-22 07:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','22','2021-03-22 07:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','22','2021-03-22 07:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','22','2021-03-22 21:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','22','2021-03-22 13:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','22','2021-03-22 13:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','22','2021-03-22 13:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','22','2021-03-22 13:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','22','2021-03-22 13:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','22','2021-03-22 13:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','22','2021-03-22 14:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','22','2021-03-22 14:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','22','2021-03-22 14:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','22','2021-03-22 14:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','22','2021-03-22 14:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','22','2021-03-22 14:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','22','2021-03-22 15:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','22','2021-03-22 15:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','22','2021-03-22 15:20:00',1);
-
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','22','13:00:00','15:30:00',1);
 
 /* 3월 23일 화요일 */
 
@@ -2088,98 +717,20 @@ insert into timetracker(userID,date)
 values (1,'2021-03-23');
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','23','2021-03-23 09:00:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','23','09:00:00','09:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','23','2021-03-23 09:10:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('1','23','13:00:00','15:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','23','2021-03-23 09:20:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('3','23','18:20:00','18:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','23','2021-03-23 13:00:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('4','23','20:00:00','21:00:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','23','2021-03-23 13:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','23','2021-03-23 13:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','23','2021-03-23 13:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','23','2021-03-23 13:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','23','2021-03-23 13:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','23','2021-03-23 14:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','23','2021-03-23 14:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','23','2021-03-23 14:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','23','2021-03-23 14:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','23','2021-03-23 14:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','23','2021-03-23 14:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','23','2021-03-23 15:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','23','2021-03-23 15:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','23','2021-03-23 15:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','23','2021-03-23 18:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','23','2021-03-23 20:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','23','2021-03-23 20:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','23','2021-03-23 20:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','23','2021-03-23 20:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','23','2021-03-23 20:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','23','2021-03-23 20:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','23','2021-03-23 03:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','23','2021-03-23 03:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','23','2021-03-23 03:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','23','2021-03-23 03:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','23','2021-03-23 03:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','23','2021-03-23 03:50:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','23','03:00:00','04:00:00',0);
 
 
 /* 3월 24일 수요일 */
@@ -2187,92 +738,17 @@ values ('5','23','2021-03-23 03:50:00',0);
 insert into timetracker(userID,date) 
 values (1,'2021-03-24');
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','24','2021-03-24 10:00:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('2','24','10:00:00','10:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','24','2021-03-24 10:10:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('1','24','13:00:00','14:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','24','2021-03-24 10:20:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('3','24','18:30:00','18:35:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','24','2021-03-24 13:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','24','2021-03-24 13:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','24','2021-03-24 13:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','24','2021-03-24 13:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','24','2021-03-24 13:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','24','2021-03-24 13:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','24','2021-03-24 14:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','24','2021-03-24 14:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','24','2021-03-24 14:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','24','2021-03-24 18:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','24','2021-03-24 01:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','24','2021-03-24 01:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','24','2021-03-24 01:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','24','2021-03-24 01:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','24','2021-03-24 02:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','24','2021-03-24 02:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','24','2021-03-24 02:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','24','2021-03-24 02:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','24','2021-03-24 02:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','24','2021-03-24 02:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','24','2021-03-24 03:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','24','2021-03-24 03:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','24','2021-03-24 03:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','24','2021-03-24 03:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','24','2021-03-24 03:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','24','2021-03-24 03:50:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('5','24','01:30:00','04:00:00',1);
 
 
 /* 3월 25일 목요일 */
@@ -2280,236 +756,34 @@ values ('5','24','2021-03-24 03:50:00',1);
 insert into timetracker(userID,date) 
 values (1,'2021-03-25');
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','25','2021-03-25 08:20:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('1','25','08:30:00','11:00:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','25','2021-03-25 08:30:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','25','08:00:00','08:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','25','2021-03-25 08:40:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('3','25','18:00:00','18:10:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','25','2021-03-25 08:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','25','2021-03-25 09:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','25','2021-03-25 09:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','25','2021-03-25 09:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','25','2021-03-25 09:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','25','2021-03-25 09:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','25','2021-03-25 09:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','25','2021-03-25 10:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','25','2021-03-25 10:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','25','2021-03-25 10:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','25','2021-03-25 10:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','25','2021-03-25 10:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','25','2021-03-25 10:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','25','2021-03-25 08:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','25','2021-03-25 08:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','25','2021-03-25 08:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','25','2021-03-25 18:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','25','2021-03-25 20:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','25','2021-03-25 20:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','25','2021-03-25 20:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','25','2021-03-25 20:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','25','2021-03-25 20:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','25','2021-03-25 20:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','25','2021-03-25 21:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','25','2021-03-25 21:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','25','2021-03-25 21:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','25','2021-03-25 21:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','25','2021-03-25 21:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','25','2021-03-25 21:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','25','2021-03-25 22:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','25','2021-03-25 22:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','25','2021-03-25 22:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','25','2021-03-25 22:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','25','2021-03-25 22:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','25','2021-03-25 22:50:00',1);
-
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','25','20:00:00','23:00:00',1);
 
 /* 3월 26일 금요일 */
 
 insert into timetracker(userID,date) 
 values (1,'2021-03-26');
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 11:00:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('1','26','11:00:00','14:30:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 11:10:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','26','10:30:00','11:00:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 11:20:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('3','26','18:30:00','18:40:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 11:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 11:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 11:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 12:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 12:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 12:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 12:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 12:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 12:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 13:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 13:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 13:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 13:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 13:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 13:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 14:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 14:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','26','2021-03-26 14:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','26','2021-03-26 10:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','26','2021-03-26 10:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','26','2021-03-26 10:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','26','2021-03-26 18:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','26','2021-03-26 04:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','26','2021-03-26 04:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','26','2021-03-26 04:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','26','2021-03-26 04:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','26','2021-03-26 04:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','26','2021-03-26 04:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','26','2021-03-26 05:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','26','2021-03-26 05:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','26','2021-03-26 05:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','26','2021-03-26 05:30:00',1);
-
-insert into t_routine(routineID,trackerID, datetime,checkRoutine) 
-values ('5','26','2021-03-26 05:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','26','2021-03-26 05:50:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('5','26','04:00:00','06:00:00',1);
 
 
 
@@ -2520,62 +794,15 @@ insert into timetracker(userID,date)
 values (1,'2021-03-27');
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','27','2021-03-27 10:20:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','27','10:20:00','10:50:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','27','2021-03-27 10:30:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('3','27','18:30:00','18:40:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','27','2021-03-27 10:40:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','27','13:00:00','15:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','27','2021-03-27 18:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','27','2021-03-27 13:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','27','2021-03-27 13:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','27','2021-03-27 13:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','27','2021-03-27 13:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','27','2021-03-27 13:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','27','2021-03-27 13:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','27','2021-03-27 14:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','27','2021-03-27 14:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','27','2021-03-27 14:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','27','2021-03-27 14:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','27','2021-03-27 14:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','27','2021-03-27 14:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','27','2021-03-27 15:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','27','2021-03-27 15:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','27','2021-03-27 15:20:00',1);
 
 /* 3월 28일 일요일 */
 
@@ -2583,26 +810,14 @@ insert into timetracker(userID,date)
 values (1,'2021-03-28');
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','28','2021-03-28 09:30:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','28','09:30:00','10:00:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','28','2021-03-28 09:40:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('3','28','19:40:00','19:50:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','28','2021-03-28 09:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','28','2021-03-28 18:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('6','28','2021-03-28 15:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('6','28','2021-03-28 15:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('6','28','2021-03-28 15:20:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('6','28','15:00:00','15:30:00',1);
 
 
 /* 3월 29일 월요일 */
@@ -2614,89 +829,18 @@ values (1,'2021-03-29');
 
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','29','2021-03-29 16:00:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('1','29','16:00:00','18:00:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','29','2021-03-29 16:10:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','29','2021-03-29 16:20:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','29','09:20:00','10:00:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','29','2021-03-29 16:30:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('3','29','17:30:00','17:40:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','29','2021-03-29 16:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','29','2021-03-29 16:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','29','2021-03-29 17:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','29','2021-03-29 17:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','29','2021-03-29 17:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','29','2021-03-29 17:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','29','2021-03-29 17:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','29','2021-03-29 17:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','29','2021-03-29 09:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','29','2021-03-29 09:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','29','2021-03-29 09:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','29','2021-03-29 17:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','29','2021-03-29 20:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','29','2021-03-29 20:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','29','2021-03-29 20:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','29','2021-03-29 20:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','29','2021-03-29 20:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','29','2021-03-29 20:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','29','2021-03-29 21:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','29','2021-03-29 21:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','29','2021-03-29 21:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','29','2021-03-29 21:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','29','2021-03-29 21:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','29','2021-03-29 21:50:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','29','20:00:00','22:00:00',1);
 
 
 
@@ -2706,117 +850,20 @@ insert into timetracker(userID,date)
 values (1,'2021-03-30');
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','30','2021-03-30 12:30:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('1','30','12:30:00','14:00:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','30','2021-03-30 12:40:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('2','30','09:30:00','10:00:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','30','2021-03-30 12:50:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('3','30','18:20:00','18:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','30','2021-03-30 13:00:00',1);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','30','02:00:00','05:00:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','30','2021-03-30 13:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','30','2021-03-30 13:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','30','2021-03-30 13:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','30','2021-03-30 13:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','30','2021-03-30 13:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','30','2021-03-30 09:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','30','2021-03-30 09:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','30','2021-03-30 09:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','30','2021-03-30 18:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','30','2021-03-30 02:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','30','2021-03-30 02:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','30','2021-03-30 02:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','30','2021-03-30 02:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','30','2021-03-30 02:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','30','2021-03-30 02:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','30','2021-03-30 03:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','30','2021-03-30 03:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','30','2021-03-30 03:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','30','2021-03-30 03:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','30','2021-03-30 03:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','30','2021-03-30 03:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','30','2021-03-30 04:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','30','2021-03-30 04:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','30','2021-03-30 04:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','30','2021-03-30 04:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','30','2021-03-30 04:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','30','2021-03-30 04:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','30','2021-03-30 19:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','30','2021-03-30 19:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','30','2021-03-30 19:50:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','30','2021-03-30 20:00:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','30','2021-03-30 20:10:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('4','30','2021-03-30 20:20:00',1);
-
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine)  
+values ('4','30','19:30:00','20:30:00',1);
 
 
 
@@ -2827,80 +874,17 @@ insert into timetracker(userID,date)
 values (1,'2021-03-31');
 
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','31','2021-03-31 12:00:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('1','31','12:00:00','13:30:00',0);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','31','2021-03-31 12:10:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('2','31','09:20:00','09:50:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','31','2021-03-31 12:20:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('3','31','18:20:00','18:30:00',1);
 
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','31','2021-03-31 12:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','31','2021-03-31 12:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','31','2021-03-31 12:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','31','2021-03-31 13:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','31','2021-03-31 13:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('1','31','2021-03-31 13:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','31','2021-03-31 09:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','31','2021-03-31 09:30:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('2','31','2021-03-31 09:40:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('3','31','2021-03-31 18:20:00',1);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-31 03:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-31 03:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-31 03:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-31 03:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-31 03:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-31 03:50:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-31 04:00:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-31 04:10:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-31 04:20:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-31 04:30:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-31 04:40:00',0);
-
-insert into t_routine(routineID, trackerID, datetime,checkRoutine) 
-values ('5','31','2021-03-31 04:50:00',0);
+insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
+values ('5','31','03:00:00','05:00:00',0);
 
 
 

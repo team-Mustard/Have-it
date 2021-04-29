@@ -5,8 +5,8 @@
 
 </head>
 
-<div class="main col-md-10 col-md-offset-2">
-    <div class="container" id="weekButton">
+<div class="main col-md-8 col-md-offset-2">
+    <div class="container col-md-10" id="weekButton">
         <a class="glyphicon glyphicon-remove-circle" aria-hidden="true"></a>
         <a class="glyphicon glyphicon-ok-circle" aria-hidden="true" onclick="document.getElementById('weeklyform').submit();"></a>
     </div>
@@ -38,15 +38,15 @@
 ?>
     <form action="adminWeekly.php?mode=2" method="POST" id="weeklyform" enctype="multipart/form-data">
 
-        <div class="container">
+        <div class="container col-md-12">
             <row>
-                <div id="calender" class="col-md-4">
+                <div id="calender" class="col-md-3">
                     <div class="year-month"></div>
                     <div class="dates"></div>
                 </div>
-                <div id="image" class="col-md-4">
+                <div id="image" class="col-md-3">
                     <input type="file" name="inputImg" id = "inputImg" style='display: none;' accept="image/*">
-                    <img src='<?=$image?>' width="280px"height="250px" id = 'weeklyImg' onclick='document.all.inputImg.click();'>
+                    <img src='<?=$image?>' width="180px"height="180px" id = 'weeklyImg' onclick='document.all.inputImg.click();'>
 
 
                 </div>
@@ -60,16 +60,16 @@
 
             </row>
         </div>
-        <div class="container">
+        <div class="container col-md-9">
             <canvas id="myChart"></canvas>
         </div>
-        <div class="container writeEval">
+        <div class="container writeEval col-md-10">
             <row>
-                <div id="good" class="col-md-6">
+                <div id="good" class="col-md-5">
                     <p>칭찬</p>
                     <textarea name="good"><?=$good?></textarea>
                 </div>
-                <div id="bad" class="col-md-6">
+                <div id="bad" class="col-md-5">
                     <p>반성</p>
                     <textarea name="bad"><?=$bad?></textarea>
                 </div>
@@ -81,7 +81,6 @@
 
 <?php 
     $weeklyRoutine = explode(';',$routineAchieve);
-    
 ?>
 <script>
     var chBar = document.getElementById("myChart");
@@ -97,7 +96,9 @@
                 <?=$weeklyRoutine[7]?>, <?=$weeklyRoutine[9]?>, <?=$weeklyRoutine[11]?>, <?=$weeklyRoutine[13]?>
             ],
             backgroundColor: '#ff1f78'
-        }]
+        }],
+        
+        
     };
     var myChart = new Chart(chBar, { // 챠트 종류를 선택 
         type: 'bar', // 챠트를 그릴 데이타 
@@ -105,7 +106,16 @@
         options: {
             legend: {
                 display: false
-            }
+            },
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero: true,
+                        stepSize : 1
+					
+					}
+				}]
+			}
         }
     });
 

@@ -6,8 +6,8 @@ $userid = 1;
 //$today = date("Y-m-d");
 $today = '2021-04-01';
 $year = date("Y",strtotime($today));
-$month = 4;
-$day = 1;
+$month = date("m",strtotime($today));
+$day = date("d",strtotime($today));
 
 
 $preLastDay = date('t',mktime(0,0,1,$month-1,$day,$year));
@@ -45,9 +45,9 @@ $trackerResult = mysqli_query($conn,$trackerSql);
 if($trackerResult){
     while($trackerRow = mysqli_fetch_array($trackerResult, MYSQLI_ASSOC)){
         $trackerID = $trackerRow['trackerID'];
+        $trackerDate = $trackerRow['date'];
         $t_routineSql = "select * from t_routine where trackerID = $trackerID";
         $t_routineResult = mysqli_query($conn,$t_routineSql);
-        $preRoutineID = 0;
         while($t_routineRow = mysqli_fetch_array($t_routineResult, MYSQLI_ASSOC)){
             
             $routineID = $t_routineRow['routineID'];
@@ -75,75 +75,107 @@ if($trackerResult){
             }
             
            
-            $t_routineDatetime = $t_routineRow['datetime'];
-            $hour = date('G',strtotime($t_routineDatetime));
-            $month = date('m',strtotime($t_routineDatetime));
-            $year = date('Y',strtotime($t_routineDatetime));
-            $day = date('d',strtotime($t_routineDatetime));
+            
+            $t_routineStartTime = $t_routineRow['startTime'];
+            $t_routineEndTime = $t_routineRow['endTime'];
+            $month = date('m',strtotime($trackerDate));
+            $year = date('Y',strtotime($trackerDate));
+            $day = date('d',strtotime($trackerDate));
             $week = toWeekNum($year,$month,$day);
-            $dayofweek = date('w',strtotime($t_routineDatetime));
-            
-            if($preRoutineID != $routineID){
-                //시간
-                if(isset($countHour[$hour][$goalID])){
-                    $countHour[$hour][$goalID]++;
+            $dayofweek = date('w',strtotime($trackerDate));
+            $startHour = date('G',strtotime($t_routineStartTime));
+            $endHour = date('G',strtotime($t_routineEndTime));
+            $endMinute = date('i',strtotime($t_routineEndTime));
+            //시간
+            if($startHour == $endHour){
+                if(isset($countHour[$startHour][$goalID])){
+                     $countHour[$startHour][$goalID]++;
 
                 }else{
-                    $countHour[$hour][$goalID] = 1;                   
-                 }
-                //주차
-                if(isset($countWeek[$week][$goalID])){
-                    $countWeek[$week][$goalID]++;
-                }else{
-                    $countWeek[$week][$goalID] = 1;
+                    $countHour[$startHour][$goalID] = 1;                   
                 }
-                //요일
-                if(isset($countDayWeek[$dayofweek][$goalID])){
-                    $countDayWeek[$dayofweek][$goalID]++;
-                }else{
-                    $countDayWeek[$dayofweek][$goalID] = 1;
-                }
-                //루틴 성취도
-                if(isset($countRoutine[$routineID])){
-                    $countRoutine[$routineID]++;                   
-                }else {
-                    $countRoutine[$routineID] = 1;
-                }
-                
-                if($checkRoutine != 0){
-                    //시간
-                    if(isset($countCheckHour[$hour][$goalID])){
-                        $countCheckHour[$hour][$goalID]++;
+                       
+             }else {
+                for($z=0;$z<=$endHour - $startHour;$z++){
+                    if(($z == $endHour - $startHour) && $endMinute == 0){
+                        break;
+                    }
+                    
+                    if(isset($countHour[$startHour+$z][$goalID])){
+                        $countHour[$startHour+$z][$goalID]++;
 
                     }else{
-                        $countCheckHour[$hour][$goalID] = 1;                   
-                     }
-                    //주차
-                    if(isset($countCheckWeek[$week][$goalID])){
-                        $countCheckWeek[$week][$goalID]++;
-                    }else{
-                        $countCheckWeek[$week][$goalID] = 1;
-                    }
-                    //요일
-                    if(isset($countCheckDayWeek[$dayofweek][$goalID])){
-                        $countCheckDayWeek[$dayofweek][$goalID]++;
-                    }else{
-                        $countCheckDayWeek[$dayofweek][$goalID] = 1;
-                    }
-                    //루틴
-                    if(isset($countCheckRoutine[$routineID])){
-                        $countCheckRoutine[$routineID]++;
-                    }else
-                    {
-                        $countCheckRoutine[$routineID] = 1;
-                    }
+                        $countHour[$startHour+$z][$goalID] = 1;                   
+                    } 
 
                 }
-                
-                
+
+      
+            }               
+            //주차
+            if(isset($countWeek[$week][$goalID])){
+                 $countWeek[$week][$goalID]++;
+            }else{
+                $countWeek[$week][$goalID] = 1;
             }
-            
-            $preRoutineID = $routineID;
+            //요일
+            if(isset($countDayWeek[$dayofweek][$goalID])){
+                 $countDayWeek[$dayofweek][$goalID]++;
+            }else{
+                $countDayWeek[$dayofweek][$goalID] = 1;
+            }
+            //루틴 성취도
+            if(isset($countRoutine[$routineID])){
+                 $countRoutine[$routineID]++;                   
+            }else {
+                 $countRoutine[$routineID] = 1;
+             }
+                
+            if($checkRoutine != 0){
+                //시간
+                if($startHour == $endHour){
+                    if(isset($countCheckHour[$startHour][$goalID])){
+                        $countCheckHour[$startHour][$goalID]++;
+
+                    }else{
+                        $countCheckHour[$startHour][$goalID] = 1;                   
+                    }
+                    
+                }
+                else {
+                    for($z=0;$z<=$endHour - $startHour;$z++){
+                        if(($z == $endHour - $startHour) && $endMinute == 0){                         
+                            break;
+                    }
+                        if(isset($countCheckHour[$startHour+$z][$goalID])){              
+                            $countCheckHour[$startHour+$z][$goalID]++;     
+                        }else{                     
+                            $countCheckHour[$startHour+$z][$goalID] = 1;                               
+                        } 
+                    }    
+                }          
+                //주차
+                 if(isset($countCheckWeek[$week][$goalID])){
+                    $countCheckWeek[$week][$goalID]++;
+                 }else{
+                    $countCheckWeek[$week][$goalID] = 1;
+                 }
+                //요일
+                if(isset($countCheckDayWeek[$dayofweek][$goalID])){
+                    $countCheckDayWeek[$dayofweek][$goalID]++;
+                 }else{
+                    $countCheckDayWeek[$dayofweek][$goalID] = 1;
+                 }
+                //루틴
+                if(isset($countCheckRoutine[$routineID])){
+                     $countCheckRoutine[$routineID]++;
+                }else
+                 {
+                    $countCheckRoutine[$routineID] = 1;
+                 }
+
+             }
+
         }
         
         
@@ -226,13 +258,12 @@ for($w=0;$w<$goalIDCount;$w++){
         }
         
     }
-    echo "목표 $goalID 의 성취도 <br><br>$hourAchieve <br> $weekAchieve <br> $dayweekAchieve <br><br>";
     
-    $achieveTimeSql = "insert into achieve_time(goalID,monthlyID,achieveTime)
+    $achieveTimeSql = "insert into monthly_achieveTime(goalID,monthlyID,achieveTime)
                         values($goalID,$monthlyID,'$hourAchieve')";
-    $achieveWeekSql = "insert into achieve_week(goalID,monthlyID,achieveWeek)
+    $achieveWeekSql = "insert into monthly_achieveWeek(goalID,monthlyID,achieveWeek)
                         values($goalID,$monthlyID,'$weekAchieve')";
-    $achieveDayWeekSql = "insert into achieve_dayweek(goalID,monthlyID,achieveDayWeek)
+    $achieveDayWeekSql = "insert into monthly_achieveDayofweek(goalID,monthlyID,achieveDayofWeek)
                         values($goalID,$monthlyID,'$dayweekAchieve')";
     mysqli_query($conn, $achieveTimeSql);
     mysqli_query($conn, $achieveWeekSql);
@@ -244,8 +275,7 @@ for($z = 0; $z < $routineIDCount; $z++){
     
     $routineID = $routineIDArr[$z];
     $routineAchieve[$routineID] = round($countCheckRoutine[$routineID] / $countRoutine[$routineID] * 100,1);
-    echo $routineAchieve[$routineID];
-    echo "<br>";
+  
         
 }
 
@@ -259,8 +289,6 @@ $SaveHighest = "$highestRoutineID;$countRoutine[$highestRoutineID];$countCheckRo
 $SaveLowest = "$lowestRoutineID;$countRoutine[$lowestRoutineID];$countCheckRoutine[$lowestRoutineID]";
 
 
-echo "<br><br>$highestRoutineID = $highestRoutine<br>$lowestRoutineID = $lowestRoutine";
-echo "<br>$SaveHighest<br>$SaveLowest";
 
 
 
@@ -268,12 +296,24 @@ $updateMonthlySql = "update monthlyreport set lowestRoutine = '$SaveLowest', hig
 
 mysqli_query($conn, $updateMonthlySql);
 
+mysqli_close($conn);
+echo ("
+                <script>
+                    history.back();
+                </script>
+        ");
+
+
+
+
+/*
 function pp($v){
 	echo "<xmp>";
 	print_r($v);
 	echo "</xmp><br>";
 }
-mysqli_close($conn);
+
+
 echo "<br><br>시간 총 루틴";
 pp($countHour);
 echo "시간 체크 루틴<br>";
@@ -290,7 +330,7 @@ echo "총 루틴 개수<br>";
 pp($countRoutine);
 echo "총 체크 루틴 개수<br>";
 pp($countCheckRoutine);
-
+*/
 
 
 
