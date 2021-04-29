@@ -252,6 +252,7 @@ insert into WeeklyReport(goodEvaluation, badEvaluation, score, date, userID)
 values("잘한점이에유","못한점이에유",50,"2021-03-04",1);
 
 
+
 /*3월 1일 월요일 */
 
 
@@ -885,11 +886,6 @@ values ('3','31','18:20:00','18:30:00',1);
 
 insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
 values ('5','31','03:00:00','05:00:00',0);
-
-
-
-
-
 
 
 
