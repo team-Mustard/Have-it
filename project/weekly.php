@@ -78,6 +78,7 @@
             </row>
         </div>
         <div class = "container selectFail col-md-10">
+            <!--이름 복잡해서 테이블 만들거임 무슨 영어공부 하는 줄 알았네-->
             <label for="mobileGame"><input type="checkbox" id="mobileGame" value="mobileGame">핸드폰 게임</label> 
             <label for="onlineBroadcast"><input type="checkbox" id="onlineBroadcast" value="onlineBroadcast">인터넷방송 시청</label> 
             <label for="outsideActivity"><input type="checkbox" id="outsideActivity" value="outsideActivity">야외 활동</label> 
