@@ -11,7 +11,7 @@
            <table class="time">
 
             <div class="chart">
-                <canvas id="myChart" width="300" height="300"></canvas>
+                <canvas id="myChart1" width="300" height="300"></canvas>
             </div>
 
             <?php
@@ -23,7 +23,7 @@
             ?>
                
             <script>
-                var ctx = document.getElementById('myChart');
+                var ctx = document.getElementById('myChart1');
                 var backColor = [];
                 //backColor[1] = '#1a53ff';
                 

@@ -37,8 +37,22 @@ constraint goal_userID_FK Foreign Key (userID) references userinfo(userID) on de
 /* 1111@naver.com */
 insert into goal(goalName, startTerm,endTerm, userID) 
 values ('팀프로젝트', '2021-03-17','2021-06-21','1');
+
 insert into goal(goalName, startTerm,endTerm, userID) 
 values ('건강하게 살기', '2021-03-1','2021-04-1','1');
+
+insert into goal(goalName,startTerm,endTerm,userID)
+values('토익 800점','2021-01-01','2021-02-01',1);
+
+insert into goal(goalName,startTerm,endTerm,userID)
+values('유기동물 검색 사이트 구현','2020-12-01','2021-02-01',1);
+
+insert into goal(goalName,startTerm,endTerm,userID)
+values('학점 4.0 이상 받기','2020-10-05','2020-12-31',1);
+
+insert into goal(goalName,startTerm,endTerm,userID)
+values('기말 프로젝트','2020-11-10','2020-12-15',1);
+
 
 
 
@@ -76,13 +90,58 @@ values ('영양제 먹기','#FFFF00' ,'1;1;1;1;1;1;1',2);
 /*goal 1 팀 프로젝트 */
 
 insert into Routine(routineName, color,rInterval, goalID) 
-values ('팀 정기회의','#660099' ,'0;0;1;0;0;0;0',1);
+values ('팀 정기회의','#660099' ,'0;1;0;0;0;0;0',1);
 
 insert into Routine(routineName, color,rInterval, goalID) 
-values ('코딩하기','#584329' ,'0;1;1;1;1;1;1',1);
+values ('코딩하기','#584329' ,'1;1;1;1;1;1;0',1);
 
 insert into Routine(routineName, color,rInterval, goalID) 
-values ('주간 결과물 깃허브 업로드','#584329' ,'1;0;0;0;0;0;0',1);
+values ('주간 결과물 깃허브 업로드','#584329' ,'0;0;0;0;0;0;1',1);
+
+/* goal 3 토익 800점 */
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('단어 암기','#6937a1' ,'1;1;1;1;1;0;0',3);
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('LC 공부','#8977ad' ,'1;1;1;1;1;1;0',3);
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('RC 공부','#8b00ff' ,'1;1;1;1;1;1;0',3);
+
+
+/* goal 4 유기동물 검색 사이트 구현 */
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('페이지 구현','#00498c' ,'1;1;1;1;1;1;0',4);
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('진척도 보고서 작성','#0099a4' ,'0;0;0;0;0;0;1',4);
+
+
+/* goal 5 학점 4.0 이상 받기 */
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('수업 내용 복습','#edacb1' ,'1;1;1;1;1;0;0',5);
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('다음 날 내용 예습','#f29886' ,'1;1;1;1;1;0;0',5);
+
+
+/* goal 6 기말 프로젝트 */
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('프로젝트 회의','#83dcb7' ,'0;0;1;0;0;0;0',6);
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('프로젝트 구현','#f5f5dc' ,'1;1;1;1;1;1;1',6);
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('주간 보고서 작성','#f7e600' ,'0;0;0;0;0;0;1',6);
+
+insert into Routine(routineName, color,rInterval, goalID) 
+values ('회의록 작성','#464964','0;0;1;0;0;0;0',6);
+
 
 
 create table timetracker (
@@ -132,34 +191,34 @@ constraint MonthlyReport_userID_FK Foreign Key (userID) references userinfo(user
 
 );
 
-create table achieve_time(
-achieveTimeID int auto_increment,
+create table monthly_achieveTime(
+monthlyTimeID int auto_increment,
 goalID int,
 monthlyID int,
 achieveTime varchar(150),
-constraint achieveTime_achieveTimeID_PK primary key (achieveTimeID),
-constraint achieveTime_goalID_FK Foreign Key (goalID) references goal(goalID) on delete set null,
-constraint achieveTime_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
+constraint monthly_achieveTime_achieveTimeID_PK primary key (monthlyTimeID),
+constraint monthly_achieveTime_goalID_FK Foreign Key (goalID) references goal(goalID) on delete set null,
+constraint monthly_achieveTime_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
 );
 
-create table achieve_week(
-achieveWeekID int auto_increment,
+create table monthly_achieveWeek(
+monthlyWeekID int auto_increment,
 goalID int,
 monthlyID int,
 achieveWeek varchar(150),
-constraint achieveWeek_achieveWeekID_PK primary key (achieveWeekID),
-constraint achieveWeek_goalID_FK Foreign Key (goalID) references goal(goalID) on delete set null,
-constraint achieveWeek_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
+constraint monthly_achieveWeek_achieveWeekID_PK primary key (monthlyWeekID),
+constraint monthly_achieveWeek_goalID_FK Foreign Key (goalID) references goal(goalID) on delete set null,
+constraint monthly_achieveWeek_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
 );
 
-create table achieve_dayweek(
-achieveDayweekID int auto_increment,
+create table monthly_achieveDayofweek(
+monthlyDayofweekID int auto_increment,
 goalID int,
 monthlyID int, 
-achieveDayWeek varchar(150),
-constraint achieveDayweek_achieveDayweekID_PK primary key (achieveDayweekID),
-constraint achieveDayweek_goalID_FK Foreign Key (goalID) references goal(goalID) on delete set null,
-constraint achieveDayweek_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
+achieveDayofWeek varchar(150),
+constraint monthly_achieveDayofweek_achieveDayweekID_PK primary key (monthlyDayofweekID),
+constraint monthly_achieveDayofweek_goalID_FK Foreign Key (goalID) references goal(goalID) on delete set null,
+constraint monthly_achieveDayofweek_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
 );
 
 
@@ -171,18 +230,27 @@ score int,
 date date,
 userID int,
 image text,
-routineAchieve varchar(50),
 constraint WeeklyReport_weeklyID_PK primary key (weeklyID),
 constraint WeeklyReport_userID_FK Foreign Key (userID) references userinfo(userID) on delete cascade
 
 );
 
+create table weekly_achieveDayofweek(
+weeklyDayofweekID int auto_increment,
+goalID int,
+weeklyID int, 
+achieveDayofWeek varchar(150),
+constraint weekly_achieveDayofweek_weeklyDayofweekID_PK primary key (weeklyDayofweekID),
+constraint weekly_achieveDayofweek_goalID_FK Foreign Key (goalID) references goal(goalID) on delete set null,
+constraint weekly_achieveDayofweek_weeklyID_FK Foreign Key (weeklyID) references weeklyreport(weeklyID) on delete cascade
+);
 
-insert into WeeklyReport(goodEvaluation, badEvaluation, score, date, routineAchieve,userID)
-values("2월 잘한점","2월 못한점",100,"2021-02-28","15;7;3;2;11;9;13;2;5;1;2;0;5;3",1);
+insert into WeeklyReport(goodEvaluation, badEvaluation, score, date, userID)
+values("2월 잘한점","2월 못한점",100,"2021-02-28",1);
 
-insert into WeeklyReport(goodEvaluation, badEvaluation, score, date, routineAchieve,userID)
-values("잘한점이에유","못한점이에유",50,"2021-03-04","10;8;6;5;15;10;13;11;20;5;10;9;5;3",1);
+insert into WeeklyReport(goodEvaluation, badEvaluation, score, date, userID)
+values("잘한점이에유","못한점이에유",50,"2021-03-04",1);
+
 
 
 /*3월 1일 월요일 */
@@ -818,11 +886,6 @@ values ('3','31','18:20:00','18:30:00',1);
 
 insert into t_routine(routineID, trackerID, startTime,endTime,checkRoutine) 
 values ('5','31','03:00:00','05:00:00',0);
-
-
-
-
-
 
 
 
