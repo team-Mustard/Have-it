@@ -1,6 +1,6 @@
 <?php 
 
-$conn = mysqli_connect('localhost', 'root', 'root','haveit'); 
+$conn = mysqli_connect('', '', '',''); 
 // localhost, ID, PW, DB name
 
 /*
