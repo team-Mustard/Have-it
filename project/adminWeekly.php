@@ -13,7 +13,7 @@ switch($mode){
         $month = date("m",strtotime($today));
         $day = date("d",strtotime($today));
         */
-        $today = '2021-03-15';    
+        $today = '2021-03-22';    
         $year = date("Y",strtotime($today));
         $month = date("m",strtotime($today));
         $day = date("d",strtotime($today));
@@ -44,21 +44,18 @@ switch($mode){
 
             while($trackerRow = mysqli_fetch_array($trackerResult, MYSQLI_ASSOC)){
                 $trackerID = $trackerRow['trackerID'];
+                $trackerDate = $trackerRow['date'];
+                $dayofweek = date('w',strtotime($trackerDate));
                 $t_routineSql = "select * from t_routine where trackerID = $trackerID";
                 $t_routineResult = mysqli_query($conn, $t_routineSql);
                 
-                if($t_routineResult){
-                    $successRoutine = 0;
-                    $allRoutine = 0;
-                    $preRoutineID = 0;
-                    
+                if($t_routineResult){                 
                     while($t_routineRow = mysqli_fetch_array($t_routineResult, MYSQLI_ASSOC)){
                         $routineID = $t_routineRow['routineID'];
                         $routineSql = "select goalID from routine where routineID = $routineID";
                         $routineResult = mysqli_query($conn,$routineSql);
                         $routineRow = mysqli_fetch_array($routineResult,MYSQLI_ASSOC);
                         $goalID = $routineRow['goalID'];
-
                         if(isset($goalIDArr)){
                             if(!in_array($goalID,$goalIDArr)){
                                 $goalIDArr[count($goalIDArr)] = $goalID;
@@ -67,21 +64,22 @@ switch($mode){
                             $goalIDArr[0] = $goalID;
 
                         }
-                        
-                        if(isset($weeklyRoutine[$goalID])){
+
+                        if(isset($weeklyRoutine[$dayofweek][$goalID])){
+                            $weeklyRoutine[$dayofweek][$goalID]++;
                             
+                        }else {
+                            $weeklyRoutine[$dayofweek][$goalID] = 1;
                             
                         }
-                            $allRoutine++;
-                            if($t_routineRow['checkRoutine'] == 1){
-                                $successRoutine++;
-
+                        
+                        if($t_routineRow['checkRoutine'] == 1){
+                            if(isset($checkWeeklyRoutine[$dayofweek][$goalID])){                      
+                                $checkWeeklyRoutine[$dayofweek][$goalID]++;
+                            }else{ 
+                                $checkWeeklyRoutine[$dayofweek][$goalID] = 1;
+                            }
                         }   
-                    }
-                    if($achieveRoutine !=null){
-                        $achieveRoutine = "$achieveRoutine;$allRoutine;$successRoutine";
-                    }else {
-                        $achieveRoutine = "$allRoutine;$successRoutine";
                     }
 
                 }
@@ -90,14 +88,61 @@ switch($mode){
             }
 
         }
-        $insertSql = "insert into WeeklyReport (userID, date, routineAchieve) 
-                    values($userid,'$today','$achieveRoutine')";
+      
+        $insertWeeklySql = "insert into WeeklyReport (userID, date) 
+                    values($userid,'$today')";
+        mysqli_query($conn, $insertWeeklySql);
+        $selectWeeklySql = "select weeklyID from weeklyreport where date = '$today'";
+        $weeklyResult = mysqli_query($conn, $selectWeeklySql);
+        $weeklyRow = mysqli_fetch_array($weeklyResult, MYSQLI_ASSOC);
+        $weeklyID = $weeklyRow['weeklyID'];
         
-        mysqli_query($conn, $insertSql);
-        mysqli_close($conn);
+        $goalIDCount = count($goalIDArr);
+                             
+        for($w=0;$w<$goalIDCount;$w++){
+            $goalID = $goalIDArr[$w];
 
-        break;
+            $dayweekAchieve = null;
         
+            for($i=0;$i<7;$i++){
+
+                if(isset($weeklyRoutine[$i][$goalID])){
+                    if(isset($checkWeeklyRoutine[$i][$goalID])) {    
+                        $dayweekPercent = round($checkWeeklyRoutine[$i][$goalID] / $weeklyRoutine[$i][$goalID] * 100 ,1);
+
+                    }else{                
+                        $dayweekPercent = 0;
+                    }     
+                }else        
+                    $dayweekPercent = 0;                
+
+                if($dayweekAchieve != null){            
+
+                    $dayweekAchieve = "$dayweekAchieve;$dayweekPercent";
+
+                }else{            
+                    $dayweekAchieve = "$dayweekPercent";        
+                }      
+
+            }    
+            $insertWeeklyAchieveSql = "insert into weekly_achievedayofweek (goalID, weeklyID,achieveDayofWeek) values($goalID,$weeklyID,'$dayweekAchieve')";
+            
+           
+            mysqli_query($conn, $insertWeeklyAchieveSql);
+            
+
+           
+        }
+        
+        mysqli_close($conn);
+        echo ("
+                <script>
+                    history.back();
+                </script>
+        ");
+        
+        break;
+
     }
     case 2:{
         
@@ -112,19 +157,23 @@ switch($mode){
             mkdir($uploadDir, 0777,true);
         }
         
-        
+        function pp($v){
+	echo "<xmp>";
+	print_r($v);
+	echo "</xmp><br>";
+}
         
         if(isset($_FILES['inputImg'])){
-        
-            $inputImg = "$uploadDir$datetime.png";
-            
-            move_uploaded_file($_FILES["inputImg"]['tmp_name'], $inputImg); 
-            $updateSql = "update weeklyreport set goodEvaluation = '$good', badEvaluation = '$bad', score = $weeklyScore, image = '$inputImg'  where weeklyID = $weeklyID";
-        
-            
-        }else {
-            $updateSql = "update weeklyreport set goodEvaluation = '$good', badEvaluation = '$bad', score = $weeklyScore where weeklyID = $weeklyID";
-        
+            if($_FILES['inputImg']['size']!=null){
+                $inputImg = "$uploadDir$datetime.png";
+
+                pp($_FILES['inputImg']);
+                move_uploaded_file($_FILES["inputImg"]['tmp_name'], $inputImg); 
+                $updateSql = "update weeklyreport set goodEvaluation = '$good', badEvaluation = '$bad', score = $weeklyScore, image = '$inputImg'  where weeklyID = $weeklyID";
+            }else {
+                $updateSql = "update weeklyreport set goodEvaluation = '$good', badEvaluation = '$bad', score = $weeklyScore where weeklyID = $weeklyID";
+                
+            }
             
         }
         echo $updateSql;

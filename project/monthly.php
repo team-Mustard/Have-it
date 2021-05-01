@@ -144,7 +144,7 @@
         </div>
         
         <div id="chart" class="container col-md-10">
-            <canvas id="mChart"></canvas>
+            <canvas id="monthlyChart"></canvas>
         </div>
         <div class="container col-md-10">
             <row>
@@ -183,11 +183,9 @@
     
 ?>   
 var chart = document.getElementById("chart");
-function showRoutineTime() {
-    
-    chart.innerHTML = "<canvas id='mChartTime'></canvas>";
-    var ctxTime = document.getElementById("mChartTime");
-    var timeData =
+
+var ctxTime = document.getElementById("monthlyChart");
+var timeData =
   {
     type: 'bar',
     data: {
@@ -240,8 +238,17 @@ function showRoutineTime() {
 
         }
     },
-}
-   var chartTime = new Chart(ctxTime,timeData);
+}    
+var chartTime = new Chart(ctxTime,timeData);
+    
+function showRoutineTime() {
+    if(!document.getElementById('monthlyChart')){
+        chart.innerHTML = "<canvas id='mChartTime'></canvas>";
+        var ctxTime = document.getElementById("mChartTime");
+        var chartTime = new Chart(ctxTime,timeData);
+        
+    }
+    
       
 }    
 function showRoutineWeek(){
