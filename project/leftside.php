@@ -100,7 +100,6 @@
         </div>
             <!-- 하단 버튼메뉴 -->
         <div class="setting">
-          <a href="#"><i class="fas fa-cog pull-right fa-2"></i></a>  
-          <a href="#"><i class="fas fa-question-circle pull-right fa-2"></i></a>  
+          <a href="#"><i class="fas fa-question-circle fa-2"></i></a>  
         </div>
         </div>
