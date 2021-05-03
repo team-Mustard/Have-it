@@ -1,7 +1,7 @@
 body {
   padding-top: 51px;
+  height: 100%;
 }
-
 
 /* navbar-top */
 
@@ -18,14 +18,6 @@ span.navbar-brand a:visited {
 span.navbar-brand a:hover {
     color: #777;
     text-decoration: none;
-}
-
-.logout {
-    color: #777;
-    float: right;
-    margin-right: 15px;
-    height: 45px;
-    line-height: 45px;
 }
 
 .navbar-toggle {
@@ -45,7 +37,6 @@ span.navbar-brand a:hover {
 .sidebar {
   padding: 0px;
   background-color: #04005E;
-  border-right: 1px solid #eee;
 }
 
 
@@ -474,3 +465,38 @@ input.time {
 
 
 
+/* bottom.php css start */
+
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.contents-wrap {
+   min-height:100%;
+   position:relative;
+   /* footer height */
+   padding-bottom:110px;
+}
+
+footer {
+   width:100%;
+   height:110px;
+   position:absolute;
+   bottom:0;
+   background:#F8F8F8;
+   color: #969696;
+   padding-top:10px;
+}
+
+.logout, .bg-mode, .github{
+    color: #969696;
+}
+
+.logout:hover, .bg-mode:hover, .github:hover{
+    color: #969696;
+    text-decoration: none;
+}
+
+/* bottom.php css end */

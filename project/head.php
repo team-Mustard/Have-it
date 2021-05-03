@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <div class="contents-wrap">
     <!-- Top navbar -->
     <div class="navbar navbar-static navbar-default navbar-fixed-top" style="height: 51px;">
       <div class="container-fluid">
@@ -25,7 +26,6 @@
         <button type="button" class="navbar-toggle toggle-right" data-toggle="sidebar" data-target=".sidebar-right">
           <i class="fas fa-dolly-flatbed" style="color: dimgray; margin: 0 2px;"></i>
         </button>
-        <a class="logout" href="logout.php">[로그아웃]</a>
       </div>
     </div>
     <!-- "((" (leftside)(example)(rightside) )) -->
