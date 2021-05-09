@@ -7,7 +7,7 @@
 <div class="main col-md-7 col-md-offset-2">
     <div style="margin:25px 10%;">
         <h2 style="margin-bottom:25px;">목표 추가하기</h2>
-        <form class="goal_set_form" id="frm" name="goal_set_form" method="post" action="db/goal_save.php">
+        <form class="goal_set_form" name="goal_set_form" method="post" action="db/goal_save.php">
             <input id="goal_name" name="goal_name" type="text" placeholder="새로운 목표 이름" required/><br/>
             
             <p style="margin-bottom:10px;">기간　:
@@ -44,7 +44,7 @@
             <input id="plus_btn" type="button" value="+ 루틴 추가하기" onclick="plus_routine()"><br/><br/>
             <p style="float:right; margin-right: 120px;">
                 <input type="reset" value="삭제">
-                <input type="submit" value="저장">
+                <input type="button" onclick="goal_set_submit()" value="저장">
             </p>
             <input style="display:none" id="routineNum" type="text" name="routineNum" value="">
         </form>
@@ -77,6 +77,31 @@
       content.innerHTML += new_routine;
         
       document.getElementById('routineNum').value = routine_num;
+    }
+    
+    function goal_set_submit() {
+        var form = document.goal_set_form;
+        for(var i=0; i<routine_num; i++){
+            var routines = document.getElementsByName("routine"+i+"[]");
+            var check = checkbox_permit(routines);
+            alert(check);
+            if (!check) {
+                var name_routine = document.getElementsByName("routine_name"+i)[0].value;
+                alert(name_routine+" 루틴의 주기를 하루 이상 체크해 주세요!");
+                return;
+            }
+        }
+        form.submit();
+    }
+    
+    function checkbox_permit(routines) {
+        var ck_num = 0;
+        for(var i=0; i<routines.length; i++) {
+            if(routines[i].checked){
+                ck_num++;
+            }
+        }
+        return ck_num;
     }
   
     </script>
