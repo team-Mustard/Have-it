@@ -100,6 +100,6 @@
         </div>
             <!-- 하단 버튼메뉴 -->
         <div class="setting">
-          <a href="#"><i class="fas fa-question-circle fa-2"></i></a>  
+          <a href="./index.php"><i class="fas fa-question-circle fa-2"></i></a>  
         </div>
         </div>
