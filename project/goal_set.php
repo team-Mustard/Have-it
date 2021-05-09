@@ -7,7 +7,7 @@
 <div class="main col-md-7 col-md-offset-2">
     <div style="margin:25px 10%;">
         <h2 style="margin-bottom:25px;">목표 추가하기</h2>
-        <form class="goal_set_form" name="goal_set_form" method="post" action="db/goal_save.php">
+        <form class="goal_set_form" id="frm" name="goal_set_form" method="post" action="db/goal_save.php">
             <input id="goal_name" name="goal_name" type="text" placeholder="새로운 목표 이름" required/><br/>
             
             <p style="margin-bottom:10px;">기간　:
