@@ -84,7 +84,6 @@
         for(var i=0; i<routine_num; i++){
             var routines = document.getElementsByName("routine"+i+"[]");
             var check = checkbox_permit(routines);
-            alert(check);
             if (!check) {
                 var name_routine = document.getElementsByName("routine_name"+i)[0].value;
                 alert(name_routine+" 루틴의 주기를 하루 이상 체크해 주세요!");
