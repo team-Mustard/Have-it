@@ -3,6 +3,10 @@ body {
   height: 100%;
 }
 
+.no-js {
+    display:none;
+}
+
 /* navbar-top */
 
 span.navbar-brand a {
@@ -490,13 +494,23 @@ footer {
    padding-top:10px;
 }
 
-.logout, .bg-mode, .github{
+.logout, #bg_mode, .github {
     color: #969696;
 }
 
-.logout:hover, .bg-mode:hover, .github:hover{
+.logout:hover, #bg_mode:hover, .github:hover {
     color: #969696;
     text-decoration: none;
+}
+
+.logout:valid, #bg_mode:valid, .github:valid {
+    color: #969696;
+    text-decoration: none;
+}
+
+.dark {
+    background: #343434;
+    color: #bbb;
 }
 
 /* bottom.php css end */
