@@ -183,15 +183,17 @@ create table MonthlyReport (
 monthlyID int auto_increment,
 lowestRoutine varchar(10),
 highestRoutine varchar(10),
+monthly_failure varchar(80),
 grade int,
 date date,
 userID int,
+totalAchieve float,
 constraint MonthlyReport_monthlyID_PK primary key (monthlyID),
 constraint MonthlyReport_userID_FK Foreign Key (userID) references userinfo(userID) on delete cascade
 
 );
 
-create table monthly_achieveTime(
+create table monthly_achieve_Time(
 monthlyTimeID int auto_increment,
 goalID int,
 monthlyID int,
@@ -201,7 +203,7 @@ constraint monthly_achieveTime_goalID_FK Foreign Key (goalID) references goal(go
 constraint monthly_achieveTime_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
 );
 
-create table monthly_achieveWeek(
+create table monthly_achieve_Week(
 monthlyWeekID int auto_increment,
 goalID int,
 monthlyID int,
@@ -211,7 +213,7 @@ constraint monthly_achieveWeek_goalID_FK Foreign Key (goalID) references goal(go
 constraint monthly_achieveWeek_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
 );
 
-create table monthly_achieveDayofweek(
+create table monthly_achieve_Dayofweek(
 monthlyDayofweekID int auto_increment,
 goalID int,
 monthlyID int, 
@@ -230,12 +232,13 @@ score int,
 date date,
 userID int,
 image text,
+weekly_failure varchar(50),
 constraint WeeklyReport_weeklyID_PK primary key (weeklyID),
 constraint WeeklyReport_userID_FK Foreign Key (userID) references userinfo(userID) on delete cascade
 
 );
 
-create table weekly_achieveDayofweek(
+create table weekly_achieve_Dayofweek(
 weeklyDayofweekID int auto_increment,
 goalID int,
 weeklyID int, 
@@ -245,11 +248,178 @@ constraint weekly_achieveDayofweek_goalID_FK Foreign Key (goalID) references goa
 constraint weekly_achieveDayofweek_weeklyID_FK Foreign Key (weeklyID) references weeklyreport(weeklyID) on delete cascade
 );
 
-insert into WeeklyReport(goodEvaluation, badEvaluation, score, date, userID)
-values("2월 잘한점","2월 못한점",100,"2021-02-28",1);
 
-insert into WeeklyReport(goodEvaluation, badEvaluation, score, date, userID)
-values("잘한점이에유","못한점이에유",50,"2021-03-04",1);
+
+
+
+/*
+2월달 (3/1 생성)
+3-토익 800점 / 7 8 9
+4-유기동물 검색 사이트 구현 / 10 11
+*/
+
+insert into monthlyreport(monthlyID,lowestRoutine, highestRoutine,date,userID,monthly_failure, totalAchieve)
+values(100,"8;40;12","10;20;18","2021-03-01",1,"2-4;6-4;12-1",70.65);
+
+insert into monthly_achieve_dayofweek(goalID,monthlyID,achieveDayofWeek)
+values(3,100,"30.5;50;88;22;44;85.5;70");
+
+insert into monthly_achieve_dayofweek(goalID,monthlyID,achieveDayofWeek)
+values(4,100,"20;60.5;30;40;100;90;100");
+
+insert into monthly_achieve_time(goalID,monthlyID,achieveTime)
+values(3,100,"1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24");
+
+insert into monthly_achieve_time(goalID,monthlyID,achieveTime)
+values(4,100,"1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24");
+
+insert into monthly_achieve_week(goalID,monthlyID,achieveWeek)
+values(3,100,"50;90;80;70");
+
+insert into monthly_achieve_week(goalID,monthlyID,achieveWeek)
+values(4,100,"10;80;70;40");
+
+
+/*
+1월달(2/1 생성)
+4-유기동물 검색 사이트 구현 / 10 11
+3- 토익 800점 / 7 8 9
+*/
+
+insert into monthlyreport(monthlyID, lowestRoutine, highestRoutine,date,userID,monthly_failure, totalAchieve)
+values(101,"7;15;3","11;50;40","2021-02-01",1,"4-1;5-1;7-1;9-2;15-1",65.75);
+
+insert into monthly_achieve_dayofweek(goalID,monthlyID,achieveDayofWeek)
+values(3,101,"30.5;10;18;12;14;15.5;10");
+
+insert into monthly_achieve_dayofweek(goalID,monthlyID,achieveDayofWeek)
+values(4,101,"20;60.5;20;90;400;50;200");
+
+insert into monthly_achieve_time(goalID,monthlyID,achieveTime)
+values(3,101,"1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24");
+
+insert into monthly_achieve_time(goalID,monthlyID,achieveTime)
+values(4,101,"1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24");
+
+insert into monthly_achieve_week(goalID,monthlyID,achieveWeek)
+values(3,101,"50;90;80;70");
+
+insert into monthly_achieve_week(goalID,monthlyID,achieveWeek)
+values(4,101,"10;80;70;40");
+
+
+
+/*
+12월달(1/1 생성)
+4-유기동물 검색 사이트 구현 / 10 11
+5-학점 4.0이상 받기 / 12 13
+6-기말프로젝트 / 14 15 16
+*/
+insert into monthlyreport(monthlyID, lowestRoutine, highestRoutine,date,userID,monthly_failure, totalAchieve)
+values(102,"12;9;1","15;40;35","2021-01-01",1,"6-3;7-1;12-4;13-1",65.75);
+
+insert into monthly_achieve_dayofweek(goalID,monthlyID,achieveDayofWeek)
+values(4,102,"30.5;10;18;12;14;15.5;10");
+
+insert into monthly_achieve_dayofweek(goalID,monthlyID,achieveDayofWeek)
+values(5,102,"20;60.5;20;90;400;50;200");
+
+insert into monthly_achieve_dayofweek(goalID,monthlyID,achieveDayofWeek)
+values(6,102,"20;60.5;20;90;400;50;200");
+
+insert into monthly_achieve_time(goalID,monthlyID,achieveTime)
+values(4,102,"1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24");
+
+insert into monthly_achieve_time(goalID,monthlyID,achieveTime)
+values(5,102,"1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24");
+
+insert into monthly_achieve_time(goalID,monthlyID,achieveTime)
+values(6,102,"1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24");
+
+
+insert into monthly_achieve_week(goalID,monthlyID,achieveWeek)
+values(4,102,"50;90;80;70");
+
+insert into monthly_achieve_week(goalID,monthlyID,achieveWeek)
+values(5,102,"10;80;70;40");
+
+insert into monthly_achieve_week(goalID,monthlyID,achieveWeek)
+values(6,102,"10;80;70;40");
+
+/*
+11월달 (12/1 생성)
+5- 학점 4.0이상 받기 / 12 13
+6- 기말 프로젝트 / 14 15 16
+*/
+insert into monthlyreport(monthlyID, lowestRoutine, highestRoutine,date,userID,monthly_failure, totalAchieve)
+values(103,"14;10;2","13;20;10","2020-12-01",1,"1-1;2-1;6-1;13-1",90.8);
+
+
+
+insert into monthly_achieve_dayofweek(goalID,monthlyID,achieveDayofWeek)
+values(5,103,"20;60.5;20;90;400;50;200");
+
+insert into monthly_achieve_dayofweek(goalID,monthlyID,achieveDayofWeek)
+values(6,103,"20;60.5;20;90;400;50;200");
+
+
+
+insert into monthly_achieve_time(goalID,monthlyID,achieveTime)
+values(5,103,"1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24");
+
+insert into monthly_achieve_time(goalID,monthlyID,achieveTime)
+values(6,103,"1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24");
+
+
+
+insert into monthly_achieve_week(goalID,monthlyID,achieveWeek)
+values(5,103,"10;80;70;40");
+
+insert into monthly_achieve_week(goalID,monthlyID,achieveWeek)
+values(6,103,"10;80;70;40");
+
+
+/*
+10월달 (11/1 생성)
+*/
+insert into monthlyreport(monthlyID, lowestRoutine, highestRoutine,date,userID,monthly_failure, totalAchieve)
+values(104,"12;20;4","13;12;9","2020-11-01",1,"13-1",50.55);
+
+
+insert into monthly_achieve_dayofweek(goalID,monthlyID,achieveDayofWeek)
+values(5,104,"20;60.5;20;90;400;50;200");
+
+insert into monthly_achieve_time(goalID,monthlyID,achieveTime)
+values(5,104,"1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24");
+
+
+insert into monthly_achieve_week(goalID,monthlyID,achieveWeek)
+values(5,104,"10;80;70;40");
+
+
+/*상위 계산을 위한 샘플 데이터(리포트 출력은 안 됨)*/
+
+insert into monthlyreport(date,userID,totalAchieve)
+values("2021-04-01",2,70.5);
+
+insert into monthlyreport(date,userID,totalAchieve)
+values("2021-04-01",3,80);
+
+insert into monthlyreport(date,userID,totalAchieve)
+values("2021-04-01",4,50.8);
+insert into monthlyreport(date,userID,totalAchieve)
+values("2021-04-01",5,78.5);
+insert into monthlyreport(date,userID,totalAchieve)
+values("2021-04-01",6,50.8);
+insert into monthlyreport(date,userID,totalAchieve)
+values("2021-04-01",7,33.2);
+insert into monthlyreport(date,userID,totalAchieve)
+values("2021-04-01",8,95.87);
+insert into monthlyreport(date,userID,totalAchieve)
+values("2021-04-01",9,74.23);
+insert into monthlyreport(date,userID,totalAchieve)
+values("2021-04-01",10,65.7);
+
 
 
 
