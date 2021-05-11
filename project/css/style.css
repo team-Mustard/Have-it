@@ -266,6 +266,30 @@ input.time {
     text-align: right;
 
 }
+.checkFailure {
+    padding: 5px;
+    margin-left: 25px;
+    
+    
+}
+.checkFailure #labels{
+
+    
+    border:2px solid;
+    padding: 10px;
+    
+}
+.checkFailure label {
+    
+
+    display: inline-block;
+    width: 150px;
+    line-height: 30px;
+    margin-left: 5px;
+    
+    
+}
+
 /* Weekly Report css end */
 
 
@@ -287,7 +311,7 @@ input.time {
     border-bottom: 3px solid;
 }
 
-#chart {
+#routineChart {
     margin-top: 5px;
     margin-bottom: 30px;
 }
@@ -297,14 +321,17 @@ input.time {
     text-align: center;
     
 }
-#fail button {
+#fail a {
+    display: inline-block;
     width:80%;
     height: 30px;
     background-color: #560a86;
     color: white;
     font-size: 15px;
-    border: none;
+    text-decoration: none;
+    padding: 5px;
 }
+
 
 #fail p:nth-child(1){
     font-size: 20px;
@@ -326,14 +353,16 @@ input.time {
     
     
 }
-#success button{
+
+#success a{
+    display:inline-block;
     width:80%;
     height: 30px;
-    background-color: #560a86;
+    padding: 5px;
     background-color: #ef6d79;
     color: white;
     font-size: 15px;
-    border: none;
+    text-decoration:none;
 }
 #success p:nth-child(1){
     font-size: 20px;
@@ -350,11 +379,45 @@ input.time {
     
     
 }
-#chartBtn{
-    
+#routineChartBtn{
     float: left;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    
+    
 }
+#routineChartBtn a, routineChartBtn span{
+    text-decoration: none;
+    width: 50px;
+    font-size: 15px;
+    display: inline-block;
+    color: black;
+    text-align: center;
+
+    
+    
+}
+
+#failureChart {
+    padding-left: 10px;
+    margin-top: 10px; 
+    
+}
+
+#failureChart canvas{
+
+    margin: 0 auto;
+
+}
+
+#monthChart {
+    padding-left: 10px;
+}
+
+#monthChart canvas{
+    margin: 0 auto;
+}
+
 
 /* Monthly Report css end */
 
