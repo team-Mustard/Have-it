@@ -20,9 +20,11 @@
                 <label><i class="fas fa-key blue"></i></label>
                 <input type="password" name="password" placeholder="password"><br>
                 <label><i class="fas fa-check-double blue"></i></label>
-                <input type="password" name="password_check" placeholder="password double check">
+                <input type="password" name="password_check" placeholder="password double check"><br>
+                <hr class="hr_bord">
+                <input type="submit" class="btn purple fa-2" value="가입하기">
+                
             </form>
-            <a class="btn purple fa-2" onclick="document.getElementById('signupform').submit();">가입하기</a>
         </div>
     </div>
   </body>
