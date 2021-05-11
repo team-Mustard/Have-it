@@ -49,15 +49,7 @@
           <h5 class="list-header text-center"><b>📃품질 보증서📃</b></h5>
           <ul class="nav navbar-stacked">
 <?php
-        /*
-            TODO: 월간 리포트 주간 리포트 날짜 별로 출력
         
-        */
-              function pp($v){
-                echo "<xmp>";
-                print_r($v);
-                echo "</xmp><br>";
-            }
         $weeklySql = "select weeklyID, date from WeeklyReport where userID = $userid";
         $weeklyResult =  mysqli_query($conn, $weeklySql);
         $count = 0;
