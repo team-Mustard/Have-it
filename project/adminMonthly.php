@@ -41,7 +41,8 @@ $trackerSql = "select * from timetracker where userID = $userid and date(date) b
 
 
 $trackerResult = mysqli_query($conn,$trackerSql);
-
+$totalAchieve = 0;
+$totalCheckAchieve = 0;
 if($trackerResult){
     while($trackerRow = mysqli_fetch_array($trackerResult, MYSQLI_ASSOC)){
         $trackerID = $trackerRow['trackerID'];
@@ -111,7 +112,9 @@ if($trackerResult){
                 }
 
       
-            }               
+            }   
+            
+            $totalAchieve++;
             //주차
             if(isset($countWeek[$week][$goalID])){
                  $countWeek[$week][$goalID]++;
@@ -133,6 +136,7 @@ if($trackerResult){
                 
             if($checkRoutine != 0){
                 //시간
+                $totalCheckAchieve++;
                 if($startHour == $endHour){
                     if(isset($countCheckHour[$startHour][$goalID])){
                         $countCheckHour[$startHour][$goalID]++;
@@ -175,6 +179,7 @@ if($trackerResult){
                  }
 
              }
+            
 
         }
         
@@ -259,11 +264,11 @@ for($w=0;$w<$goalIDCount;$w++){
         
     }
     
-    $achieveTimeSql = "insert into monthly_achieveTime(goalID,monthlyID,achieveTime)
+    $achieveTimeSql = "insert into monthly_achieve_Time(goalID,monthlyID,achieveTime)
                         values($goalID,$monthlyID,'$hourAchieve')";
-    $achieveWeekSql = "insert into monthly_achieveWeek(goalID,monthlyID,achieveWeek)
+    $achieveWeekSql = "insert into monthly_achieve_Week(goalID,monthlyID,achieveWeek)
                         values($goalID,$monthlyID,'$weekAchieve')";
-    $achieveDayWeekSql = "insert into monthly_achieveDayofweek(goalID,monthlyID,achieveDayofWeek)
+    $achieveDayWeekSql = "insert into monthly_achieve_Dayofweek(goalID,monthlyID,achieveDayofWeek)
                         values($goalID,$monthlyID,'$dayweekAchieve')";
     mysqli_query($conn, $achieveTimeSql);
     mysqli_query($conn, $achieveWeekSql);
@@ -290,9 +295,62 @@ $SaveLowest = "$lowestRoutineID;$countRoutine[$lowestRoutineID];$countCheckRouti
 
 
 
+$failureSql  = "select * from weeklyReport where userID = $userid and date(date) between '$startTerm' and '$endTerm'";
+
+$failResult = mysqli_query($conn,$failureSql);
+
+while($failRow = mysqli_fetch_array($failResult,MYSQLI_ASSOC)){
+    
+    
+    $failure = $failRow['weekly_failure'];
+    $failure = explode(';',$failure);
+    
+    for($i=0;$i<count($failure);$i++){
+        
+        $tmp = $failure[$i];
+        if(isset($failureArr)){      
+            if(!in_array($tmp,$failureArr)){                   
+                $failureArr[count($failureArr)] = $tmp;          
+            }         
+        }else{         
+            $failureArr[0] = $tmp;
+        }
+        
+        
+        if(isset($countFailure[$tmp])){
+            $countFailure[$tmp]++;
+        }else{
+            $countFailure[$tmp] = 1;
+        }
+        
+    }
+    
+    
+    
+    
+    
+}
+for($z=0;$z<count($failureArr);$z++){
+        
+        $failureID = $failureArr[$z];
+        
+        if(isset($inputFail)){
+            
+            $inputFail = "$inputFail;$failureID-$countFailure[$failureID]";
+            
+            
+        }else{
+            
+            $inputFail = "$failureID-$countFailure[$failureID]";
+        }
+
+    }
+    
+$insertTotal = round($totalCheckAchieve / $totalAchieve * 100,3);
+
+$updateMonthlySql = "update monthlyreport set lowestRoutine = '$SaveLowest', highestRoutine = '$SaveHighest', monthly_failure = '$inputFail',totalAchieve = $insertTotal where monthlyID = $monthlyID";
 
 
-$updateMonthlySql = "update monthlyreport set lowestRoutine = '$SaveLowest', highestRoutine = '$SaveHighest' where monthlyID = $monthlyID";
 
 mysqli_query($conn, $updateMonthlySql);
 

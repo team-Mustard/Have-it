@@ -3,7 +3,7 @@
 </head>
 
 <body>
-    
+
 <?php 
     include "db/dbconn.php";
     if(isset($_GET['monthlyID'])) $monthlyID = $_GET['monthlyID'];
@@ -12,9 +12,10 @@
     $monthlyResult = mysqli_query($conn, $monthlySql);
     $monthlyRow = mysqli_fetch_array($monthlyResult, MYSQLI_ASSOC);
     if($monthlyRow){
+        $monthlyDate = $monthlyRow['date'];
         $highestRoutine = $monthlyRow['highestRoutine'];
         $lowestRoutine = $monthlyRow['lowestRoutine'];
-        
+        $monthlyTotalAchieve = $monthlyRow['totalAchieve'];
         $highestRoutine = explode(';',$highestRoutine);
         $lowestRoutine = explode(';',$lowestRoutine);
         
@@ -26,9 +27,9 @@
         
         $lowestRow = mysqli_fetch_array(mysqli_query($conn,$LowestRoutineSql),MYSQLI_ASSOC);
         
-        $achieveTimeSql = "select * from monthly_achieveTime where monthlyID = $monthlyID order by goalID ASC";
-        $achieveWeekSql = "select * from monthly_achieveWeek where monthlyID = $monthlyID order by goalID ASC";
-        $achieveDayofWeekSql = "select * from monthly_achieveDayofweek where monthlyID = $monthlyID order by goalID ASC";
+        $achieveTimeSql = "select * from monthly_achieve_Time where monthlyID = $monthlyID order by goalID ASC";
+        $achieveWeekSql = "select * from monthly_achieve_Week where monthlyID = $monthlyID order by goalID ASC";
+        $achieveDayofWeekSql = "select * from monthly_achieve_Dayofweek where monthlyID = $monthlyID order by goalID ASC";
         $timeResult = mysqli_query($conn, $achieveTimeSql);
         $weekResult = mysqli_query($conn,$achieveWeekSql);
         $dayofweekResult = mysqli_query($conn,$achieveDayofWeekSql);
@@ -126,24 +127,43 @@
         }
     
     
+        $monthlySql2 = "select totalAchieve, monthlyID from monthlyReport where date = '$monthlyDate' order by totalAchieve DESC ";
+        $monthlyResult2 = mysqli_query($conn,$monthlySql2);
+        $countReport=0;
+        $sameRank = 0;
+        while($monthlyRow2 = mysqli_fetch_array($monthlyResult2,MYSQLI_ASSOC)){
+            $countReport++;
+            
+            if($monthlyTotalAchieve == $monthlyRow2['totalAchieve'] && $monthlyID == $monthlyRow2['monthlyID']){
+                $rank = $countReport;
+            }
+            if($monthlyTotalAchieve == $monthlyRow2['totalAchieve'] && $monthlyID != $monthlyRow2['monthlyID']){
+                $sameRank++;
+            }
+        }
+        if($countReport !=1){
+            
+            $grade = 100 - ((($countReport -$rank) +($sameRank/2))  / $countReport * 100);
+        }else {
+            $grade = 1;
+        }
     ?>    
-        
-        
-
     <div class="main col-md-8 col-md-offset-2">
         <div class="container text-center col-md-10">
             <div id="grade">
                 <p class="gradetitle">이번 달 나의 등급</p>
-                <span class="gradeprint">상위 74%</span>
+                <span class="gradeprint">상위 <?=$grade?>%</span>
             </div>
         </div>
-        <div id = "chartBtn" class="container">
+        <div id = "routineChartBtn" class="container">
             <a onclick="showRoutineTime();">시간</a>
+            <span>|</span>
             <a onclick="showRoutineWeek();">주차</a>
+            <span>|</span>
             <a onclick="showRoutineDayofweek();">요일</a>
         </div>
         
-        <div id="chart" class="container col-md-10">
+        <div id="routineChart" class="container col-md-10">
             <canvas id="monthlyChart"></canvas>
         </div>
         <div class="container col-md-10">
@@ -152,25 +172,31 @@
                     <p>가장 실패율이 높은 루틴</p>
                     <p>"<?=$lowestRow['routineName']?>"</p>
                     <p><?=$lowestRoutine[2]?>/<?=$lowestRoutine[1]?></p>
-                    <button>루틴 바로가기</button>
+                    <a href="?page=goal_set">루틴 바로가기</a>
+                    
                 </div>
                 <div id="success" class="col-md-6">
                     <p>가장 성공률이 높은 루틴</p>
                     <p>"<?=$highestRow['routineName']?>"</p>
                     <p><?=$highestRoutine[2]?>/<?=$highestRoutine[1]?></p>
-                    <button>새로운 루틴 생성하기</button>
+                    <a href="?page=goal_set">새로운 루틴 생성하기</a>
                 </div>
             </row>
+        </div>
+        
+        <div id = "failureChart"  class = "contatiner col-md-10">
+            <h4 style="text-align:center;">실패 원인 분석</h4>
+            <canvas id="mChartFailure" width="400" height="400"></canvas> 
+        </div>
+        <div id = "monthChart"  class = "contatiner col-md-10">
+            <h4 style="text-align:right;">5달간 성취도 추이</h4>
+            <canvas id="mChartMonth"></canvas> 
         </div>
     </div>
 
 
 </body>
-<?php 
-    
-    }    
 
-?>
 <script>
 
 
@@ -182,8 +208,7 @@
                 
     
 ?>   
-var chart = document.getElementById("chart");
-
+var chart = document.getElementById("routineChart");
 var ctxTime = document.getElementById("monthlyChart");
 var timeData =
   {
@@ -353,5 +378,161 @@ function showRoutineDayofweek(){
 }
    var chartDayofWeek = new Chart(ctxDayofWeek,dayofweekData);
 }
+ 
+    
+<?php
+    $failList = ["핸드폰 게임","인터넷 방송","야외 활동","무리한 계획","유튜브","PC 게임","음주","예정에 없던 외출","TV 시청","수면","사고","넷플릭스/왓챠","SNS","능력 부족","집중력 부족","아픔"];
+    
+    $failure = $monthlyRow['monthly_failure'];
+    $failure = explode(';',$failure);
+    
+    
+?>
+var colorIndex = ["#C6E8BA","#ADE3AB","#9FB6DF","#94DBC0","#E4C9ED","#BAE6E8","#CCE3AB","#EDD5C9","#E1F4DD","#D9F2F2","#8C8FD9","#EDDEC9","#C2C7EB","#C9EDE7","#F4F6E4","#ECF9F7"];
+var ctxFailure = document.getElementById("mChartFailure");
+var randomcolor = "#" + Math.round(Math.random() * 0xffffff).toString(16);
+var failData=
+  {
+    type: 'pie',
+    data: {
+        labels: [
+            <?php 
+            for($z=0;$z<count($failure);$z++){
+                $failtmp = explode('-',$failure[$z]);
+                $failString = $failList[$failtmp[0]-1];
+                echo "\"$failString\"";
+                if($z!=count($failure)){
+                    echo ",";
+                }
+ 
+            }
+
+            ?>
+            
+            
+        ],
+        
+        datasets: [{
+            <?php 
+        
+            echo "data:[";
+            for($z=0;$z<count($failure);$z++){
+                $failtmp = explode('-',$failure[$z]);
+                echo "$failtmp[1]";
+                if($z!=count($failure)){
+                    echo ",";
+                }
+                
+            }
+            echo "],backgroundColor:[";
+            for($w= 0; $w<count($failure);$w++){
+                
+                echo "colorIndex[$w]";
+                
+                if($w!=count($failure)){
+                    echo ",";
+                }
+
+            }
+        
+        
+            echo "]";?>}]
+    },
+
+    options: {
+        responsive: false,
+        legend:{
+            
+            display: true,
+            position: 'right'
+
+        },
+        
+    },
+}
+   var chartFailure = new Chart(ctxFailure,failData);    
+    
+<?php
+
+        $preMonth = strtotime($monthlyDate.'-5 month');
+        $select5monthSql = "select * from monthlyReport where userID = $userid and date(date) between '$preMonth' and '$monthlyDate' order by monthlyID DESC";
+        $monthResult = mysqli_query($conn,$select5monthSql);
+        $countMonth = 0;
+        while($monthRow = mysqli_fetch_array($monthResult,MYSQLI_ASSOC)){
+            $month[$countMonth] = $monthRow['totalAchieve'];
+            $monthDate[$countMonth] = $monthRow['date'];
+            $countMonth++;
+        }
+        
+    
+?>
+
+var ctx5Month = document.getElementById("mChartMonth");
+var monthData=
+  {
+    type: 'line',
+    data: {
+        labels: [
+            <?php 
+            for($h=0;$h<$countMonth;$h++){
+                $tmp = date('m',strtotime($monthDate[$h]));
+                $tmp2 = preg_replace('/(0)(\d)/','$2', $tmp);
+                echo "\"$tmp2 월\"";
+                if($h!=$countMonth){
+                    echo ",";
+                }
+ 
+            }
+
+            ?>
+            
+            
+        ],
+        
+        datasets: [{
+            <?php 
+        
+            echo "data:[";
+            for($q=0;$q<$countMonth;$q++){
+                echo "\"$month[$q]\"";
+                if($q!=$countMonth){
+                    echo ",";
+                }
+                
+            }
+            echo "],";
+        ;?>
+        fill: false,
+        lineTension: 0,
+        borderColor: "#fc914c"
+        }]
+    },
+
+    options: {
+        
+        legend:{
+            
+            display: false
+        },
+        scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero: true,
+                        stepSize : 20
+					
+					}
+				}]
+			}
+        
+    },
+}
+   var chartmonth = new Chart(ctx5Month,monthData); 
+    
+<?php 
+    
+    }    
+
+?>    
+    
     
 </script>
