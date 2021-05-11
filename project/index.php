@@ -26,4 +26,5 @@ else {
     include_once "rightside.php";
     include_once "bottom.php";
     }
+echo "<script> bg_check(); $(function(){ $('html').removeClass('no-js'); }); </script>";
 ?>

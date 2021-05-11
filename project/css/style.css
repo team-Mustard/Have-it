@@ -1,7 +1,11 @@
 body {
   padding-top: 51px;
+  height: 100%;
 }
 
+.no-js {
+    display:none;
+}
 
 /* navbar-top */
 
@@ -18,14 +22,6 @@ span.navbar-brand a:visited {
 span.navbar-brand a:hover {
     color: #777;
     text-decoration: none;
-}
-
-.logout {
-    color: #777;
-    float: right;
-    margin-right: 15px;
-    height: 45px;
-    line-height: 45px;
 }
 
 .navbar-toggle {
@@ -45,7 +41,6 @@ span.navbar-brand a:hover {
 .sidebar {
   padding: 0px;
   background-color: #04005E;
-  border-right: 1px solid #eee;
 }
 
 
@@ -74,8 +69,9 @@ hr {
 }
 
 .setting {
-  background-color: #8181C1;
-  height: 25px;
+  position:absolute;
+  right:0px;
+  bottom:52px;
 }
 
 .setting a, .setting a:visited{
@@ -149,8 +145,7 @@ input.time {
 #calender {
     padding: 15px;
     padding-right: 30px;
-    height: 200px;
-
+    height: 280px;
     border:5px solid;
     margin: 10px;
     border-radius: 20px;
@@ -158,9 +153,8 @@ input.time {
 }
 
 #image {
-    text-align: center;
-    padding: 5px;
-    height: 200px;
+    padding: 15px;
+    height: 280px;
     border:5px solid;
     margin: 10px;
     border-radius: 20px;
@@ -171,13 +165,13 @@ input.time {
     padding: 15px;
     text-align: center;
     padding-top: 80px;
-    height: 200px;
+    height: 280px;
 
 }
 
 #score span {
 
-    font-size: 20px;
+    font-size: 25px;
     
 }
 
@@ -188,7 +182,7 @@ input.time {
     border-right: none;
     border-left: none;
     text-align: center;
-    width: 100px;
+    width: 150px;
 
 }
 #score input:focus {
@@ -204,8 +198,6 @@ input.time {
     border:5px solid;
     border-radius: 20px;
     border-color: #d2c5e1;
-    margin: 10px;
- 
     
     
 }
@@ -218,9 +210,9 @@ input.time {
 
 .writeEval textarea{
     width:100%;
-    height:150px;
+    height:200px;
     border: none;
-    font-size: 15px;
+    font-size: 20px;
 
 }
 .writeEval textarea:focus{
@@ -236,7 +228,6 @@ input.time {
     border:5px solid;
     border-color: #d2c5e1;
     border-radius: 20px;
-    margin: 10px;
     
     
 }
@@ -250,19 +241,33 @@ input.time {
 
 
 .year-month {
-    font-size: 20px;
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+
+.days {
+    display: flex;
+    margin: 25px 0 10px;
+}
+
+.day {
+    width: calc(100% / 7);
     text-align: center;
 }
 
 .dates {
     display: flex;
     text-align: center;
-    flex-flow: row wrap
+    flex-flow: row wrap;
+    height: 200px;
+   
 }
 
 .date {
     width: calc(100% / 7);
-    padding: 3px;
+    padding: 5px;
     text-align: right;
 
 }
@@ -299,17 +304,18 @@ input.time {
 #grade {
 
     padding: 10px;
-    margin-bottom: 5px
+    margin-bottom: 10px
 }
 #grade p {
-    font-size: 20px; 
-    margin: 10px;
+    font-size: 25px; 
+    margin: 15px;
 }
 #grade span {
     
-    font-size: 20px;
+    font-size: 30px;
     border-bottom: 3px solid;
 }
+
 
 #routineChart {
     margin-top: 5px;
@@ -324,27 +330,28 @@ input.time {
 #fail a {
     display: inline-block;
     width:80%;
-    height: 30px;
+    height: 40px;
     background-color: #560a86;
     color: white;
     font-size: 15px;
     text-decoration: none;
     padding: 5px;
+
 }
 
 
 #fail p:nth-child(1){
-    font-size: 20px;
+    font-size: 30px;
     font-weight: bold;
 
     
 }
 #fail p:nth-child(2){
-    font-size: 15px;
+    font-size: 25px;
     
 }
 #fail p:nth-child(3){
-    font-size: 15px;
+    font-size: 30px;
     
 }
 #success{
@@ -363,18 +370,20 @@ input.time {
     color: white;
     font-size: 15px;
     text-decoration:none;
+
 }
 #success p:nth-child(1){
-    font-size: 20px;
+    font-size: 30px;
     font-weight: bold;
 
     
 }
 #success p:nth-child(2){
-    font-size: 15px;
+    font-size: 25px;
     
 }
 #success p:nth-child(3){
+
     font-size: 15px;
     
     
@@ -395,7 +404,7 @@ input.time {
     text-align: center;
 
     
-    
+ 
 }
 
 #failureChart {
@@ -417,6 +426,7 @@ input.time {
 #monthChart canvas{
     margin: 0 auto;
 }
+
 
 
 /* Monthly Report css end */
@@ -532,3 +542,48 @@ input.time {
 
 
 
+/* bottom.php css start */
+
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.contents-wrap {
+   min-height:100%;
+   position:relative;
+   /* footer height */
+   padding-bottom:110px;
+}
+
+footer {
+   width:100%;
+   height:110px;
+   position:absolute;
+   bottom:0;
+   background:#F8F8F8;
+   color: #969696;
+   padding-top:10px;
+}
+
+.logout, #bg_mode, .github {
+    color: #969696;
+}
+
+.logout:hover, #bg_mode:hover, .github:hover {
+    color: #969696;
+    text-decoration: none;
+}
+
+.logout:valid, #bg_mode:valid, .github:valid {
+    color: #969696;
+    text-decoration: none;
+}
+
+.dark {
+    background: #343434;
+    color: #bbb;
+}
+
+/* bottom.php css end */

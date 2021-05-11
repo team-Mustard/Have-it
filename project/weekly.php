@@ -77,25 +77,30 @@
                 </div>
             </row>
         </div>
-        <div class = "container selectFail col-md-10">
-            <!--이름 복잡해서 테이블 만들거임 무슨 영어공부 하는 줄 알았네-->
-            <label for="mobileGame"><input type="checkbox" id="mobileGame" value="mobileGame">핸드폰 게임</label> 
-            <label for="onlineBroadcast"><input type="checkbox" id="onlineBroadcast" value="onlineBroadcast">인터넷방송 시청</label> 
-            <label for="outsideActivity"><input type="checkbox" id="outsideActivity" value="outsideActivity">야외 활동</label> 
-            <label for="unreasonablePlan"><input type="checkbox" id="unreasonablePlan" value="unreasonablePlan">무리한 계획</label> 
-            <label for="youtube"><input type="checkbox" id="youtube" value="youtube">유튜브</label> 
-            <label for="PCgame"><input type="checkbox" id="PCgame" value="PCgame">PC 게임</label> 
-            <label for="drinking"><input type="checkbox" id="drinking" value="drinking">음주</label> 
-            <label for="unscheduled"><input type="checkbox" id="unscheduled" value="unscheduled">예정에 없던 외출</label> 
-            <label for="TV"><input type="checkbox" id="TV" value="TV">TV 시청</label> 
-            <label for="sleep"><input type="checkbox" id="sleep" value="sleep">수면</label> 
-            <label for="accident"><input type="checkbox" id="accident" value="accident">사고</label> 
-            <label for="OTT"><input type="checkbox" id="OTT" value="OTT">넷플릭스/왓챠</label> 
-            <label for="SNS"><input type="checkbox" id="SNS" value="SNS">SNS</label> 
-            <label for="lackOfAbility"><input type="checkbox" id="lackOfAbility" value="lackOfAbility">능력 부족</label> 
-            <label for="lackOfConcentration"><input type="checkbox" id="lackOfConcentration" value="lackOfConcentration">집중력 부족</label> 
-            <label for="sick"><input type="checkbox" id="sick" value="sick">아픔</label> 
+        <div class = "container checkFailure col-md-10">
+            <h4>Q. 왜 루틴을 수행하지 못했나요?</h4>
+            <div class = "col-md-10" id = "labels">
+            <label for="1"><input type="checkbox" name="failure[]"id="1" value="1"> 핸드폰 게임</label> 
+            <label for="2"><input type="checkbox" name="failure[]" id="2" value="2"> 인터넷방송 시청</label> 
+            <label for="3"><input type="checkbox" name="failure[]" id="3" value="3"> 야외 활동</label> 
+            <label for="4"><input type="checkbox" name="failure[]" id="4" value="4"> 무리한 계획</label> 
+            <br>
+            <label for="5"><input type="checkbox" name="failure[]" id="5" value="5"> 유튜브</label> 
+            <label for="6"><input type="checkbox" name="failure[]" id="6" value="6"> PC 게임</label> 
+            <label for="7"><input type="checkbox" name="failure[]" id="7" value="7"> 음주</label> 
+            <label for="8"><input type="checkbox" name="failure[]" id="8" value="8"> 예정에 없던 외출</label> 
+            <br>
+            <label for="9"><input type="checkbox" name="failure[]" id="9" value="9"> TV 시청</label> 
+            <label for="10"><input type="checkbox" name="failure[]" id="10" value="10"> 수면</label> 
+            <label for="11"><input type="checkbox" name="failure[]" id="11" value="11"> 사고</label> 
+            <label for="12"><input type="checkbox" name="failure[]" id="12" value="12"> 넷플릭스/왓챠</label> 
+            <br>
+            <label for="13"><input type="checkbox" name="failure[]" id="13" value="13"> SNS</label> 
+            <label for="14"><input type="checkbox" name="failure[]" id="14" value="14"> 능력 부족</label> 
+            <label for="15"><input type="checkbox" name="failure[]" id="15" value="15"> 집중력 부족</label> 
+            <label for="16"><input type="checkbox" name="failure[]" id="16" value="16"> 아픔</label> 
         
+            </div>
         
         </div>
         <input type="hidden" name="weeklyID" value="<?=$weeklyID?>">
@@ -103,7 +108,7 @@
 </div>
 
 <?php 
-        $achieveDayofWeekSql = "select * from weekly_achievedayofweek where weeklyID = $weeklyID order by goalID ASC";
+        $achieveDayofWeekSql = "select * from weekly_achieve_dayofweek where weeklyID = $weeklyID order by goalID ASC";
     
         $dayofweekResult = mysqli_query($conn,$achieveDayofWeekSql);
         while($dayofweekRow = mysqli_fetch_array($dayofweekResult,MYSQLI_ASSOC)){
@@ -250,7 +255,25 @@
     
 </script>
 
-<?php }?>
+
+
+
+
+<?php 
+$weekly_failure = $weeklyRow['weekly_failure'];
+$weekly_failure = explode(';',$weekly_failure);
+            
+for($z=0;$z<count($weekly_failure);$z++){
+    
+    $temp = $weekly_failure[$z];
+    echo "<script>document.getElementById('$temp').checked = true;</script>";
+    
+    
+}      
+
+  
+        
+}?>
 
 
 

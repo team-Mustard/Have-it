@@ -19,19 +19,30 @@
     else if($term == "year"){
         $term_e_date = date("Y-m-d", strtotime("+1 year", $time));
     }
-
-    $sql = "INSERT INTO goal(goalName, startTerm, endTerm, achievement, userID) VALUES('$goal_name', '$term_s_date', '$term_e_date', '0', '$userid')";
     
-    $result = $conn->query($sql);
-    if($result){
+    $gcheck = "SELECT * FROM goal";
+    $check_result = mysqli_query($conn, $gcheck);
+    $check1 = "true";
+
+    while($grow = mysqli_fetch_array($check_result)){
+        $check_goal = $grow['goalName'];
+        
+        if($check_goal == $goal_name){
+            echo("<script> alert('중복된 목표가 존재합니다.');
+            history.back(); </script>");
+            $check1 = "false";
+            break;
+        }
+    }
+    
+    if($check1 == "true"){
+        $sql = "INSERT INTO goal(goalName, startTerm, endTerm, achievement, userID) VALUES('$goal_name', '$term_s_date', '$term_e_date', '0', '$userid')";    
+        $result = $conn->query($sql);
+    /*if($result){
         echo "등록완료";
     }
-    else{ echo "FAIL"; }
-
-    $goal = "SELECT * FROM goal WHERE goalName = '$goal_name'";
-    $result2 = mysqli_query($conn, $goal);
-    $row = mysqli_fetch_array($result2);
-    $goalID = $row['goalID'];
+    else{ echo "FAIL"; }*/
+    
     $Interval = "";
     $arr = array("0", "0", "0", "0", "0", "0", "0");
     
@@ -45,8 +56,7 @@
         $repeats = $_POST[$week];
         $colors = $_POST[$color];
 
-        
-    echo $goal_name.", ".$term_s_date.", ".$term_e_date.", ".$routine_name[$i].", ";
+    /*echo $goal_name.", ".$term_s_date.", ".$term_e_date.", ".$routine_name[$i].", ";*/
     foreach($repeats as $repeat){
         echo $repeat.", ";
         
@@ -74,13 +84,36 @@
         
     }
     $Interval = implode(";", $arr);
+       
+    $arr_count = count($routine_name);
+    $uniq_count = count(array_unique($routine_name));
+                    
+    if($arr_count != $uniq_count){
+        echo("<script> alert('동일한 루틴은 두 개 이상 넣을 수 없습니다.');</script>");
+        $dgoal = "DELETE FROM goal WHERE goalName = '$goal_name'";
+        $dresult = $conn->query($dgoal);
         
-          $sql3 = "INSERT INTO routine(routineName, color, rInterval, habbitTracker, goalID) VALUES('$routine_name[$i]', '$colors', '$Interval', '0', '$goalID')";
+        echo("<script>history.back();</script>");
         
-        $result3 = $conn->query($sql3);
-        if($result3){ echo "루틴 등록완료"; }
-        else{ echo "실패 ! "; }
+        }
+            
+            
+    $goal = "SELECT * FROM goal WHERE goalName = '$goal_name'";
+    $result2 = mysqli_query($conn, $goal);
+    $row = mysqli_fetch_array($result2);
+    $goalID = $row['goalID'];
+            
+    $sql3 = "INSERT INTO routine(routineName, color, rInterval, habbitTracker, goalID) VALUES('$routine_name[$i]', '$colors', '$Interval', '0', '$goalID')";
         
-        $arr = array("0", "0", "0", "0", "0", "0", "0");
+    $result3 = $conn->query($sql3); 
+            
+    if($result3){ echo "루틴 등록완료"; }
+    else{ echo "실패 ! "; }
+        
+    $arr = array("0", "0", "0", "0", "0", "0", "0");
     }
+}
+
+        
+
 ?>

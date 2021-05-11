@@ -1,5 +1,9 @@
 <?php
-
+ function pp($v){
+                echo "<xmp>";
+                print_r($v);
+                echo "</xmp><br>";
+            } 
 session_start();
 if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
 if(isset($_GET['mode'])) $mode = $_GET['mode'];
@@ -88,7 +92,8 @@ switch($mode){
             }
 
         }
-      
+       pp($weeklyRoutine);
+       pp($checkWeeklyRoutine);
         $insertWeeklySql = "insert into WeeklyReport (userID, date) 
                     values($userid,'$today')";
         mysqli_query($conn, $insertWeeklySql);
@@ -125,14 +130,20 @@ switch($mode){
                 }      
 
             }    
-            $insertWeeklyAchieveSql = "insert into weekly_achievedayofweek (goalID, weeklyID,achieveDayofWeek) values($goalID,$weeklyID,'$dayweekAchieve')";
-            
+            $insertWeeklyAchieveSql = "insert into weekly_achieve_dayofweek (goalID, weeklyID,achieveDayofWeek) values($goalID,$weeklyID,'$dayweekAchieve')";
+              
+        
            
             mysqli_query($conn, $insertWeeklyAchieveSql);
             
 
            
         }
+        
+        
+        
+        
+        
         
         mysqli_close($conn);
         echo ("
@@ -142,8 +153,14 @@ switch($mode){
         ");
         
         break;
+        
+        
+        
+        
 
     }
+    
+        
     case 2:{
         
         if(isset($_POST['weeklyScore'])) $weeklyScore = $_POST['weeklyScore'];
@@ -151,17 +168,30 @@ switch($mode){
         if(isset($_POST['bad'])) $bad = $_POST['bad'];
         if(isset($_POST['weeklyID'])) $weeklyID = $_POST['weeklyID'];
         if(isset($_POST['inputWeeklyImg'])) $weeklyImg = $_POST['inputWeeklyImg'];
+        if(isset($_POST['failure'])) $failure = $_POST['failure'];
+        $inputFailure = null;
+        
+        for($i=0;$i<count($failure);$i++){
+              
+            if($inputFailure!=null){
+                
+                $inputFailure = "$inputFailure;$failure[$i]";
+                
+            }else{
+                
+                $inputFailure = "$failure[$i]";
+                
+            }
+   
+        }
+              
         $uploadDir = "upload/$userid/";
         $datetime = date("YmdHis");
         if(!is_dir(!$uploadDir)){
             mkdir($uploadDir, 0777,true);
         }
         
-        function pp($v){
-	echo "<xmp>";
-	print_r($v);
-	echo "</xmp><br>";
-}
+        
         
         if(isset($_FILES['inputImg'])){
             if($_FILES['inputImg']['size']!=null){
@@ -169,9 +199,9 @@ switch($mode){
 
                 pp($_FILES['inputImg']);
                 move_uploaded_file($_FILES["inputImg"]['tmp_name'], $inputImg); 
-                $updateSql = "update weeklyreport set goodEvaluation = '$good', badEvaluation = '$bad', score = $weeklyScore, image = '$inputImg'  where weeklyID = $weeklyID";
+                $updateSql = "update weeklyreport set goodEvaluation = '$good', badEvaluation = '$bad', score = $weeklyScore, image = '$inputImg', weekly_failure = '$inputFailure'  where weeklyID = $weeklyID";
             }else {
-                $updateSql = "update weeklyreport set goodEvaluation = '$good', badEvaluation = '$bad', score = $weeklyScore where weeklyID = $weeklyID";
+                $updateSql = "update weeklyreport set goodEvaluation = '$good', badEvaluation = '$bad', score = $weeklyScore, weekly_failure = '$inputFailure' where weeklyID = $weeklyID";
                 
             }
             
