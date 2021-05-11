@@ -145,7 +145,7 @@ input.time {
 #calender {
     padding: 15px;
     padding-right: 30px;
-    height: 280px;
+    height: 200px;
     border:5px solid;
     margin: 10px;
     border-radius: 20px;
@@ -153,8 +153,9 @@ input.time {
 }
 
 #image {
-    padding: 15px;
-    height: 280px;
+    text-align: center;
+    padding: 5px;
+    height: 200px;
     border:5px solid;
     margin: 10px;
     border-radius: 20px;
@@ -165,13 +166,13 @@ input.time {
     padding: 15px;
     text-align: center;
     padding-top: 80px;
-    height: 280px;
+    height: 200px;
 
 }
 
 #score span {
 
-    font-size: 25px;
+    font-size: 20px;
     
 }
 
@@ -182,7 +183,7 @@ input.time {
     border-right: none;
     border-left: none;
     text-align: center;
-    width: 150px;
+    width: 100px;
 
 }
 #score input:focus {
@@ -198,7 +199,7 @@ input.time {
     border:5px solid;
     border-radius: 20px;
     border-color: #d2c5e1;
-    
+    margin: 10px;
     
 }
 #good p{
@@ -210,9 +211,9 @@ input.time {
 
 .writeEval textarea{
     width:100%;
-    height:200px;
+    height:150px;
     border: none;
-    font-size: 20px;
+    font-size: 15px;
 
 }
 .writeEval textarea:focus{
@@ -228,6 +229,7 @@ input.time {
     border:5px solid;
     border-color: #d2c5e1;
     border-radius: 20px;
+    margin: 10px;
     
     
 }
@@ -241,33 +243,22 @@ input.time {
 
 
 .year-month {
-    font-size: 30px;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-
-.days {
-    display: flex;
-    margin: 25px 0 10px;
-}
-
-.day {
-    width: calc(100% / 7);
+    font-size: 20px;
     text-align: center;
 }
+
+
 
 .dates {
     display: flex;
     text-align: center;
     flex-flow: row wrap;
-    height: 200px;
    
 }
 
 .date {
     width: calc(100% / 7);
-    padding: 5px;
+    padding: 3px;
     text-align: right;
 
 }
@@ -279,7 +270,6 @@ input.time {
 }
 .checkFailure #labels{
 
-    
     border:2px solid;
     padding: 10px;
     
@@ -304,15 +294,15 @@ input.time {
 #grade {
 
     padding: 10px;
-    margin-bottom: 10px
+    margin-bottom: 5px
 }
 #grade p {
-    font-size: 25px; 
-    margin: 15px;
+    font-size: 20px; 
+    margin: 10px;
 }
 #grade span {
     
-    font-size: 30px;
+    font-size: 20px;
     border-bottom: 3px solid;
 }
 
@@ -330,7 +320,7 @@ input.time {
 #fail a {
     display: inline-block;
     width:80%;
-    height: 40px;
+    height: 30px;
     background-color: #560a86;
     color: white;
     font-size: 15px;
@@ -341,17 +331,17 @@ input.time {
 
 
 #fail p:nth-child(1){
-    font-size: 30px;
+    font-size: 20px;
     font-weight: bold;
 
     
 }
 #fail p:nth-child(2){
-    font-size: 25px;
+    font-size: 15px;
     
 }
 #fail p:nth-child(3){
-    font-size: 30px;
+    font-size: 15px;
     
 }
 #success{
@@ -373,13 +363,13 @@ input.time {
 
 }
 #success p:nth-child(1){
-    font-size: 30px;
+    font-size: 20px;
     font-weight: bold;
 
     
 }
 #success p:nth-child(2){
-    font-size: 25px;
+    font-size: 15px;
     
 }
 #success p:nth-child(3){
@@ -503,7 +493,7 @@ input.time {
 
 .goal_set_form input[type="radio"] + label {
     display: inline-block;
-	border: 1px solid #000000;
+   border: 1px solid #000000;
     border-radius: 5px;
     padding: 3px 10px;
     margin: 0 10px;
@@ -513,7 +503,7 @@ input.time {
 
 .goal_set_form input[type="checkbox"] + label {
     display: inline-block;
-	border: 1px solid #000000;
+   border: 1px solid #000000;
     border-radius: 5px;
     padding: 3px 6px;
     margin: 0 10px;
