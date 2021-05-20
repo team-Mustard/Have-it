@@ -1,4 +1,3 @@
-<div class="col-xs-12 col-sm-7 col-md-4 sidebar sidebar-right sidebar-animate text-center">
 <div><h2 class="right-header" style="float: left;"><i class="fas fa-dolly-flatbed"></i>광산수레</h2>
 <?php
     $time = time();
@@ -48,4 +47,3 @@
     
     <!-- 이 div는 지우면 right side bar가 밀립니다. 지우지 마세요 -->
     <div style="margin-top: 51px;"></div>
-</div>
