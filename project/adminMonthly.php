@@ -4,7 +4,7 @@ if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
 include "db/dbconn.php";
 $userid = 1;
 //$today = date("Y-m-d");
-$today = '2021-04-01';
+$today = '2021-03-01';
 $year = date("Y",strtotime($today));
 $month = date("m",strtotime($today));
 $day = date("d",strtotime($today));
@@ -28,7 +28,7 @@ function toWeekNum($get_year, $get_month, $get_day){
 
 $insertMonthlySql = "insert into monthlyreport(date,userID) values('$today',$userid)";
 mysqli_query($conn,$insertMonthlySql);
-$selectMonthlySql = "select monthlyID from monthlyReport where date = '$today'";
+$selectMonthlySql = "select monthlyID from monthlyReport where date = '$today' and userid = $userid";
 
 $monthlyResult = mysqli_query($conn,$selectMonthlySql);
 $monthlyRow = mysqli_fetch_array($monthlyResult,MYSQLI_ASSOC);
@@ -304,7 +304,7 @@ while($failRow = mysqli_fetch_array($failResult,MYSQLI_ASSOC)){
     
     $failure = $failRow['weekly_failure'];
     $failure = explode(';',$failure);
-    
+
     for($i=0;$i<count($failure);$i++){
         
         $tmp = $failure[$i];
@@ -330,21 +330,25 @@ while($failRow = mysqli_fetch_array($failResult,MYSQLI_ASSOC)){
     
     
 }
+$inputFail = null;
 for($z=0;$z<count($failureArr);$z++){
         
         $failureID = $failureArr[$z];
+        if($failureID !=null){
         
-        if(isset($inputFail)){
+            if($inputFail !=null){
+               $inputFail = "$inputFail;$failureID-$countFailure[$failureID]";
+   
+            }else{
             
-            $inputFail = "$inputFail;$failureID-$countFailure[$failureID]";
-            
-            
-        }else{
-            
-            $inputFail = "$failureID-$countFailure[$failureID]";
+        
+                $inputFail = "$failureID-$countFailure[$failureID]";
+      
+            }
+ 
         }
-
-    }
+   
+}
     
 $insertTotal = round($totalCheckAchieve / $totalAchieve * 100,3);
 
@@ -357,20 +361,27 @@ mysqli_query($conn, $updateMonthlySql);
 mysqli_close($conn);
 echo ("
                 <script>
-                    history.back();
+                    //history.back();
                 </script>
         ");
+echo $achieveTimeSql;
+echo "<br>";
+echo $achieveWeekSql;
+echo "<br>";
+echo $achieveDayWeekSql;
+echo "<br>";
+echo $updateMonthlySql;
+echo "<br>";
+echo $failureSql;
 
 
-
-
-/*
 function pp($v){
 	echo "<xmp>";
 	print_r($v);
 	echo "</xmp><br>";
 }
 
+/*
 
 echo "<br><br>시간 총 루틴";
 pp($countHour);

@@ -19,9 +19,10 @@
         $highestRoutine = explode(';',$highestRoutine);
         $lowestRoutine = explode(';',$lowestRoutine);
         
-        $highestRoutineSql = "select routineName from routine where routineID = $highestRoutine[0]";
+        $highestRoutineSql = "select routineName,goalID from routine where routineID = $highestRoutine[0]";
         
-        $LowestRoutineSql = "select routineName from routine where routineID = $lowestRoutine[0]";
+        $LowestRoutineSql = "select routineName,goalID from routine where routineID = $lowestRoutine[0]";
+        
         
         $highestRow = mysqli_fetch_array(mysqli_query($conn,$highestRoutineSql),MYSQLI_ASSOC);
         
@@ -170,15 +171,76 @@
             <row>
                 <div id="fail" class="col-md-6">
                     <p>가장 실패율이 높은 루틴</p>
-                    <p>"<?=$lowestRow['routineName']?>"</p>
-                    <p><?=$lowestRoutine[2]?>/<?=$lowestRoutine[1]?></p>
-                    <a href="?page=goal_set">루틴 바로가기</a>
+                    <p>"<?php
+                            if(isset($lowestRow['routineName']))
+                                echo $lowestRow['routineName'];
+                            else
+                                echo "no-data";
+                            ?>"</p>
+                    <p>
+                        <?php
+                            if(isset($lowestRoutine[2]))
+                               echo $lowestRoutine[2];
+                            else
+                                echo "no-data";
+                        ?>/<?php
+                                if(isset($lowestRoutine[1]))
+                                    echo $lowestRoutine[1];                
+                                else
+                                    echo "no-data";?></p>
+                    <?php 
+                    $today = date("Y-m-d");
+                    if(isset($lowestRow)){
+                        
+                    $lowestGoalID =  $lowestRow['goalID'];
+                    $selectGoalSql = "select startTerm, endTerm from goal where goalID = '$lowestGoalID'";
+
+                    $lowestGoalRow = mysqli_fetch_array(mysqli_query($conn,$selectGoalSql),MYSQLI_ASSOC);
+                    $startTerm = $lowestGoalRow['startTerm'];
+                    $endTerm = $lowestGoalRow['endTerm'];
+        
+        
+                    if($today<$startTerm || $today > $endTerm) {
+                        echo "<a href='#' onclick=\"alert('기간이 끝난 목표입니다.');\" return false;>루틴 바로가기</a>";
+
+
+                    }else{
+
+                         echo "<a href='?page=goal&goalID=$lowestGoalID'>루틴 바로가기</a>";
+
+                    }
+
+                        
+                    }else {
+                        
+                         echo "<a href='#'>루틴 바로가기</a>";
+                        
+                        
+                    }
+                    
+                    ?>
+                   
                     
                 </div>
                 <div id="success" class="col-md-6">
                     <p>가장 성공률이 높은 루틴</p>
-                    <p>"<?=$highestRow['routineName']?>"</p>
-                    <p><?=$highestRoutine[2]?>/<?=$highestRoutine[1]?></p>
+                        <p>"<?php
+                            if(isset($highestRow['routineName']))
+                                echo $highestRow['routineName'];
+                            else
+                                echo "no-data";
+                            ?>"</p>
+                    <p>
+                        <?php
+                            if(isset($highestRoutine[2]))
+                               echo $highestRoutine[2];
+                            else
+                                echo "no-data";
+                        ?>/<?php
+        if(isset($highestRoutine[1]))
+            echo $highestRoutine[1];                
+        else
+            echo "no-data";?> </p>
                     <a href="?page=goal_set">새로운 루틴 생성하기</a>
                 </div>
             </row>
@@ -186,7 +248,8 @@
         
         <div id = "failureChart"  class = "contatiner col-md-10">
             <h4 style="text-align:center;">실패 원인 분석</h4>
-            <canvas id="mChartFailure" width="400" height="400"></canvas> 
+            <canvas id="mChartFailure" width="300" height="300"></canvas>
+            <div id='customLegend' class="customLegend"></div>
         </div>
         <div id = "monthChart"  class = "contatiner col-md-10">
             <h4 style="text-align:right;">5달간 성취도 추이</h4>
@@ -201,10 +264,15 @@
 
 
  <?php
-    
-     $timeGoalIDCount = count($timeGoalIDArr);   
-     $weekGoalIDCount = count($weekGoalIDArr);
-     $dayofweekGoalIDCount = count($dayofweekGoalIDArr);
+    $timeGoalIDCount = 0;
+    $weekGoalIDCount = 0;
+    $dayofweekGoalIDCount = 0;
+    if(isset($timeGoalIDArr))
+        $timeGoalIDCount = count($timeGoalIDArr); 
+    if(isset($weekGoalIDArr))
+        $weekGoalIDCount = count($weekGoalIDArr);
+    if(isset($dayofweekGoalIDArr))
+        $dayofweekGoalIDCount = count($dayofweekGoalIDArr);
                 
     
 ?>   
@@ -286,13 +354,17 @@ function showRoutineWeek(){
     data: {
         labels: [
             <?php 
+            if(isset($achieveWeek)){
             for($z=1;$z<=count($achieveWeek);$z++){
                 echo "\"$z 주차\"";
                 if($z!=count($achieveWeek)){
                     echo ",";
                 }
+            }
+                
                 
             }
+                
 
             ?>
             
@@ -389,6 +461,16 @@ function showRoutineDayofweek(){
     
 ?>
 var colorIndex = ["#C6E8BA","#ADE3AB","#9FB6DF","#94DBC0","#E4C9ED","#BAE6E8","#CCE3AB","#EDD5C9","#E1F4DD","#D9F2F2","#8C8FD9","#EDDEC9","#C2C7EB","#C9EDE7","#F4F6E4","#ECF9F7"];
+var customLegend = function (chart) {
+    var ul = document.createElement('ul');
+    var color = chart.data.datasets[0].backgroundColor;
+
+    chart.data.labels.forEach(function (label, index) {
+        ul.innerHTML += `<li><span style="background-color: ${color[index]};"></span> ${label}</li>`;
+    });
+
+    return ul.outerHTML;
+};
 var ctxFailure = document.getElementById("mChartFailure");
 var randomcolor = "#" + Math.round(Math.random() * 0xffffff).toString(16);
 var failData=
@@ -398,6 +480,8 @@ var failData=
         labels: [
             <?php 
             for($z=0;$z<count($failure);$z++){
+                if($failure[$z] != null){
+                    
                 $failtmp = explode('-',$failure[$z]);
                 $failString = $failList[$failtmp[0]-1];
                 echo "\"$failString\"";
@@ -405,6 +489,11 @@ var failData=
                     echo ",";
                 }
  
+                    
+                }else {
+                    
+                    echo "\"데이터 없음\"";
+                }
             }
 
             ?>
@@ -414,13 +503,23 @@ var failData=
         
         datasets: [{
             <?php 
-        
+            
             echo "data:[";
             for($z=0;$z<count($failure);$z++){
+                if($failure[$z]!=null){
+                    
+                    
                 $failtmp = explode('-',$failure[$z]);
                 echo "$failtmp[1]";
                 if($z!=count($failure)){
                     echo ",";
+                }
+                    
+                    
+                }else{
+                    
+                    echo "1";
+                    
                 }
                 
             }
@@ -436,21 +535,26 @@ var failData=
             }
         
         
-            echo "]";?>}]
+            echo "]";
+            
+            
+            ?>}]
     },
 
     options: {
         responsive: false,
         legend:{
             
-            display: true,
+            display: false,
             position: 'right'
 
         },
-        
+        legendCallback: customLegend,       
     },
 }
-   var chartFailure = new Chart(ctxFailure,failData);    
+
+    var chartFailure = new Chart(ctxFailure,failData);
+    document.getElementById('customLegend').innerHTML = window.chartFailure.generateLegend();
     
 <?php
 
