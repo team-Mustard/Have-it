@@ -1,7 +1,11 @@
 body {
   padding-top: 51px;
+  height: 100%;
 }
 
+.no-js {
+    display:none;
+}
 
 /* navbar-top */
 
@@ -18,14 +22,6 @@ span.navbar-brand a:visited {
 span.navbar-brand a:hover {
     color: #777;
     text-decoration: none;
-}
-
-.logout {
-    color: #777;
-    float: right;
-    margin-right: 15px;
-    height: 45px;
-    line-height: 45px;
 }
 
 .navbar-toggle {
@@ -45,7 +41,6 @@ span.navbar-brand a:hover {
 .sidebar {
   padding: 0px;
   background-color: #04005E;
-  border-right: 1px solid #eee;
 }
 
 
@@ -74,8 +69,9 @@ hr {
 }
 
 .setting {
-  background-color: #8181C1;
-  height: 25px;
+  position:absolute;
+  right:0px;
+  bottom:52px;
 }
 
 .setting a, .setting a:visited{
@@ -150,7 +146,6 @@ input.time {
     padding: 15px;
     padding-right: 30px;
     height: 200px;
-
     border:5px solid;
     margin: 10px;
     border-radius: 20px;
@@ -189,6 +184,7 @@ input.time {
     border-left: none;
     text-align: center;
     width: 100px;
+    background-color: transparent;
 
 }
 #score input:focus {
@@ -204,9 +200,8 @@ input.time {
     border:5px solid;
     border-radius: 20px;
     border-color: #d2c5e1;
+    background-color: #d2c5e1;
     margin: 10px;
- 
-    
     
 }
 #good p{
@@ -221,6 +216,8 @@ input.time {
     height:150px;
     border: none;
     font-size: 15px;
+    resize: none;
+    background-color: transparent;
 
 }
 .writeEval textarea:focus{
@@ -229,12 +226,12 @@ input.time {
 
 }
 
-
 #bad {
     box-sizing: border-box; 
     padding: 10px;
     border:5px solid;
     border-color: #d2c5e1;
+    background-color:#d2c5e1;
     border-radius: 20px;
     margin: 10px;
     
@@ -254,18 +251,50 @@ input.time {
     text-align: center;
 }
 
+
+
 .dates {
     display: flex;
     text-align: center;
-    flex-flow: row wrap
+    flex-flow: row wrap;
+   
 }
 
-.date {
+.date, .preDate, .nextDate {
     width: calc(100% / 7);
     padding: 3px;
     text-align: right;
 
 }
+
+.term {
+    background-color: #d2c5e1;
+    
+}
+
+.checkFailure {
+    padding: 5px;
+    margin-left: 25px;
+    
+    
+}
+.checkFailure #labels{
+
+    border:2px solid;
+    padding: 10px;
+    
+}
+.checkFailure label {
+    
+
+    display: inline-block;
+    width: 150px;
+    line-height: 30px;
+    margin-left: 5px;
+    
+    
+}
+
 /* Weekly Report css end */
 
 
@@ -287,7 +316,8 @@ input.time {
     border-bottom: 3px solid;
 }
 
-#chart {
+
+#routineChart {
     margin-top: 5px;
     margin-bottom: 30px;
 }
@@ -297,14 +327,18 @@ input.time {
     text-align: center;
     
 }
-#fail button {
+#fail a {
+    display: inline-block;
     width:80%;
     height: 30px;
     background-color: #560a86;
     color: white;
     font-size: 15px;
-    border: none;
+    text-decoration: none;
+    padding: 5px;
+
 }
+
 
 #fail p:nth-child(1){
     font-size: 20px;
@@ -326,14 +360,17 @@ input.time {
     
     
 }
-#success button{
+
+#success a{
+    display:inline-block;
     width:80%;
     height: 30px;
-    background-color: #560a86;
+    padding: 5px;
     background-color: #ef6d79;
     color: white;
     font-size: 15px;
-    border: none;
+    text-decoration:none;
+
 }
 #success p:nth-child(1){
     font-size: 20px;
@@ -346,15 +383,71 @@ input.time {
     
 }
 #success p:nth-child(3){
+
     font-size: 15px;
     
     
 }
-#chartBtn{
-    
+#routineChartBtn{
     float: left;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    
+    
 }
+#routineChartBtn a, routineChartBtn span{
+    text-decoration: none;
+    width: 50px;
+    font-size: 15px;
+    display: inline-block;
+    color: black;
+    text-align: center;
+
+    
+ 
+}
+
+#failureChart {
+    padding-left: 10px;
+    margin-top: 10px; 
+    
+}
+
+#failureChart canvas{
+
+    margin: 0 auto;
+
+}
+
+#customLegend {
+    position: absolute;
+    top: 62px;
+    left: 600px;
+    
+}
+#customLegend ul li {
+    list-style:none;
+    margin: 10px 0;
+    
+}
+#customLegend ul li span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+#monthChart {
+    padding-left: 10px;
+}
+
+#monthChart canvas{
+    margin: 0 auto;
+}
+
+
 
 /* Monthly Report css end */
 
@@ -430,7 +523,7 @@ input.time {
 
 .goal_set_form input[type="radio"] + label {
     display: inline-block;
-	border: 1px solid #000000;
+   border: 1px solid #000000;
     border-radius: 5px;
     padding: 3px 10px;
     margin: 0 10px;
@@ -440,7 +533,7 @@ input.time {
 
 .goal_set_form input[type="checkbox"] + label {
     display: inline-block;
-	border: 1px solid #000000;
+   border: 1px solid #000000;
     border-radius: 5px;
     padding: 3px 6px;
     margin: 0 10px;
@@ -469,3 +562,48 @@ input.time {
 
 
 
+/* bottom.php css start */
+
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.contents-wrap {
+   min-height:100%;
+   position:relative;
+   /* footer height */
+   padding-bottom:110px;
+}
+
+footer {
+   width:100%;
+   height:110px;
+   position:absolute;
+   bottom:0;
+   background:#F8F8F8;
+   color: #969696;
+   padding-top:10px;
+}
+
+.logout, #bg_mode, .github {
+    color: #969696;
+}
+
+.logout:hover, #bg_mode:hover, .github:hover {
+    color: #969696;
+    text-decoration: none;
+}
+
+.logout:valid, #bg_mode:valid, .github:valid {
+    color: #969696;
+    text-decoration: none;
+}
+
+.dark {
+    background: #343434;
+    color: #bbb;
+}
+
+/* bottom.php css end */
