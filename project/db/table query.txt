@@ -183,7 +183,7 @@ create table MonthlyReport (
 monthlyID int auto_increment,
 lowestRoutine varchar(10),
 highestRoutine varchar(10),
-monthly_failure varchar(80),
+monthly_failure varchar(80) default null,
 grade int,
 date date,
 userID int,
@@ -228,11 +228,11 @@ create table WeeklyReport(
 weeklyID int auto_increment,
 goodEvaluation text,
 badEvaluation text, 
-score int,
+score int default 0,
 date date,
 userID int,
 image text,
-weekly_failure varchar(50),
+weekly_failure varchar(50) default null,
 constraint WeeklyReport_weeklyID_PK primary key (weeklyID),
 constraint WeeklyReport_userID_FK Foreign Key (userID) references userinfo(userID) on delete cascade
 
