@@ -116,7 +116,7 @@
               
     
               
-        for($w=0;$w<$count;$w++){
+        for($w=$count-1;$w>=0;$w--){
             
             if($reportKind[$w]==1){
                 echo "<li class='active'>
