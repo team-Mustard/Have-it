@@ -17,7 +17,7 @@ switch($mode){
         $month = date("m",strtotime($today));
         $day = date("d",strtotime($today));
         */
-        $today = '2021-03-22';    
+        $today = '2021-03-08';    
         $year = date("Y",strtotime($today));
         $month = date("m",strtotime($today));
         $day = date("d",strtotime($today));
@@ -37,7 +37,7 @@ switch($mode){
             $endTerm = date('Y-m-d',mktime(0,0,0,$month-1,$preLastday,$year));
         }
         
-        
+     
         $trackerSql = "select * from timetracker where userID = '$userid' 
                 and date(date) between '$startTerm' and '$endTerm'";
         
@@ -199,9 +199,9 @@ switch($mode){
 
                 pp($_FILES['inputImg']);
                 move_uploaded_file($_FILES["inputImg"]['tmp_name'], $inputImg); 
-                $updateSql = "update weeklyreport set goodEvaluation = '$good', badEvaluation = '$bad', score = $weeklyScore, image = '$inputImg', weekly_failure = '$inputFailure'  where weeklyID = $weeklyID";
+                $updateSql = "update weeklyreport set goodEvaluation = '$good', badEvaluation = '$bad', score = '$weeklyScore', image = '$inputImg', weekly_failure = '$inputFailure'  where weeklyID = '$weeklyID'";
             }else {
-                $updateSql = "update weeklyreport set goodEvaluation = '$good', badEvaluation = '$bad', score = $weeklyScore, weekly_failure = '$inputFailure' where weeklyID = $weeklyID";
+                $updateSql = "update weeklyreport set goodEvaluation = '$good', badEvaluation = '$bad', score = '$weeklyScore', weekly_failure = '$inputFailure' where weeklyID = '$weeklyID'";
                 
             }
             
