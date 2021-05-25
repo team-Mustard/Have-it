@@ -58,7 +58,7 @@
 
     /*echo $goal_name.", ".$term_s_date.", ".$term_e_date.", ".$routine_name[$i].", ";*/
     foreach($repeats as $repeat){
-        echo $repeat.", ";
+        /*echo $repeat.", ";*/
         
         if($repeat == "mon"){ 
             $arr[0] = "1"; 
@@ -107,13 +107,13 @@
         
     $result3 = $conn->query($sql3); 
             
-    if($result3){ echo "루틴 등록완료"; }
-    else{ echo "실패 ! "; }
+    /*if($result3){ echo "루틴 등록완료"; }
+    else{ echo "실패 ! "; }*/
         
     $arr = array("0", "0", "0", "0", "0", "0", "0");
     }
 }
 
-        
+echo "<script>document.location.href='../index.php?page=goal&goalID=".$goalID."'</script>";        
 
 ?>
