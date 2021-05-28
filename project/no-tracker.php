@@ -9,7 +9,7 @@
   </div>
     
     
-  <div class="text-center" style="clear: both; padding:50% 0;">
+  <div class="text-center" style="clear: both; padding:40% 0;">
       <img src="img/no-tracker.png">
       <h3>오늘은 일정이 없어요!</h3>
       
