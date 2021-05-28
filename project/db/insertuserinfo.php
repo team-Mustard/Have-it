@@ -21,7 +21,7 @@ if($email !=null){
                     $checkSql = "select * from userinfo where email = '$email'";
                     $result = mysqli_query($conn,$checkSql);
                     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-                        if(isset($row['email'])){
+                    if(isset($row['email'])){
                             echo("
                             <script>
                                 alert('이미 존재하는 이메일입니다.');
@@ -30,7 +30,9 @@ if($email !=null){
                     );    
                                  
                     }else{
-                    
+                   
+                    if(strlen($password) >=8 && strlen($password) <=18){
+                        
                     $sql = "insert into userinfo(email,pw) values('$email','$password')";
                     if(mysqli_query($conn,$sql)){
                             echo("
@@ -41,7 +43,17 @@ if($email !=null){
                             );
                         }
                     mysqli_close($conn);
-                        }
+                    }else{
+                        echo("
+                                <script>
+                                    alert('비밀번호의 길이는 8자 이상 18자 이하만 가능합니다.');
+                                    history.back();
+                                </script>"
+                            );
+                        
+                        
+                    }
+                }
                 }else {
                 echo("
                    <script>

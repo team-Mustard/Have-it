@@ -520,16 +520,34 @@ hr {
 
 /* goal_set css start */
 
+#between {
+  border-top: 4px double #777;
+  text-align: center;
+  overflow: visible;
+  margin: 45px 10%;
+}
+
+#between:after {
+  content: '\002764';
+  display: inline-block;
+  position: relative;
+  top: -13px;
+  padding: 0 10px;
+  color: #777;
+  font-size: 18px;
+}
+
 .goal_set_form input[id="goal_name"]{
     width: 80%;
     margin-bottom: 10px;
+    margin-top: 20px;
 }
 
 .goal_set_form input[id="plus_btn"] {
     width: 80%;
     margin-bottom: 10px;
     border-radius: 5px;
-    border: 1px solid #000;
+    border: 0px;
     background-color: #61019A;
     color: #f2f2f2;
     font-weight: 800;
@@ -540,13 +558,25 @@ hr {
     margin-bottom: 10px;
 }
 
+.goal_set_form input[type="text"]:focus {
+    outline: none;
+}
+
+.goal_set_form input[type="text"], .goal_set_form input[type="date"]{
+    background-color:transparent;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 2px solid #888;
+}
+
 .goal_set_form input[type="radio"], .goal_set_form input[type="checkbox"] {
     display: none;
 }
 
 .goal_set_form input[type="radio"] + label {
     display: inline-block;
-   border: 1px solid #000000;
+   border: 1px solid #777;
     border-radius: 5px;
     padding: 3px 10px;
     margin: 0 10px;
@@ -556,7 +586,7 @@ hr {
 
 .goal_set_form input[type="checkbox"] + label {
     display: inline-block;
-   border: 1px solid #000000;
+    border: 1px solid #777;
     border-radius: 5px;
     padding: 3px 6px;
     margin: 0 10px;
@@ -565,8 +595,9 @@ hr {
 }
 
 .goal_set_form input[type="radio"]:checked + label, .goal_set_form input[type="checkbox"]:checked + label {
-    background-color: #61019A;
-    color: #f2f2f2;
+  border: 1px solid #61019A;  
+  background-color: #61019A;
+  color: #f2f2f2;
 }
 
 
@@ -579,6 +610,10 @@ hr {
 
 .no-drag {
     -ms-user-select: none; -moz-user-select: -moz-none; -webkit-user-select: none; -khtml-user-select: none; user-select:none;
+}
+
+.example-img {
+    margin: 40px 0;
 }
 
 /* example css end */
