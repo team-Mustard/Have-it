@@ -17,7 +17,6 @@ function bg_check() {
     mode = getCookie("bg-mode");
     get = document.getElementById("bg_mode");
     if(mode == null) {
-        alert("mode 기본값을 light로 설정");
         setCookie("bg-mode","light",7);
     } else if (mode == "dark") {
         get.innerHTML = '[라이트모드]';
