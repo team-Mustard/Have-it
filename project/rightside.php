@@ -3,6 +3,7 @@ include "db/dbconn.php";
 if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
 $time = time();
 $today = date("Y-m-d", $time);
+//$today = "2021-04-30";
 
 $sql = "SELECT * FROM timetracker WHERE date='$today' and userID=$userid";
 $tracker = mysqli_query($conn, $sql);

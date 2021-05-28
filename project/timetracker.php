@@ -3,6 +3,7 @@
             <?php
                 $time = time();
                 $today = date("Y-m-d", $time);
+                //$today = "2021-04-30";
                 echo '<h4 class="right-header" style="float: right;">'.$today.'</h4>';
             ?>
           </div>
@@ -12,61 +13,54 @@
                 <canvas id="myChart1" width="300" height="300"></canvas>
                 </center>
             </div>
-               
-               
+
             <?php
-                include "./db/dbconn.php";
-                if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
-                $sql = "SELECT * FROM timetracker WHERE date='$today' and userID=$userid";
-                $tracker = mysqli_query($conn, $sql);
-                $trackerRow = mysqli_fetch_array($tracker, MYSQLI_ASSOC);
-                $trackerID = $trackerRow['trackerID'];
-                /* $tracker = "SELECT * FROM timetracker WHERE userID='$userid'";
-                
-                $result = mysqli_query($conn, $tracker);
-                $bool = "false";
-                while($row = mysqli_fetch_array($result)){
-                    if($today == $row['date'])
-                        { $bool = "true"; break; }
-                } 
-                */
-               /*
-                if($bool == "true"){ //오늘 날짜와 일치하는 타임트래커 존재
-                    $trackerID = $row['trackerID']; */
-                    
-                    $t_routine = "SELECT * FROM t_routine WHERE trackerID='$trackerID'"; 
-                    //타임트래커ID 받아서 해당 ID와 일치하는 t_routine 찾기
-                    $result2 = mysqli_query($conn, $t_routine);
-                    
-                    $print_legend = '<div class="container-fluid row tracker-legend"> ';
-                    $time_s_to_e = '<div class="col-sm-6 legend-time"> ';
-                    $r_name = '<div class="col-sm-6 legend-name"> ';
+        
+            include "./db/dbconn.php";
+            if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
+            $selectTrackerSql = "select * from timetracker where date = '$today' and userid = $userid";
+            $trackerRow = mysqli_fetch_array(mysqli_query($conn,$selectTrackerSql), MYSQLI_ASSOC);
+            $trackerID = $trackerRow['trackerID'];
+            $selectT_RoutineSql = "select * from t_routine WHERE trackerID='$trackerID'";
+            $t_routineResult = mysqli_query($conn, $selectT_RoutineSql);
             
-                    while($row2 = mysqli_fetch_array($result2)){
-                    //timetrackerID에 일치하는 t_routine 데이터
-                        $t_routineID = $row2['t_routineID'];
+            $print_legend = '<div class="container-fluid row tracker-legend"> ';
+            $time_s_to_e = '<div class="col-sm-6 legend-time"> ';
+            $r_name = '<div class="col-sm-6 legend-name"> ';  
+            $chartRoutineName = null;
+            $chartRoutineColor = null;
+            $chartRoutineTime = null;
+            while($row2 = mysqli_fetch_array($t_routineResult,MYSQLI_ASSOC)){
+                
+                //timetrackerID에 일치하는 t_routine 데이터 
+                $t_routineID = $row2['t_routineID']; 
+                $t_routineCheck = $row2['checkRoutine'];
+                $time_s = $row2['startTime']; //트래커 시작시간
+                $time_e = $row2['endTime'];  //트래커 종료시간
+                $s = strtotime($time_s);
+                $e = strtotime($time_e);
+                $arr_s = intval(date('H', $s));
+                $tmp = round(abs($e - $s) / 60,2);
+                $routineID = $row2['routineID'];
+                $routine = "SELECT * FROM routine WHERE routineID='$routineID'"; 
+                $result3 = mysqli_query($conn, $routine);
+                $row3 = mysqli_fetch_array($result3);
+                $routineName = $row3['routineName'];
+                $routineColor = $row3['color']; //routineID 통해서 색깔, 제목 받아옴
+                $chartRoutineName .= "\"$routineName\",";
+                $chartRoutineColor .= "\"$routineColor\",";   
+                $chartRoutineTime .= "\"$tmp\",";
+                
+               
+                
+                $time_s_to_e .= '<div class="checks"> <label> '.$time_s.' - '.$time_e.' </label></div>';
                         
-                        $time_s = $row2['startTime']; //트래커 시작시간
-                        $time_e = $row2['endTime'];  //트래커 종료시간
-                        
-                        $s = strtotime($time_s);
-                        $e = strtotime($time_e);
-                        $arr_s = intval(date('H', $s));
-                        
-                       
-                        
-                        $routineID = $row2['routineID'];
+                $r_name .= '<div id = "checks" class="checks"> <input type="checkbox" onchange="changeRoutineCheck('.$t_routineID.');" id="checkRoutine" name="routine'.$t_routineID.'" value="'.$t_routineID.'"';
+                if($t_routineCheck == 1){
+                    $r_name .= 'checked';
+                }    
                     
-                        $routine = "SELECT * FROM routine WHERE routineID='$routineID'";                    
-                        $result3 = mysqli_query($conn, $routine);
-                        $row3 = mysqli_fetch_array($result3);
-                    
-                        $routineName = $row3['routineName'];
-                        $routineColor = $row3['color']; //routineID 통해서 색깔, 제목 받아옴
-                        
-                        $time_s_to_e .= '<div class="checks"> <label> '.$time_s.' - '.$time_e.' </label></div>';
-                        
-                        $r_name .= '<div class="checks"> <input type="checkbox" name="tracker" value="'.$t_routineID.'"> <label style="color: '.$routineColor.'"> '.$routineName.'</label> </div>';
+                $r_name .= '><label style="color: '.$routineColor.'"> '.$routineName.'</label></div>';
                         
                         /*echo '
                         <div class="chart_content">
@@ -77,8 +71,8 @@
                         ';*/
                     }
                 //}
-                    $print_legend .= $time_s_to_e . '</div>' . $r_name . '</div> </div>';
-                    echo $print_legend;
+                $print_legend .= $time_s_to_e . '</div>' . $r_name . '</div> </div>';
+                echo $print_legend;
                     
                     //시작시간, 끝나는 시간 표시 + 라디오 통해 루틴 제목 옆에 체크 기능
                     //라디오 체크시 t_routine의 checkRoutine 1로 바꾸기
@@ -114,16 +108,27 @@
                 var backColor = ["#04005E", "#04005E", "#04005E", "#04005E", "#04005E", "#04005E", "#04005E", "#04005E", "#04005E", "#04005E", "#04005E", "#04005E", "#04005E", "#04005E", "#04005E", "#04005E", "#04005E", "#04005E", "#04005E", "#04005E", "#04005E","#04005E", "#04005E", "#04005E" ];
                
                 var data = {
+                    labels:[<?=$chartRoutineName?>],
                     datasets: [{
-                        backgroundColor: backColor,
-                        data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                        backgroundColor: [<?=$chartRoutineColor?>],
+                        data: [<?=$chartRoutineTime?>],
                     }],
                 };
                 var myPieChart = new Chart(ctx, {
                     type: 'pie',
                     data: data,
                     options: {
-                        responsive: false
+                        elements: {
+                            arc: {
+                              borderWidth: 0
+                            }
+                        },
+                        responsive: false,
+                        legend:{
+                            display: false,
+
+                        },
+
                     }
                 })
             </script>         
@@ -132,9 +137,39 @@
             <!-- 이 div는 지우면 right side bar가 밀립니다. 지우지 마세요 -->
             <div style="margin-top: 51px;"></div>
         </div>
+            
 
 <script>
     function add_schedule() {
         $(".sidebar-right").load("add_schedule.php");
     }
+    function changeRoutineCheck(t_routineID) {
+        var checked = 0;
+        var tmp = 'routine' + t_routineID;
+       
+        if ($("input:checkbox[name='"+tmp+"']").is(":checked") == true){
+
+            checked = 1;
+
+            }else{
+
+            checked = 0;
+
+            }
+            var ajaxDate = {"t_routineID":t_routineID,"checked":checked};
+            $.ajax({
+                type: 'POST',
+                url: 'adminTimetracker.php',
+                data: ajaxDate,
+                success: function(html) {
+
+                }
+
+            });
+        
+        
+        
+        
+    }
+   
 </script>
