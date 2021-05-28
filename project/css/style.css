@@ -461,7 +461,25 @@ hr {
     margin: 0 auto;
 
 }
-
+#customLegend {
+    position: absolute;
+    top: 62px;
+    left: 600px;
+    
+}
+#customLegend ul li {
+    list-style:none;
+    margin: 10px 0;
+    
+}
+#customLegend ul li span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+}
 #monthChart {
     padding-left: 10px;
 }
