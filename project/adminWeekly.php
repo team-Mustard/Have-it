@@ -1,9 +1,5 @@
 <?php
- function pp($v){
-                echo "<xmp>";
-                print_r($v);
-                echo "</xmp><br>";
-            } 
+
 session_start();
 if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
 if(isset($_GET['mode'])) $mode = $_GET['mode'];
@@ -17,7 +13,7 @@ switch($mode){
         $month = date("m",strtotime($today));
         $day = date("d",strtotime($today));
         */
-        $today = '2021-03-08';    
+        $today = '2021-05-03';    
         $year = date("Y",strtotime($today));
         $month = date("m",strtotime($today));
         $day = date("d",strtotime($today));
@@ -92,8 +88,6 @@ switch($mode){
             }
 
         }
-       pp($weeklyRoutine);
-       pp($checkWeeklyRoutine);
         $insertWeeklySql = "insert into WeeklyReport (userID, date) 
                     values($userid,'$today')";
         mysqli_query($conn, $insertWeeklySql);
