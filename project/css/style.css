@@ -82,36 +82,89 @@ hr {
 /* sidebar - right */
 
 .right-header {
-    margin: 10px 0;
+    margin: 10px 18px;
     color: white;
 }
 
 .sidebar.sidebar-right {
     overflow-y: auto;
     overflow-x: hidden;
+    color: white;
 }
 
-input.time {
-    border: 1px solid #fff;
-    border-radius: 5px;
+.schedule_add:hover {
+    cursor: pointer;
 }
 
-.time {
-    margin: 10px auto;
+.checks input.checkbox1{
+    width: 1.25em;
+    height: 1.7em;
+    /*vertical-align: middle;*/
+    margin: -3px 0 0 0;
+    vertical-align: -2px;
 }
 
-.time th {
+.checks {
+    font-size: 1.125em;
+    height: 1.7em;
+}
+
+#routine { text-align: center; }
+
+.chart { 
+    clear: both;
+    width: 100%;
     text-align: center;
-    color : white;
-    border: 8px solid #04005E;
 }
 
-.time td {
-    width: 60px;
-    background-color: gray;
-    border: 8px solid #04005E;
+.tracker-legend{
+    margin-top:50px;
 }
 
+.legend-time {
+    text-align: right;
+    border-right: 2px solid;
+}
+
+.legend-name {
+    text-align: left;
+}
+
+.schedule-list {
+    margin : 20px;
+}
+
+@media (max-width: 767px){
+.legend-time, .legend-name {
+    text-align: center;
+    border-right: 0;
+}
+}
+
+.schedule {
+    clear: both;
+    margin: 80px 30px 30px 30px;
+}
+
+.schedule_form select {
+    width: 60%;
+    color: #bbb;
+    margin: 10px 5px;
+}
+
+.schedule_form input[type='time'] {
+    color: #bbb;
+    height: 20px;
+    margin: 10px 5px;
+}
+
+.schedule_form input[type='submit'] {
+    font-size: 1.3em;
+    border:none;
+    color: white;
+    /* 배경 투명하게 */
+    background-color: transparent;
+}
 
 /* scrollbar design */
 
@@ -467,16 +520,34 @@ input.time {
 
 /* goal_set css start */
 
+#between {
+  border-top: 4px double #777;
+  text-align: center;
+  overflow: visible;
+  margin: 45px 10%;
+}
+
+#between:after {
+  content: '\002764';
+  display: inline-block;
+  position: relative;
+  top: -13px;
+  padding: 0 10px;
+  color: #777;
+  font-size: 18px;
+}
+
 .goal_set_form input[id="goal_name"]{
     width: 80%;
     margin-bottom: 10px;
+    margin-top: 20px;
 }
 
 .goal_set_form input[id="plus_btn"] {
     width: 80%;
     margin-bottom: 10px;
     border-radius: 5px;
-    border: 1px solid #000;
+    border: 0px;
     background-color: #61019A;
     color: #f2f2f2;
     font-weight: 800;
@@ -487,13 +558,25 @@ input.time {
     margin-bottom: 10px;
 }
 
+.goal_set_form input[type="text"]:focus {
+    outline: none;
+}
+
+.goal_set_form input[type="text"], .goal_set_form input[type="date"]{
+    background-color:transparent;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 2px solid #888;
+}
+
 .goal_set_form input[type="radio"], .goal_set_form input[type="checkbox"] {
     display: none;
 }
 
 .goal_set_form input[type="radio"] + label {
     display: inline-block;
-   border: 1px solid #000000;
+   border: 1px solid #777;
     border-radius: 5px;
     padding: 3px 10px;
     margin: 0 10px;
@@ -503,7 +586,7 @@ input.time {
 
 .goal_set_form input[type="checkbox"] + label {
     display: inline-block;
-   border: 1px solid #000000;
+    border: 1px solid #777;
     border-radius: 5px;
     padding: 3px 6px;
     margin: 0 10px;
@@ -512,8 +595,9 @@ input.time {
 }
 
 .goal_set_form input[type="radio"]:checked + label, .goal_set_form input[type="checkbox"]:checked + label {
-    background-color: #61019A;
-    color: #f2f2f2;
+  border: 1px solid #61019A;  
+  background-color: #61019A;
+  color: #f2f2f2;
 }
 
 
@@ -526,6 +610,10 @@ input.time {
 
 .no-drag {
     -ms-user-select: none; -moz-user-select: -moz-none; -webkit-user-select: none; -khtml-user-select: none; user-select:none;
+}
+
+.example-img {
+    margin: 40px 0;
 }
 
 /* example css end */
@@ -559,6 +647,7 @@ footer {
 
 .logout, #bg_mode, .github {
     color: #969696;
+    text-decoration: none;
 }
 
 .logout:hover, #bg_mode:hover, .github:hover {
