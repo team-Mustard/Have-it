@@ -44,7 +44,7 @@
             <input id="plus_btn" type="button" value="+ 루틴 추가하기" onclick="plus_routine()"><br/><br/>
             <p style="float:right; margin-right: 120px;">
                 <input type="reset" value="삭제">
-                <input type="submit" value="저장">
+                <input type="button" onclick="goal_set_submit()" value="저장">
             </p>
             <input style="display:none" id="routineNum" type="text" name="routineNum" value="">
         </form>
@@ -77,6 +77,30 @@
       content.innerHTML += new_routine;
         
       document.getElementById('routineNum').value = routine_num;
+    }
+    
+    function goal_set_submit() {
+        var form = document.goal_set_form;
+        for(var i=0; i<routine_num; i++){
+            var routines = document.getElementsByName("routine"+i+"[]");
+            var check = checkbox_permit(routines);
+            if (!check) {
+                var name_routine = document.getElementsByName("routine_name"+i)[0].value;
+                alert(name_routine+" 루틴의 주기를 하루 이상 체크해 주세요!");
+                return;
+            }
+        }
+        form.submit();
+    }
+    
+    function checkbox_permit(routines) {
+        var ck_num = 0;
+        for(var i=0; i<routines.length; i++) {
+            if(routines[i].checked){
+                ck_num++;
+            }
+        }
+        return ck_num;
     }
   
     </script>

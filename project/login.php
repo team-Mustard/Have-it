@@ -14,13 +14,14 @@
             <img class="logo img-circle" src="img/logoRail.jpg">
             <h2>' Have it '</h2>
             <p style="font-size: 3.5em;">로 그 인</p>
-            <form action = "db/checkuserinfo.php" method="post" id="signinform">
+            <form action = "db/checkuserinfo.php" method="post">
                 <label><i class="fas fa-at babypink"></i></label>
                 <input type="email" name="email" placeholder="e-mail"><br>
                 <label><i class="fas fa-key blue"></i></label>
-                <input type="password" name="password" placeholder="password">
+                <input type="password" name="password" placeholder="password"><br>
+                <hr class="hr_bord">
+                <input type="submit" class="btn pink fa-2" value="로그인">
             </form>
-            <a class="btn pink fa-2" onclick="document.getElementById('signinform').submit();">로그인 <i class="fas fa-arrow-circle-right"></i></a>
             <p style="margin-bottom:0px;">회원이 아니신가요?
                 <a href="javascript:location.replace('./signup.php')"> 회원가입하기</a>
             </p>

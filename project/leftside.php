@@ -49,24 +49,21 @@
           <h5 class="list-header text-center"><b>📃품질 보증서📃</b></h5>
           <ul class="nav navbar-stacked">
 <?php
-        /*
-            TODO: 월간 리포트 주간 리포트 날짜 별로 출력
         
-        */
         $weeklySql = "select weeklyID, date from WeeklyReport where userID = $userid";
         $weeklyResult =  mysqli_query($conn, $weeklySql);
+        $count = 0;
         if($weeklyResult){
  
             while( $weeklyRow = mysqli_fetch_array($weeklyResult,MYSQLI_ASSOC)){
                           
-            $weeklyID = $weeklyRow['weeklyID'];
-            $weeklyDate = $weeklyRow['date'];
-                         
-        
+                $reportID[$count] = $weeklyRow['weeklyID'];
+                $reportDate[$count] = $weeklyRow['date'];
+                $reportKind[$count] = 1;
+                $count++;
+
 ?>
-            <li class="active">
-              <a href="?page=weekly&weeklyID=<?=$weeklyID?>">[주] <?=$weeklyDate?> 리포트</a>
-            </li>
+      
               
       
         
@@ -80,27 +77,68 @@
  
             while( $monthlyRow = mysqli_fetch_array($monthlyResult,MYSQLI_ASSOC)){
                           
-            $monthlyID = $monthlyRow['monthlyID'];
-            $monthlyDate = $monthlyRow['date'];
-                         
-        
+                $reportID[$count] = $monthlyRow['monthlyID'];
+                $reportDate[$count] = $monthlyRow['date'];
+                $reportKind[$count] = 2;
+                $count++;
+                
 ?>
-            <li class="active">
-              <a href="?page=monthly&monthlyID=<?=$monthlyID?>">[월] <?=$monthlyDate?> 리포트</a>
-            </li>
+            
               
       
         
         <?php 
             }
-        }      
+        }   
+  
+        for($i=0;$i<$count-1;$i++){
+          for($j = $i+1;$j<$count;$j++){
+              $min = $i;
+              if(strtotime($reportDate[$j]) < strtotime($reportDate[$min])){
+                  $min = $j;
+              }
+              $temp = $reportDate[$min];
+              $reportDate[$min] = $reportDate[$i];
+              $reportDate[$i] = $temp;
+              
+              $temp = $reportID[$min];
+              $reportID[$min] = $reportID[$i];
+              $reportID[$i] = $temp;
+              
+              $temp = $reportKind[$min];
+              $reportKind[$min] = $reportKind[$i];
+              $reportKind[$i] = $temp;
+              
+              
+          }
+    
+        }
+              
+    
+              
+        for($w=0;$w<$count;$w++){
+            
+            if($reportKind[$w]==1){
+                echo "<li class='active'>
+                <a href='?page=weekly&weeklyID=$reportID[$w]'>[주] $reportDate[$w] 리포트</a>
+                </li>";
+               
+            }
+            if($reportKind[$w]==2){
+                echo "<li class='active'>
+                <a href='?page=monthly&monthlyID=$reportID[$w]'>[월] $reportDate[$w] 리포트</a>
+                </li>";
+               
+            }
+            
+        }
+             
           ?>   
               
           </ul>
         </div>
             <!-- 하단 버튼메뉴 -->
         <div class="setting">
-          <a href="#"><i class="fas fa-cog pull-right fa-2"></i></a>  
-          <a href="#"><i class="fas fa-question-circle pull-right fa-2"></i></a>  
+          <a href="./index.php"><i class="fas fa-question-circle fa-2"></i></a>  
         </div>
         </div>
