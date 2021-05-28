@@ -23,10 +23,16 @@
         
         $LowestRoutineSql = "select routineName,goalID from routine where routineID = $lowestRoutine[0]";
         
-        
-        $highestRow = mysqli_fetch_array(mysqli_query($conn,$highestRoutineSql),MYSQLI_ASSOC);
-        
-        $lowestRow = mysqli_fetch_array(mysqli_query($conn,$LowestRoutineSql),MYSQLI_ASSOC);
+        $highestResult = mysqli_query($conn,$highestRoutineSql);
+        $lowestResult = mysqli_query($conn,$LowestRoutineSql);
+        if($highestResult){
+            
+            $highestRow = mysqli_fetch_array($highestResult,MYSQLI_ASSOC);
+        }
+        if($lowestResult){
+            $lowestRow = mysqli_fetch_array($lowestResult,MYSQLI_ASSOC);
+            
+        }
         
         $achieveTimeSql = "select * from monthly_achieve_Time where monthlyID = $monthlyID order by goalID ASC";
         $achieveWeekSql = "select * from monthly_achieve_Week where monthlyID = $monthlyID order by goalID ASC";
@@ -413,7 +419,7 @@ function showRoutineDayofweek(){
   {
     type: 'horizontalBar',
     data: {
-        labels: ["월", "화", "수", "목","금","토","일"],
+        labels: ["일","월", "화", "수", "목","금","토"],
         
         datasets: [
             <?php 
@@ -423,7 +429,6 @@ function showRoutineDayofweek(){
                echo " {
                     data: [$dayofweek[$goalID]],
                     backgroundColor: '$dayofweekGoalColor[$goalID]'
-
                 },";
             }
               

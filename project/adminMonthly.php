@@ -4,7 +4,7 @@ if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
 include "db/dbconn.php";
 $userid = 1;
 //$today = date("Y-m-d");
-$today = '2021-03-01';
+$today = '2021-06-01';
 $year = date("Y",strtotime($today));
 $month = date("m",strtotime($today));
 $day = date("d",strtotime($today));
@@ -361,7 +361,7 @@ mysqli_query($conn, $updateMonthlySql);
 mysqli_close($conn);
 echo ("
                 <script>
-                    //history.back();
+                    history.back();
                 </script>
         ");
 echo $achieveTimeSql;
@@ -382,7 +382,6 @@ function pp($v){
 }
 
 /*
-
 echo "<br><br>시간 총 루틴";
 pp($countHour);
 echo "시간 체크 루틴<br>";
