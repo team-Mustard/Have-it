@@ -7,7 +7,6 @@
 
 <div class="main col-md-8 col-md-offset-2">
     <div class="container col-md-10" id="weekButton">
-        <a class="glyphicon glyphicon-remove-circle" aria-hidden="true"></a>
         <a class="glyphicon glyphicon-ok-circle" aria-hidden="true" onclick="document.getElementById('weeklyform').submit();"></a>
     </div>
     <?php 
@@ -204,7 +203,7 @@
     const thisDates = [...Array(TLDate + 1).keys()].slice(1);
     const nextDates = [];
 
-
+    
 
     if (PLDay !== 6) {
         for (let i = 0; i < PLDay + 1; i++) {
@@ -216,14 +215,58 @@
         nextDates.push(i);
     }
 
-    const dates = prevDates.concat(thisDates, nextDates);
-
-    dates.forEach((date, i) => {
-        dates[i] = `<div class="date">${date}</div>`;
+    //const dates = prevDates.concat(thisDates, nextDates);
+    prevDates.forEach((date, i) => {
+        prevDates[i] = `<div class="preDate">${date}</div>`;
     })
-
-    document.querySelector('.dates').innerHTML = dates.join('');
-
+    thisDates.forEach((date, i) => {
+        thisDates[i] = `<div class="date">${date}</div>`;
+    })
+    nextDates.forEach((date, i) => {
+        nextDates[i] = `<div class="nextDate">${date}</div>`;
+    })
+    
+    
+    document.querySelector('.dates').innerHTML = prevDates.join('');
+    document.querySelector('.dates').innerHTML += thisDates.join('');
+    document.querySelector('.dates').innerHTML += nextDates.join('');
+    
+    
+    
+    const term = new Date('<?=$date?>');
+    var z = 1;
+    for(var i=0; i <7;i++){  
+        var w = 0;
+        
+        for (let date of document.querySelectorAll('.date')) {
+            w++;
+            if (+date.innerText === term.getDate() - i) {
+                if(+date.innerText >=22 && w<7){
+                    break;
+                }
+                
+                date.classList.add('term');
+                break;
+              }
+            }
+        if((term.getDate() - i)<=0) {
+            for (let preDate of document.querySelectorAll('.preDate')){
+                if(PLDate -(z-1) === +preDate.innerText){
+                    preDate.classList.add('term');
+                    z++;
+                    break;               
+                 }
+            
+            }
+          }
+            
+       }
+        
+    
+  
+        
+    
+    
 
 
     function readURL(input) {
@@ -266,7 +309,8 @@ $weekly_failure = explode(';',$weekly_failure);
 for($z=0;$z<count($weekly_failure);$z++){
     
     $temp = $weekly_failure[$z];
-    echo "<script>document.getElementById('$temp').checked = true;</script>";
+    if($temp != null)
+        echo "<script>document.getElementById('$temp').checked = true;</script>";
     
     
 }      
