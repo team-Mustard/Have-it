@@ -1,3 +1,7 @@
+html, body {
+    width: 100%;
+}
+
 .container-fluid {
     padding:0;
 }
@@ -58,9 +62,20 @@ a:visited {
 }
 
 .blue {
-    background-color: #8181C1;
+    background-color: #8190C1;
+    padding: 50px 20%;
 }
 
 .babypink {
     background-color: #E080C0;
+    padding: 30px 20%;
+}
+
+#infoCarousel ol li{
+    border-color: purple;
+}
+
+#infoCarousel ol li.active{
+    background: purple;
+    margin: 0 5px;
 }

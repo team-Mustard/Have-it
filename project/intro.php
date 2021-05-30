@@ -22,11 +22,46 @@
                 <span>Sign up</span>
             </a>
         </div>
-        <div class="blue" style="padding:200px;">
-        
+            
+        <div class="blue text-center">
+            <img src="img/problem1.svg" width="500" height="auto">
         </div>
-        <div class="babypink" style="padding:200px;">
+        <div class="text-center" style="margin:50px 20%;">
+            <img src="img/problem2.svg" width="500" height="auto">
+        </div>
         
+        <div id="infoCarousel" class="carousel slide" data-ride="carousel">
+          <!-- Indicators -->
+          <ol class="carousel-indicators">
+            <li data-target="#infoCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#infoCarousel" data-slide-to="1"></li>
+            <li data-target="#infoCarousel" data-slide-to="2"></li>
+            <li data-target="#infoCarousel" data-slide-to="3"></li>
+          </ol>
+
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner">
+            <div class="item active">
+              <img src="img/plan.png" alt="plan">
+            </div>
+
+            <div class="item">
+              <img src="img/do.png" alt="do">
+            </div>
+
+            <div class="item">
+              <img src="img/check.png" alt="check">
+            </div>
+
+            <div class="item">
+              <img src="img/action.png" alt="action">
+            </div>
+          </div>
+        </div>
+    
+        <div class="babypink text-center">
+            <img src="img/get.svg" width="auto" height="485">
+
         </div>
         <div class="footer text-center" style="margin-top:30px;margin-bottom:30px;">
             <img class="logo img-circle" src="img/logoRail.jpg">
