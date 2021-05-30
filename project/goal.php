@@ -45,8 +45,8 @@
         ?>
     
             <form method="post">
-                <input type="button" id="gmodify" style="float:right;" name="gmodify" onclick="goal_modify()" value="목표 수정"/>
-                <input style="float:right;" type="submit" name="test" id="test" value="목표 삭제"/>
+                <input type="button" class="g_btn" id="gmodify" style="float:right;" name="gmodify" onclick="goal_modify()" value="목표 수정"/>
+                <input style="float:right;" class="g_btn" type="submit" name="test" id="test" value="목표 삭제"/>
             </form>
     
         <?php
@@ -88,12 +88,12 @@
               <p style="color: '.$color.';">'.$color.'</p>
           </div>
           <div class="con1" style="margin-top: 8px; float: left; line-height: 45px;">
-              <input class="fa-2" style="color:'.$color.'"value="'.$row2['routineName'].'" readonly/></div>
-              
-            <button class="btn_prompt" onclick="dis('.$routineID.');" style="display:none;">루틴 수정</button>
-            <form method="post">
+              <input class="fa-2" style="border:none; color:'.$color.'"value="'.$row2['routineName'].'" readonly/></div>
+             
+             <form method="post">
+                <input type="button" class="g_btn btn_prompt" onclick="dis('.$routineID.');" style="display:none;" value="루틴 수정"/>
                 <input style="display:none;" type="text" name="rouID" value="'.$routineID.'"/>
-                <input type="submit" style="display:none;" name="rou'.$bid.'" class="rou" value="루틴 삭제"/>
+                <input type="submit" style="display:none;" name="rou'.$bid.'" class="g_btn rou" value="루틴 삭제"/>
             </form>
         </div>
           ';
@@ -123,12 +123,14 @@
                 $check = $row2['habbitTracker'];
             
                 $dayNum = 0;
+                $bcount = 0;
             
                 while($dayNum<7){
                     $IntervalNum = $row2['rInterval'];
                     $interval = explode(';', $IntervalNum);
                     
                     if($interval[$dayNum] == 1){
+                        $bcount += 1;
                        echo '<div class="col-xs-1 col-md-1 con">';
                        if($check>0){
                            echo '<i id="jew" class="fa fa-trophy fa-2x" style="margin-top:3px; margin-left:3px; color:'.$color.'; aria-hidden="true"></i>';
@@ -171,7 +173,7 @@
         
     
     
-       
+    
       
         
     </div>
@@ -182,11 +184,10 @@
         
         function dis(routine_num) {
             var content = document.getElementById("basket"+routine_num);
-            var new_routine = '<input name="routine_name'+routine_num+'" class="routine_name" type="text" placeholder="루틴 이름" required/> <input type="color" name="colors'+routine_num+'"><br><p style="margin-bottom:10px;" required>주기　:<input id="mon'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="mon"><label for="mon'+routine_num+'">월</label><input id="tue'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="tue"><label for="tue'+routine_num+'">화</label><input id="wed'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="wed"><label for="wed'+routine_num+'">수</label><input id="thu'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="thu"><label for="thu'+routine_num+'">목</label><input id="fri'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="fri"><label for="fri'+routine_num+'">금</label><input id="sat'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="sat"><label for="sat'+routine_num+'">토</label><input id="sun'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="sun"><label for="sun'+routine_num+'">일</label><br/></p>';     
+            
+            var new_routine = '<input name="routine_name'+routine_num+'" class="routine_name" type="text" placeholder="루틴 이름" required/> <input type="color" name="colors'+routine_num+'"><br><p style="margin-bottom:10px;" required>주기　:<input id="mon'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="mon"><label for="mon'+routine_num+'">월</label><input id="tue'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="tue"><label for="tue'+routine_num+'">화</label><input id="wed'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="wed"><label for="wed'+routine_num+'">수</label><input id="thu'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="thu"><label for="thu'+routine_num+'">목</label><input id="fri'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="fri"><label for="fri'+routine_num+'">금</label><input id="sat'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="sat"><label for="sat'+routine_num+'">토</label><input id="sun'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="sun"><label for="sun'+routine_num+'">일</label><input type="submit" class="s_btn" style="float:right;" value="저장"><input type="button" class="s_btn" style="float:right;" onclick="javascript:location.reload(true)" value="취소"><br/></p>';     
             routine_num++;
-            new_routine += '<div id="div_routine'+routine_num+'"></div>';
-            new_routine += '<input type="reset" value="삭제"><input type="submit" value="저장">';
-
+           
             content.innerHTML += new_routine;
     }
         
@@ -197,10 +198,10 @@
             modify_name.innerHTML += goal;
             
             var term = document.getElementById("goal_term");
-            var goalTerm = '<label style="font-weight:normal;"><input type="date" value="<?=$term_s?>" name="term_s_date" style="margin-left: 60px; margin-top:10px;"> 부터 </label><label style="font-weight:normal;"><input type="date" value="<?=$term_e?>" name="term_e_date" style="margin-top:10px;"> 까지</label>';
+            var goalTerm = '<label style="font-weight:normal;"><input type="date" value="<?=$term_s?>" name="term_s_date" style="margin-left: 60px; margin-top:10px;"> 부터 </label><label style="margin-left: 20px; font-weight:normal;"><input type="date" value="<?=$term_e?>" name="term_e_date" style="margin-top:10px;"> 까지</label>';
             
-            goalTerm += '<input type="button" onclick="javascript:location.reload(true)" value="취소">';
-            goalTerm += '<input type="submit" value="저장">';
+            goalTerm += '<input type="submit" class="g_btn" style="margin-top: 20px; float:right;" value="저장">';
+            goalTerm += '<input type="button" class="g_btn" style="float:right; margin-top: 20px;" onclick="javascript:location.reload(true)" value="취소">';
             modify_name.innerHTML += goalTerm;
             
             var rou_mod_btn = document.getElementsByClassName("btn_prompt");
