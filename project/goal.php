@@ -1,25 +1,6 @@
 <div class="col-md-1">
 </div>
-<div class="main col-md-8 col-md-offset-2">
-            
-    <script>
-       /* function changeColor(change,i){
-            var temp = 'basket' + i;
-            var color = document.getElementById(temp);
-            color.style.backgroundColor = change;                    
-        }
-        
-        function changeColor2(change2, j){
-            var temp2 = 'jew' + j;
-            var color2 = document.getElementById(temp2);
-            color2.style.color = change2;
-            
-    
-            
-        }*/
-
-    </script>
-     
+<div class="main col-md-8 col-md-offset-2">    
               
     <?php
         include "./db/dbconn.php";
@@ -43,8 +24,9 @@
     
             echo '</form>';
         ?>
-    
+        <!---- !!!!!루틴수정 버튼을 누르면 루틴 저장 버튼 역할을 하도록 해주세요!!!!! (송이가) ---->
             <form method="post">
+                <input type="button" class="g_btn" id="modi_submit" style="display:none;" value="수정 저장"/>
                 <input type="button" class="g_btn" id="gmodify" style="float:right;" name="gmodify" onclick="goal_modify()" value="목표 수정"/>
                 <input style="float:right;" class="g_btn" type="submit" name="test" id="test" value="목표 삭제"/>
             </form>
@@ -65,43 +47,59 @@
             if(array_key_exists('test', $_POST)){
                 delete();
             }
-        ?>
-    
-            <?php
+
             $routine = "SELECT * FROM Routine WHERE goalID ='$goalID'";
             $result2 = mysqli_query($conn, $routine);
             $bid = 0;    
             $routineCount = 0;
-        while($row2 = mysqli_fetch_array($result2)){
-            $routineCount++;
-            $routineID = $row2['routineID'];
-            $routineName = $row2['routineName'];
-            $color = $row2['color'];
-            $tRoutine = "SELECT * FROM t_routine WHERE routineID = '$routineID'";
-            $result3 = mysqli_query($conn, $tRoutine);
+            while($row2 = mysqli_fetch_array($result2)){
+                $routineCount++;
+                $routineID = $row2['routineID'];
+                $routineName = $row2['routineName'];
+                $color = $row2['color'];
+                $tRoutine = "SELECT * FROM t_routine WHERE routineID = '$routineID'";
+                $result3 = mysqli_query($conn, $tRoutine);
             
             //루틴 제목 출력
-            echo '<div class="container cart" style="margin-top: 20px;">
-          
+            echo '<div class="container cart no-modify" style="margin-top: 20px;">
+
           <div class="con1 text-center" style="float: left; margin-top: 12px; margin-right: 15px;">
               <i class="fas fa-tools" style="font-size:30px; color:'.$color.';"></i>
               <p style="color: '.$color.';">'.$color.'</p>
           </div>
           <div class="con1" style="margin-top: 8px; float: left; line-height: 45px;">
-              <input class="fa-2" style="border:none; color:'.$color.'"value="'.$row2['routineName'].'" readonly/></div>
-             
-             <form method="post">
-                <input type="button" class="g_btn btn_prompt" onclick="dis('.$routineID.');" style="display:none;" value="루틴 수정"/>
-                <input style="display:none;" type="text" name="rouID" value="'.$routineID.'"/>
-                <input type="submit" style="display:none;" name="rou'.$bid.'" class="g_btn rou" value="루틴 삭제"/>
-            </form>
+              <p class="fa-2" style="border:none; color:'.$color.'">'.$row2['routineName'].'</p>
+          </div>
+            
         </div>
-          ';
-       ?> 
         
-         <form class="goal_set_form" id="frm" name="goal_set_form" method="post" action="db/goalmodify.php">
-        <!--해빗 트래커 칸 생성-->    
-         <div id="basket<?=$routineID?>" class="container cart" style="background-color: <?=$color?>;">
+        <form method="post">
+            <input style="display:none;" type="text" name="rouID" value="'.$routineID.'"/>
+            
+        </form>
+
+        <form class="goal_set_form" name="goal_set_form" method="post" action="db/goalmodify.php">
+            <div class="container cart modi_form">
+            <input name="routine_name'.$routineID.'" class="routine_name" type="text" value="'.$routineName.'" required/>   
+            <input type="color" name="colors'.$routineID.'" value="'.$color.'">
+            <input type="button" style="display:none;" name="rou'.$bid.'" class="g_btn rou" id="delete" value="x"/>'; 
+            // 저 x 버튼이 함수가 망가졌어유.. 바로 위에 form에 있던 '루틴 수정', '루틴 삭제', 'routineID'폼을 이 안으로 옮기려다가
+            // 루틴 수정은 버튼이 필요없어서 그냥 지우고, 루틴 삭제를 X로 바꾼겁니당.....ㅜ routineID는 위에 고대로 있어요 (송이가)
+
+?> 
+        
+             <p style="margin-bottom:10px;">주기　:
+             <input id="mon'.$routineID.'" type="checkbox" name="routine'.$routineID.'[]" value="mon"><label for="mon'.$routineID.'">월</label>
+             <input id="tue'.$routineID.'" type="checkbox" name="routine'.$routineID.'[]" value="tue"><label for="tue'.$routineID.'">화</label>
+             <input id="wed'.$routineID.'" type="checkbox" name="routine'.$routineID.'[]" value="wed"><label for="wed'.$routineID.'">수</label>
+             <input id="thu'.$routineID.'" type="checkbox" name="routine'.$routineID.'[]" value="thu"><label for="thu'.$routineID.'">목</label>
+             <input id="fri'.$routineID.'" type="checkbox" name="routine'.$routineID.'[]" value="fri"><label for="fri'.$routineID.'">금</label>
+             <input id="sat'.$routineID.'" type="checkbox" name="routine'.$routineID.'[]" value="sat"><label for="sat'.$routineID.'">토</label>
+             <input id="sun'.$routineID.'" type="checkbox" name="routine'.$routineID.'[]" value="sun"><label for="sun'.$routineID.'">일</label>
+             </p>
+            </div>
+        <!--해빗 트래커 칸 생성-->
+         <div id="basket<?=$routineID?>" class="container cart no-modify" style="background-color: <?=$color?>;">
              
             <!--루틴 수정 버튼 누를 시 데이터 넘겨줌-->
             <input style="display:none" id="goalName" type="text" name="goalName" value="<?=$goalName?>">
@@ -148,8 +146,8 @@
         </form>     
   <?php 
         $bid++;
-        } echo '<br><br><br>'; 
-    
+        }
+
         if(array_key_exists("rouID", $_POST)){
             $routineID = $_POST['rouID'];
             routine_delete($routineID);
@@ -170,23 +168,13 @@
     
     
     ?>
-        
-    
-    
-    
-      
-        
     </div>
-   
     
     <script>
-        //var routine_num = 0;
-        
         function dis(routine_num) {
             var content = document.getElementById("basket"+routine_num);
             
             var new_routine = '<input name="routine_name'+routine_num+'" class="routine_name" type="text" placeholder="루틴 이름" required/> <input type="color" name="colors'+routine_num+'"><br><p style="margin-bottom:10px;" required>주기　:<input id="mon'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="mon"><label for="mon'+routine_num+'">월</label><input id="tue'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="tue"><label for="tue'+routine_num+'">화</label><input id="wed'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="wed"><label for="wed'+routine_num+'">수</label><input id="thu'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="thu"><label for="thu'+routine_num+'">목</label><input id="fri'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="fri"><label for="fri'+routine_num+'">금</label><input id="sat'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="sat"><label for="sat'+routine_num+'">토</label><input id="sun'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="sun"><label for="sun'+routine_num+'">일</label><input type="submit" class="s_btn" style="float:right;" value="저장"><input type="button" class="s_btn" style="float:right;" onclick="javascript:location.reload(true)" value="취소"><br/></p>';     
-            routine_num++;
            
             content.innerHTML += new_routine;
     }
@@ -196,6 +184,12 @@
             var goal = '<input id="goal_name" name="goal_name" type="text" value="<?=$goalName?>" />';
             modify_name.innerHTML ='';
             modify_name.innerHTML += goal;
+
+            var gmodify_btn = document.getElementById("gmodify");
+            gmodify_btn.style = "display:none;";
+
+            var modi_submit = document.getElementById("modi_submit");
+            modi_submit.style="display:visible; float:right;";
             
             var term = document.getElementById("goal_term");
             var goalTerm = '<label style="font-weight:normal;"><input type="date" value="<?=$term_s?>" name="term_s_date" style="margin-left: 60px; margin-top:10px;"> 부터 </label><label style="margin-left: 20px; font-weight:normal;"><input type="date" value="<?=$term_e?>" name="term_e_date" style="margin-top:10px;"> 까지</label>';
@@ -204,16 +198,19 @@
             goalTerm += '<input type="button" class="g_btn" style="float:right; margin-top: 20px;" onclick="javascript:location.reload(true)" value="취소">';
             modify_name.innerHTML += goalTerm;
             
-            var rou_mod_btn = document.getElementsByClassName("btn_prompt");
+            var rou_mod_btn = document.getElementsByClassName("modi_form");
             var rou_del_btn = document.getElementsByClassName("rou");
-            var count = <?=$routineCount?>;
-            for(var i=0;i<count;i++){
-                rou_mod_btn[i].style = "display:visible";
-                rou_del_btn[i].style = "display:visible";
+            
+            for(var i = rou_mod_btn.length-1 ; i >= 0; i--) {
+                rou_mod_btn[i].classList.add("additional_space");
+                rou_mod_btn[i].classList.remove("modi_form");
+                rou_del_btn[i].style = "display:visible;";
             }
-            
-            var gmodify = document.getElementById("gmodify");
-            
+
+            var invisible = document.getElementsByClassName("no-modify");
+            for(let i = 0; i<invisible.length; i++) {
+                invisible[i].style.display = "none";
+            }
         }
     </script>
           
