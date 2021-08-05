@@ -49,11 +49,12 @@
             <input id="plus_btn" type="button" value="+ 루틴 추가하기" onclick="plus_routine()"><br/><br/>
             <p style="float:right; margin-right: 80px;">
                 <input type="reset" value="삭제">
-                <input type="button" onclick="goal_set_submit()" value="저장">
+                <input type="submit" onclick="goal_set_submit()" value="저장">
             </p>
             <input style="display:none" id="routineNum" type="text" name="routineNum" value="">
         </form>
     </div>
+</div>
 </div>
 <div class="col-md-2">
     <!-- 빈 공간 -->
