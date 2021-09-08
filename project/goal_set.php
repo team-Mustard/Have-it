@@ -48,8 +48,8 @@
             
             <input id="plus_btn" type="button" value="+ 루틴 추가하기" onclick="plus_routine()"><br/><br/>
             <p style="float:right; margin-right: 80px;">
-                <input type="reset" value="삭제">
-                <input type="submit" onclick="goal_set_submit()" value="저장">
+                <input type="reset" value="삭제" class="word_2_btn bg_gray_btn round_btn">
+                <input type="submit" onclick="goal_set_submit()" value="저장" class="word_2_btn bg_purple_btn round_btn">
             </p>
             <input style="display:none" id="routineNum" type="text" name="routineNum" value="">
         </form>

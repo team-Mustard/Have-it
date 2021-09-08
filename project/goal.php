@@ -24,10 +24,10 @@
     
             echo '</form>';
         ?>
-        <!---- !!!!!루틴수정 버튼을 누르면 루틴 저장 버튼 역할을 하도록 해주세요!!!!! (송이가) ---->
+
             <form method="post" action="db/goalmodify.php">
-                <input type="button" class="g_btn" id="gmodify" style="float:right;" name="gmodify" onclick="goal_modify()" value="목표 수정"/>
-                <input style="float:right;" class="g_btn" type="submit" name="test" id="test" value="목표 삭제"/>
+                <input type="button" class="word_4_btn bg_purple_btn round_btn" id="gmodify" style="float:right;" name="gmodify" onclick="goal_modify()" value="목표 수정"/>
+                <input style="float:right;" class="word_4_btn bg_gray_btn round_btn" type="submit" name="test" id="test" value="목표 삭제"/>
             </form>
     
         <?php
@@ -80,19 +80,17 @@
             <input style="display:none;" type="text" name="Bcount" value="'.$bid.'">
             <input style="display:none;" type="text" name="rouID'.$bid.'" value="'.$routineID.'">
             <input type="submit" style="display:none;" name="mode" class="g_btn rou" id="delete" value="x"/>';
-            // 저 x 버튼이 함수가 망가졌어유.. 바로 위에 form에 있던 '루틴 수정', '루틴 삭제', 'routineID'폼을 이 안으로 옮기려다가
-            // 루틴 수정은 버튼이 필요없어서 그냥 지우고, 루틴 삭제를 X로 바꾼겁니당.....ㅜ routineID는 위에 고대로 있어요 (송이가) -> 성공 ! (주영)
               
 ?> 
         
              <p style="margin-bottom:10px;">주기　:
+             <input id="sun<?=$routineID?>" type="checkbox" name="routine<?=$routineID?>[]" value="sun"><label for="sun<?=$routineID?>">일</label>
              <input id="mon<?=$routineID?>" type="checkbox" name="routine<?=$routineID?>[]" value="mon"><label for="mon<?=$routineID?>">월</label>
              <input id="tue<?=$routineID?>" type="checkbox" name="routine<?=$routineID?>[]" value="tue"><label for="tue<?=$routineID?>">화</label>
              <input id="wed<?=$routineID?>" type="checkbox" name="routine<?=$routineID?>[]" value="wed"><label for="wed<?=$routineID?>">수</label>
              <input id="thu<?=$routineID?>" type="checkbox" name="routine<?=$routineID?>[]" value="thu"><label for="thu<?=$routineID?>">목</label>
              <input id="fri<?=$routineID?>" type="checkbox" name="routine<?=$routineID?>[]" value="fri"><label for="fri<?=$routineID?>">금</label>
              <input id="sat<?=$routineID?>" type="checkbox" name="routine<?=$routineID?>[]" value="sat"><label for="sat<?=$routineID?>">토</label>
-             <input id="sun<?=$routineID?>" type="checkbox" name="routine<?=$routineID?>[]" value="sun"><label for="sun<?=$routineID?>">일</label>
              </p>
             </div>
 
@@ -157,16 +155,18 @@
         }
     
     ?>
-
+    
+    <div class="container cart additional_space">
     <input id="plus_btn" style="display:none;" type="button" value="+ 루틴 추가하기" onclick="dis(<?=$last_ID?>)">
 
     <div id="bas<?=$last_ID?>">
+    </div>
     </div>
     <div id="nulldiv"></div>
 
     <input style="display:none;" type="text" name="count" value="<?=$bid?>">
     <input style="display:none;" type="text" name="GOALID" value="<?=$goalID?>">
-    <input type="submit" id="rousave" class="g_btn" style="display:none;" onclick="count_return()" name="mode" value="루틴 저장">
+    <input type="submit" id="rousave" class="word_2_btn .bg_indigo_btn .round btn" style="display:none;" onclick="count_return()" name="mode" value="루틴 저장">
     </form>
 
     </div>
@@ -209,8 +209,8 @@
             var term = document.getElementById("goal_term");
             var goalTerm = '<label style="font-weight:normal;"><input type="date" value="<?=$term_s?>" name="term_s_date" style="margin-left: 60px; margin-top:10px;"> 부터 </label><label style="margin-left: 20px; font-weight:normal;"><input type="date" value="<?=$term_e?>" name="term_e_date" style="margin-top:10px;"> 까지</label>';
             
-            goalTerm += '<input type="submit" class="g_btn" style="margin-top: 20px; float:right;" name="mode" value="저장">';
-            goalTerm += '<input type="button" class="g_btn" style="float:right; margin-top: 20px;" onclick="javascript:location.reload(true)" value="취소">';
+            goalTerm += '<input type="submit" class="word_2_btn .bg_indigo_btn .round btn" style="margin-top: 20px; float:right;" name="mode" value="저장">';
+            goalTerm += '<input type="button" class="word_2_btn .bg_gray_btn .round btn" style="float:right; margin-top: 20px;" onclick="javascript:location.reload(true)" value="취소">';
             modify_name.innerHTML += goalTerm;
             
             var rou_mod_btn = document.getElementsByClassName("modi_form");
