@@ -1,9 +1,10 @@
-<div class="col-xs-12 col-sm-7 col-md-4 sidebar sidebar-right sidebar-animate">
+
   <div><h2 class="right-header" style="float: left;"><i class="fas fa-dolly-flatbed"></i>광산수레</h2>
     <?php
         $time = time();
         $today = date("Y-m-d", $time);
-        //$today = '2021-04-30';
+        //$today = '2021-09-06';
+
         echo '<h4 class="right-header" style="float: right;">'.$today.'</h4>';
     ?>
   </div>
@@ -20,7 +21,6 @@
     <!-- 이 div는 지우면 right side bar가 밀립니다. 지우지 마세요 -->
     <div style="margin-top: 51px;"></div>
 </div>
-
 <script>
     function add_schedule() {
         $(".sidebar-right").load("add_schedule.php");
