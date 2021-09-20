@@ -110,29 +110,15 @@ hr {
 }
 
 #routine { text-align: center; }
-.chartWrapper {
-    width: 100%;
-    height: 335px;
-    position: relative;
-    
-}
+
 .chart { 
-    position: relative;
     clear: both;
     width: 100%;
-    position: absolute;
-    top: 50px;
-    z-index: 1;
-}
-
-.backChart{
-    width: 100%;
-    top: 50px;
-    position: absolute;
+    text-align: center;
 }
 
 .tracker-legend{
-    margin-top: 80px;
+    margin-top:50px;
 }
 
 .legend-time {
@@ -160,11 +146,6 @@ hr {
     margin: 80px 30px 30px 30px;
 }
 
-.schedule_form {
-    
-    text-align: left;
-}
-
 .schedule_form select {
     width: 60%;
     color: #bbb;
@@ -183,70 +164,6 @@ hr {
     color: white;
     /* 배경 투명하게 */
     background-color: transparent;
-}
-#submit_schedule{
-    
-    color: white;
-    font-size: 20px;
-    text-decoration: none;
-   
-}
-
-#scheduleList a{
-    text-decoration-line: none;
-    color: white;
-    font-size: 15px;
-    padding-right: 5px;
-    padding-bottom: 5px;
-}
-
-#scheduleList a:hover {
-    cursor: pointer;
-}
-
-#scheduleList span{
-    color: white;
-    font-size: 15px;
-    padding-right: 5px;
-    padding-bottom: 5px;
-    
-}
-.saveSchedule i {
-    
-    font-size: 20px;
-}
-.saveSchedule a{
-    text-decoration-line: none;
-    color: white;
-    font-size: 15px;
-    padding-right: 5px;
-    padding-bottom: 5px;
-}
-
-.saveSchedule a:hover {
-    cursor: pointer;
-}
-
-#saveScheduleBtn{
-    
-    color: white;
-    font-size: 20px;
-    text-decoration: none;
-   
-}
-.routineSelect {
-    display: inline;
-    text-align: left;
-}
-.routineSelect #routine {
-    text-align: left;
-}
-
-.routineSelect input[type="text"]{
-    margin: 10px 5px;
-    color: #bbb;
-    height: 20px;
-    padding: 0px;
 }
 
 /* scrollbar design */
@@ -320,6 +237,7 @@ hr {
     border-left: none;
     text-align: center;
     width: 100px;
+    background-color: transparent;
 
 }
 #score input:focus {
@@ -335,6 +253,7 @@ hr {
     border:5px solid;
     border-radius: 20px;
     border-color: #d2c5e1;
+    background-color: #d2c5e1;
     margin: 10px;
     
 }
@@ -350,6 +269,8 @@ hr {
     height:150px;
     border: none;
     font-size: 15px;
+    resize: none;
+    background-color: transparent;
 
 }
 .writeEval textarea:focus{
@@ -358,12 +279,12 @@ hr {
 
 }
 
-
 #bad {
     box-sizing: border-box; 
     padding: 10px;
     border:5px solid;
     border-color: #d2c5e1;
+    background-color:#d2c5e1;
     border-radius: 20px;
     margin: 10px;
     
@@ -392,12 +313,18 @@ hr {
    
 }
 
-.date {
+.date, .preDate, .nextDate {
     width: calc(100% / 7);
     padding: 3px;
     text-align: right;
 
 }
+
+.term {
+    background-color: #d2c5e1;
+    
+}
+
 .checkFailure {
     padding: 5px;
     margin-left: 25px;
@@ -544,6 +471,7 @@ hr {
     margin: 0 auto;
 
 }
+
 #customLegend {
     position: absolute;
     top: 62px;
@@ -563,6 +491,7 @@ hr {
     margin-right: 5px;
     vertical-align: middle;
 }
+
 #monthChart {
     padding-left: 10px;
 }
