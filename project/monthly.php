@@ -4,7 +4,7 @@
 
 <body>
 
-<?php 
+    <?php 
     include "db/dbconn.php";
     if(isset($_GET['monthlyID'])) $monthlyID = $_GET['monthlyID'];
 
@@ -149,12 +149,13 @@
             }
         }
         if($countReport !=1){
+            /*$grade = 100 - ((($countReport -$rank) +($sameRank/2))  / $countReport * 100);*/
+            $grade = (($rank / ($countReport))*100);
             
-            $grade = 100 - ((($countReport -$rank) +($sameRank/2))  / $countReport * 100);
         }else {
-            $grade = 1;
+            $grade = 10;
         }
-    ?>    
+    ?>
     <div class="main col-md-8 col-md-offset-2">
         <div class="container text-center col-md-10">
             <div id="grade">
@@ -162,14 +163,14 @@
                 <span class="gradeprint">상위 <?=$grade?>%</span>
             </div>
         </div>
-        <div id = "routineChartBtn" class="container">
+        <div id="routineChartBtn" class="container">
             <a onclick="showRoutineTime();">시간</a>
             <span>|</span>
             <a onclick="showRoutineWeek();">주차</a>
             <span>|</span>
             <a onclick="showRoutineDayofweek();">요일</a>
         </div>
-        
+
         <div id="routineChart" class="container col-md-10">
             <canvas id="monthlyChart"></canvas>
         </div>
@@ -200,13 +201,13 @@
                         
                     $lowestGoalID =  $lowestRow['goalID'];
                     $selectGoalSql = "select startTerm, endTerm from goal where goalID = '$lowestGoalID'";
-
+                               
                     $lowestGoalRow = mysqli_fetch_array(mysqli_query($conn,$selectGoalSql),MYSQLI_ASSOC);
-                    $startTerm = $lowestGoalRow['startTerm'];
-                    $endTerm = $lowestGoalRow['endTerm'];
+                    $lowStartTerm = $lowestGoalRow['startTerm'];
+                    $lowEndTerm = $lowestGoalRow['endTerm'];
         
         
-                    if($today<$startTerm || $today > $endTerm) {
+                    if($today<$lowStartTerm || $today > $lowEndTerm) {
                         echo "<a href='#' onclick=\"alert('기간이 끝난 목표입니다.');\" return false;>루틴 바로가기</a>";
 
 
@@ -225,14 +226,20 @@
                     }
                     
                     ?>
-                   
-                    
+
+
                 </div>
                 <div id="success" class="col-md-6">
                     <p>가장 성공률이 높은 루틴</p>
-                        <p>"<?php
-                            if(isset($highestRow['routineName']))
+                    <p>"<?php
+                            if(isset($highestRow['routineName'])){
                                 echo $highestRow['routineName'];
+                                
+                                
+                            }
+        
+        
+                                
                             else
                                 echo "no-data";
                             ?>"</p>
@@ -246,20 +253,57 @@
         if(isset($highestRoutine[1]))
             echo $highestRoutine[1];                
         else
-            echo "no-data";?> </p>
-                    <a href="?page=goal_set">새로운 루틴 생성하기</a>
+            echo "no-data";  
+                        
+                        
+                        ?> </p>
+
+                    <?php
+                    if($highestRow){
+            
+                                $highestGoalID = $highestRow['goalID'];
+                        
+                                $selectGoalSql2 = "select startTerm, endTerm from goal where goalID = '$highestGoalID'"; 
+                                $highestGoalRow = mysqli_fetch_array(mysqli_query($conn,$selectGoalSql2),MYSQLI_ASSOC);
+                                
+                                $highStartTerm = $highestGoalRow['startTerm'];
+                                $highEndTerm = $highestGoalRow['endTerm'];
+        
+        
+                    if($today<$highStartTerm || $today > $highEndTerm) {
+                        echo "<a href='#' onclick=\"alert('기간이 끝난 목표입니다.');\" return false;>새로운 루틴 생성하기</a>";
+
+
+                    }else{
+
+                         echo "<a href='?page=goal&goalID=$highestGoalID'>새로운 루틴 생성하기</a>";
+
+                    }
+            
+            
+                    }else {
+                        
+                        echo "<a href=#'>새로운 루틴 생성하기</a>";
+                        
+                        }
+                    
+                    
+                    ?>
+
+
+
                 </div>
             </row>
         </div>
-        
-        <div id = "failureChart"  class = "contatiner col-md-10">
+
+        <div id="failureChart" class="contatiner col-md-10">
             <h4 style="text-align:center;">실패 원인 분석</h4>
             <canvas id="mChartFailure" width="300" height="300"></canvas>
             <div id='customLegend' class="customLegend"></div>
         </div>
-        <div id = "monthChart"  class = "contatiner col-md-10">
+        <div id="monthChart" class="contatiner col-md-10">
             <h4 style="text-align:right;">5달간 성취도 추이</h4>
-            <canvas id="mChartMonth"></canvas> 
+            <canvas id="mChartMonth"></canvas>
         </div>
     </div>
 
@@ -267,9 +311,7 @@
 </body>
 
 <script>
-
-
- <?php
+    <?php
     $timeGoalIDCount = 0;
     $weekGoalIDCount = 0;
     $dayofweekGoalIDCount = 0;
@@ -281,15 +323,14 @@
         $dayofweekGoalIDCount = count($dayofweekGoalIDArr);
                 
     
-?>   
-var chart = document.getElementById("routineChart");
-var ctxTime = document.getElementById("monthlyChart");
-var timeData =
-  {
-    type: 'bar',
-    data: {
-        labels: [
-            <?php
+?>
+    var chart = document.getElementById("routineChart");
+    var ctxTime = document.getElementById("monthlyChart");
+    var timeData = {
+        type: 'bar',
+        data: {
+            labels: [
+                <?php
                 for($w=1;$w<25;$w++){
                     echo "\"$w 시\"";
                     if($w !=24 ){
@@ -299,12 +340,12 @@ var timeData =
             
             
             ?>
-            
-            
-        ],
-        
-        datasets: [
-            <?php 
+
+
+            ],
+
+            datasets: [
+                <?php 
                 for($i=0;$i<$timeGoalIDCount;$i++){
                     $goalID = $timeGoalIDArr[$i];
                 
@@ -315,51 +356,51 @@ var timeData =
             }
               
                 ?>
-            
-            
-        ]
-    },
-    
-    options: {
-        legend:{
-            display: false
+
+
+            ]
         },
-        
-        scales: {
-        
-          xAxes: [{
-            stacked: true
-          }],
-          yAxes: [{
-            stacked: true
-          }],
-        
+
+        options: {
+            legend: {
+                display: false
+            },
+
+            scales: {
+
+                xAxes: [{
+                    stacked: true
+                }],
+                yAxes: [{
+                    stacked: true
+                }],
+
+
+            }
+        },
+    }
+    var chartTime = new Chart(ctxTime, timeData);
+
+    function showRoutineTime() {
+        if (!document.getElementById('monthlyChart')) {
+            chart.innerHTML = "<canvas id='mChartTime'></canvas>";
+            var ctxTime = document.getElementById("mChartTime");
+            var chartTime = new Chart(ctxTime, timeData);
 
         }
-    },
-}    
-var chartTime = new Chart(ctxTime,timeData);
-    
-function showRoutineTime() {
-    if(!document.getElementById('monthlyChart')){
-        chart.innerHTML = "<canvas id='mChartTime'></canvas>";
-        var ctxTime = document.getElementById("mChartTime");
-        var chartTime = new Chart(ctxTime,timeData);
-        
-    }
-    
-      
-}    
-function showRoutineWeek(){
-    chart.innerHTML = "<canvas id='mChartWeek'></canvas>";
-    var ctxWeek = document.getElementById("mChartWeek");
 
-    var weekData=
-  {
-    type: 'horizontalBar',
-    data: {
-        labels: [
-            <?php 
+
+    }
+
+    function showRoutineWeek() {
+        chart.innerHTML = "<canvas id='mChartWeek'></canvas>";
+        var ctxWeek = document.getElementById("mChartWeek");
+
+        var weekData = {
+            type: 'horizontalBar',
+            data: {
+                labels: [
+                    <?php 
             if(isset($achieveWeek)){
             for($z=1;$z<=count($achieveWeek);$z++){
                 echo "\"$z 주차\"";
@@ -373,12 +414,12 @@ function showRoutineWeek(){
                 
 
             ?>
-            
-            
-        ],
-        
-        datasets: [
-            <?php 
+
+
+                ],
+
+                datasets: [
+                    <?php 
                 for($i=0;$i<$weekGoalIDCount;$i++){
                     $goalID = $weekGoalIDArr[$i];
                 
@@ -388,41 +429,42 @@ function showRoutineWeek(){
                 },";
             }
               
-                ?>]
-    },
+                ?>
+                ]
+            },
 
-    options: {
-        legend:{
-            display: false
-        },
-        
-        scales: {
-        
-          xAxes: [{
-            stacked: true
-          }],
-          yAxes: [{
-            stacked: true
-          }],
-        
+            options: {
+                legend: {
+                    display: false
+                },
 
+                scales: {
+
+                    xAxes: [{
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }],
+
+
+                }
+            },
         }
-    },
-}
-   var chartWeek = new Chart(ctxWeek,weekData);
-}
-function showRoutineDayofweek(){
-    chart.innerHTML = "<canvas id='mChartDayofWeek'></canvas>";
-    var ctxDayofWeek = document.getElementById("mChartDayofWeek");
+        var chartWeek = new Chart(ctxWeek, weekData);
+    }
 
-    var dayofweekData=
-  {
-    type: 'horizontalBar',
-    data: {
-        labels: ["일","월", "화", "수", "목","금","토"],
-        
-        datasets: [
-            <?php 
+    function showRoutineDayofweek() {
+        chart.innerHTML = "<canvas id='mChartDayofWeek'></canvas>";
+        var ctxDayofWeek = document.getElementById("mChartDayofWeek");
+
+        var dayofweekData = {
+            type: 'horizontalBar',
+            data: {
+                labels: ["일", "월", "화", "수", "목", "금", "토"],
+
+                datasets: [
+                    <?php 
                 for($i=0;$i<$dayofweekGoalIDCount;$i++){
                     $goalID = $dayofweekGoalIDArr[$i];
                 
@@ -432,32 +474,33 @@ function showRoutineDayofweek(){
                 },";
             }
               
-                ?>]
-    },
+                ?>
+                ]
+            },
 
-    options: {
-        legend:{
-            display: false
-        },
-        
-        scales: {
-        
-          xAxes: [{
-            stacked: true
-          }],
-          yAxes: [{
-            stacked: true
-          }],
-        
+            options: {
+                legend: {
+                    display: false
+                },
 
+                scales: {
+
+                    xAxes: [{
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }],
+
+
+                }
+            },
         }
-    },
-}
-   var chartDayofWeek = new Chart(ctxDayofWeek,dayofweekData);
-}
- 
-    
-<?php
+        var chartDayofWeek = new Chart(ctxDayofWeek, dayofweekData);
+    }
+
+
+    <?php
     $failList = ["핸드폰 게임","인터넷 방송","야외 활동","무리한 계획","유튜브","PC 게임","음주","예정에 없던 외출","TV 시청","수면","사고","넷플릭스/왓챠","SNS","능력 부족","집중력 부족","아픔"];
     
     $failure = $monthlyRow['monthly_failure'];
@@ -465,25 +508,24 @@ function showRoutineDayofweek(){
     
     
 ?>
-var colorIndex = ["#C6E8BA","#ADE3AB","#9FB6DF","#94DBC0","#E4C9ED","#BAE6E8","#CCE3AB","#EDD5C9","#E1F4DD","#D9F2F2","#8C8FD9","#EDDEC9","#C2C7EB","#C9EDE7","#F4F6E4","#ECF9F7"];
-var customLegend = function (chart) {
-    var ul = document.createElement('ul');
-    var color = chart.data.datasets[0].backgroundColor;
+    var colorIndex = ["#C6E8BA", "#ADE3AB", "#9FB6DF", "#94DBC0", "#E4C9ED", "#BAE6E8", "#CCE3AB", "#EDD5C9", "#E1F4DD", "#D9F2F2", "#8C8FD9", "#EDDEC9", "#C2C7EB", "#C9EDE7", "#F4F6E4", "#ECF9F7"];
+    var customLegend = function(chart) {
+        var ul = document.createElement('ul');
+        var color = chart.data.datasets[0].backgroundColor;
 
-    chart.data.labels.forEach(function (label, index) {
-        ul.innerHTML += `<li><span style="background-color: ${color[index]};"></span> ${label}</li>`;
-    });
+        chart.data.labels.forEach(function(label, index) {
+            ul.innerHTML += `<li><span style="background-color: ${color[index]};"></span> ${label}</li>`;
+        });
 
-    return ul.outerHTML;
-};
-var ctxFailure = document.getElementById("mChartFailure");
-var randomcolor = "#" + Math.round(Math.random() * 0xffffff).toString(16);
-var failData=
-  {
-    type: 'pie',
-    data: {
-        labels: [
-            <?php 
+        return ul.outerHTML;
+    };
+    var ctxFailure = document.getElementById("mChartFailure");
+    var randomcolor = "#" + Math.round(Math.random() * 0xffffff).toString(16);
+    var failData = {
+        type: 'pie',
+        data: {
+            labels: [
+                <?php 
             for($z=0;$z<count($failure);$z++){
                 if($failure[$z] != null){
                     
@@ -502,12 +544,12 @@ var failData=
             }
 
             ?>
-            
-            
-        ],
-        
-        datasets: [{
-            <?php 
+
+
+            ],
+
+            datasets: [{
+                <?php 
             
             echo "data:[";
             for($z=0;$z<count($failure);$z++){
@@ -543,28 +585,29 @@ var failData=
             echo "]";
             
             
-            ?>}]
-    },
-
-    options: {
-        responsive: false,
-        legend:{
-            
-            display: false,
-            position: 'right'
-
+            ?>
+            }]
         },
-        legendCallback: customLegend,       
-    },
-}
 
-    var chartFailure = new Chart(ctxFailure,failData);
+        options: {
+            responsive: false,
+            legend: {
+
+                display: false,
+                position: 'right'
+
+            },
+            legendCallback: customLegend,
+        },
+    }
+
+    var chartFailure = new Chart(ctxFailure, failData);
     document.getElementById('customLegend').innerHTML = window.chartFailure.generateLegend();
-    
-<?php
+
+    <?php
 
         $preMonth = strtotime($monthlyDate.'-5 month');
-        $select5monthSql = "select * from monthlyReport where userID = $userid and date(date) between '$preMonth' and '$monthlyDate' order by monthlyID DESC";
+        $select5monthSql = "select * from monthlyReport where userID = $userid and date(date) between '$preMonth' and '$monthlyDate' order by date ASC";
         $monthResult = mysqli_query($conn,$select5monthSql);
         $countMonth = 0;
         while($monthRow = mysqli_fetch_array($monthResult,MYSQLI_ASSOC)){
@@ -576,13 +619,12 @@ var failData=
     
 ?>
 
-var ctx5Month = document.getElementById("mChartMonth");
-var monthData=
-  {
-    type: 'line',
-    data: {
-        labels: [
-            <?php 
+    var ctx5Month = document.getElementById("mChartMonth");
+    var monthData = {
+        type: 'line',
+        data: {
+            labels: [
+                <?php 
             for($h=0;$h<$countMonth;$h++){
                 $tmp = date('m',strtotime($monthDate[$h]));
                 $tmp2 = preg_replace('/(0)(\d)/','$2', $tmp);
@@ -594,12 +636,12 @@ var monthData=
             }
 
             ?>
-            
-            
-        ],
-        
-        datasets: [{
-            <?php 
+
+
+            ],
+
+            datasets: [{
+                <?php 
         
             echo "data:[";
             for($q=0;$q<$countMonth;$q++){
@@ -611,37 +653,48 @@ var monthData=
             }
             echo "],";
         ;?>
-        fill: false,
-        lineTension: 0,
-        borderColor: "#fc914c"
-        }]
-    },
-
-    options: {
-        
-        legend:{
-            
-            display: false
+                fill: false,
+                lineTension: 0,
+                borderColor: "#fc914c"
+            }]
         },
-        scales: {
-				yAxes: [{
-					ticks: {
-						beginAtZero: true,
-                        stepSize : 20
-					
-					}
-				}]
-			}
-        
-    },
-}
-   var chartmonth = new Chart(ctx5Month,monthData); 
-    
-<?php 
+
+        options: {
+
+            legend: {
+
+                display: false
+            },
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        fontSize: 18
+                    },
+                    gridLines: {
+                        lineWidth: 2
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: false,
+                        stepSize: 20,
+                        fontSize: 18
+
+                    },
+                    gridLines: {
+                        lineWidth: 2
+                    }
+                }]
+            }
+
+        },
+    }
+    var chartmonth = new Chart(ctx5Month, monthData);
+
+    <?php 
     
     }    
 
-?>    
-    
-    
+?>
+
 </script>
