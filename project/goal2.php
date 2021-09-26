@@ -81,7 +81,7 @@ $lastID = 1;
                 <span class="routineName left">
                     <p class="fa-2" style="color:'.$color.';">'.$routineName.'</p>
                 </span>
-                <div id="basket'.$routineID.'" class="routineBasket clear" style="background-color: '.$color.'; height: 50px;">';
+                <div id="basket'.$routineID.'" class="routineBasket clear" style="background-color: '.$color.'; height: 45px;">';
                 
                 /* 루틴 시작후 일주일 지났을 때 마다 check 초기화 */
                 $today = date("Y-m-d");
