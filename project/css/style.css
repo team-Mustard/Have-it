@@ -110,15 +110,29 @@ hr {
 }
 
 #routine { text-align: center; }
-
+.chartWrapper {
+    width: 100%;
+    height: 335px;
+    position: relative;
+    
+}
 .chart { 
+    position: relative;
     clear: both;
     width: 100%;
-    text-align: center;
+    position: absolute;
+    top: 50px;
+    z-index: 1;
+}
+
+.backChart{
+    width: 100%;
+    top: 50px;
+    position: absolute;
 }
 
 .tracker-legend{
-    margin-top:50px;
+    margin-top: 80px;
 }
 
 .legend-time {
@@ -146,6 +160,11 @@ hr {
     margin: 80px 30px 30px 30px;
 }
 
+.schedule_form {
+    
+    text-align: left;
+}
+
 .schedule_form select {
     width: 60%;
     color: #bbb;
@@ -164,6 +183,70 @@ hr {
     color: white;
     /* 배경 투명하게 */
     background-color: transparent;
+}
+#submit_schedule{
+    
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+   
+}
+
+#scheduleList a{
+    text-decoration-line: none;
+    color: white;
+    font-size: 15px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+}
+
+#scheduleList a:hover {
+    cursor: pointer;
+}
+
+#scheduleList span{
+    color: white;
+    font-size: 15px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    
+}
+.saveSchedule i {
+    
+    font-size: 20px;
+}
+.saveSchedule a{
+    text-decoration-line: none;
+    color: white;
+    font-size: 15px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+}
+
+.saveSchedule a:hover {
+    cursor: pointer;
+}
+
+#saveScheduleBtn{
+    
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+   
+}
+.routineSelect {
+    display: inline;
+    text-align: left;
+}
+.routineSelect #routine {
+    text-align: left;
+}
+
+.routineSelect input[type="text"]{
+    margin: 10px 5px;
+    color: #bbb;
+    height: 20px;
+    padding: 0px;
 }
 
 /* scrollbar design */
