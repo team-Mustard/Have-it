@@ -49,7 +49,7 @@ $lastID = 1;
         <!-- buttons --> 
         <div class="right">
             <input value="목표 삭제" id="goalRemove" onclick="goalDelete(1);" class="word_4_btn bg_gray_btn round_btn" type="button" />
-            <input value="목표 수정" id="goalModyfy" onclick="modify();" class="word_4_btn bg_purple_btn round_btn" type="button"/>
+            <input value="목표 수정" id="goalModify" onclick="modify();" class="word_4_btn bg_purple_btn round_btn" type="button"/>
             <input value="수정 완료" id="goalSubmit" onclick="goalDelete(2);" class="word_4_btn bg_purple_btn round_btn modi_form" type="button"> 
         </div>
 
@@ -68,7 +68,7 @@ $lastID = 1;
             $rInter = explode(';', $Inter);
             
         echo '    
-        <div class="routine">
+        <div class="routine text-center">
             <!-- routine id -->
             <input type="text" value="'.$routineID.'" style="display:none;">
             
@@ -120,11 +120,11 @@ $lastID = 1;
             </div>
             
             <!-- edit -->
-            <div class="routineEdit modi_form goal_set_form">
+            <div class="routineEdit modi_form goal_set_form additional_space">
                 <input value="'.$routineName.'" type="text" class="routine_name"/>
                 <input type="color" name="colors'.$routineID.'" value="'.$color.'">
                 <input id="delete" class="rou" type="submit" name="mode" value="x"/>
-                <p style="margin-bottom:10px;">주기　:
+                <p style="margin-bottom:25px;">주기　:
                     
                 
                     <input id="sun'.$routineID.'" type="checkbox"';
@@ -149,8 +149,8 @@ $lastID = 1;
     ?>
         <!-- routine add button and logic -->
         <div class="routinePlus modi_form goal_set_form">
+            <div id="bas<?=$lastID?>" class="text-center additional_space"></div>
             <input id="plus_btn" value="+ 루틴 추가하기" onclick="addRoutine(<?=$lastID?>);" type="button" />
-            <div id="bas<?=$lastID?>"></div>
         </div>
     
     </form>
@@ -173,7 +173,7 @@ $lastID = 1;
             routines[i].classList += ' modi_form';
         }
         document.getElementsByClassName("goalPrint")[0].classList += ' modi_form';
-        document.getElementById("goalModyfy").classList += ' modi_form';
+        document.getElementById("goalModify").classList += ' modi_form';
 
     }
     
@@ -182,7 +182,7 @@ $lastID = 1;
 
         var form = '<input name="routine_name'+routine_num+'" class="routine_name" type="text" placeholder="루틴 이름" required/>\
         <input type="color" name="colors'+routine_num+'"><br>\
-        <p style="margin-bottom:10px;" required>주기　:\
+        <p style="margin-bottom:25px;" required>주기　:\
         <input id="sun'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="sun">\
         <label for="sun'+routine_num+'">일</label>\
         <input id="mon'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="mon">\
@@ -200,7 +200,7 @@ $lastID = 1;
 
         btn_count++;
         var routineSpace = routine_num + btn_count;
-        form += '<div id="bas'+routineSpace+'"></div>';
+        form += '<div id="bas'+routineSpace+'" class="text-center"></div>';
         newRoutine.innerHTML += form;
     }
     
