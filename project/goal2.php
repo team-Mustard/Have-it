@@ -200,7 +200,7 @@ $lastID = 1;
 
         btn_count++;
         var routineSpace = routine_num + btn_count;
-        form += '<div id="bas'+routineSpace+'" class="text-center"></div>';
+        form += '<div id="bas'+routineSpace+'" class="text-center additional_space"></div>';
         newRoutine.innerHTML += form;
     }
     
