@@ -8,12 +8,8 @@ switch($mode){
         
     case 1:{
         
-        /*$today = date("Y-m-d");       
-        $year = date("Y",strtotime($today));
-        $month = date("m",strtotime($today));
-        $day = date("d",strtotime($today));
-        */
-        $today = '2021-05-03';    
+        $today = date("Y-m-d");   
+        //$today = '2021-09-06';    
         $year = date("Y",strtotime($today));
         $month = date("m",strtotime($today));
         $day = date("d",strtotime($today));
@@ -91,12 +87,17 @@ switch($mode){
         $insertWeeklySql = "insert into WeeklyReport (userID, date) 
                     values($userid,'$today')";
         mysqli_query($conn, $insertWeeklySql);
-        $selectWeeklySql = "select weeklyID from weeklyreport where date = '$today'";
+        $selectWeeklySql = "select weeklyID from weeklyreport where date = '$today' and userid = $userid";
         $weeklyResult = mysqli_query($conn, $selectWeeklySql);
         $weeklyRow = mysqli_fetch_array($weeklyResult, MYSQLI_ASSOC);
         $weeklyID = $weeklyRow['weeklyID'];
+        if(isset($goalIDArr)){
+            $goalIDCount = count($goalIDArr);
+            
+        }else{
+            $goalIDCount = 0;
+        }
         
-        $goalIDCount = count($goalIDArr);
                              
         for($w=0;$w<$goalIDCount;$w++){
             $goalID = $goalIDArr[$w];
@@ -140,11 +141,11 @@ switch($mode){
         
         
         mysqli_close($conn);
-        echo ("
-                <script>
-                    history.back();
-                </script>
-        ");
+        echo("
+                    <script>
+                        location.href='./index.php';
+                    </script>"
+                    );
         
         break;
         
@@ -164,8 +165,13 @@ switch($mode){
         if(isset($_POST['inputWeeklyImg'])) $weeklyImg = $_POST['inputWeeklyImg'];
         if(isset($_POST['failure'])) $failure = $_POST['failure'];
         $inputFailure = null;
-        
-        for($i=0;$i<count($failure);$i++){
+        if(isset($failure)){
+            $failureCount = count($failure);
+        }else{
+            $failureCount = 0;
+        }
+        echo $failureCount;
+        for($i=0;$i<$failureCount;$i++){
               
             if($inputFailure!=null){
                 
@@ -181,7 +187,7 @@ switch($mode){
               
         $uploadDir = "upload/$userid/";
         $datetime = date("YmdHis");
-        if(!is_dir(!$uploadDir)){
+        if(!is_dir($uploadDir)){
             mkdir($uploadDir, 0777,true);
         }
         
@@ -190,17 +196,15 @@ switch($mode){
         if(isset($_FILES['inputImg'])){
             if($_FILES['inputImg']['size']!=null){
                 $inputImg = "$uploadDir$datetime.png";
-
-                pp($_FILES['inputImg']);
                 move_uploaded_file($_FILES["inputImg"]['tmp_name'], $inputImg); 
                 $updateSql = "update weeklyreport set goodEvaluation = '$good', badEvaluation = '$bad', score = '$weeklyScore', image = '$inputImg', weekly_failure = '$inputFailure'  where weeklyID = '$weeklyID'";
             }else {
                 $updateSql = "update weeklyreport set goodEvaluation = '$good', badEvaluation = '$bad', score = '$weeklyScore', weekly_failure = '$inputFailure' where weeklyID = '$weeklyID'";
-                
+
             }
             
         }
-        echo $updateSql;
+        //echo $updateSql;
         mysqli_query($conn, $updateSql);
         mysqli_close($conn);
         
