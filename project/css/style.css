@@ -237,6 +237,7 @@ hr {
     border-left: none;
     text-align: center;
     width: 100px;
+    background-color: transparent;
 
 }
 #score input:focus {
@@ -252,6 +253,7 @@ hr {
     border:5px solid;
     border-radius: 20px;
     border-color: #d2c5e1;
+    background-color: #d2c5e1;
     margin: 10px;
     
 }
@@ -267,6 +269,8 @@ hr {
     height:150px;
     border: none;
     font-size: 15px;
+    resize: none;
+    background-color: transparent;
 
 }
 .writeEval textarea:focus{
@@ -275,12 +279,12 @@ hr {
 
 }
 
-
 #bad {
     box-sizing: border-box; 
     padding: 10px;
     border:5px solid;
     border-color: #d2c5e1;
+    background-color:#d2c5e1;
     border-radius: 20px;
     margin: 10px;
     
@@ -309,12 +313,18 @@ hr {
    
 }
 
-.date {
+.date, .preDate, .nextDate {
     width: calc(100% / 7);
     padding: 3px;
     text-align: right;
 
 }
+
+.term {
+    background-color: #d2c5e1;
+    
+}
+
 .checkFailure {
     padding: 5px;
     margin-left: 25px;
@@ -461,6 +471,7 @@ hr {
     margin: 0 auto;
 
 }
+
 #customLegend {
     position: absolute;
     top: 62px;
@@ -480,6 +491,7 @@ hr {
     margin-right: 5px;
     vertical-align: middle;
 }
+
 #monthChart {
     padding-left: 10px;
 }
