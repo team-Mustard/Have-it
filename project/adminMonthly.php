@@ -2,9 +2,8 @@
 session_start();
 if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
 include "db/dbconn.php";
-$userid = 1;
-//$today = date("Y-m-d");
-$today = '2021-06-01';
+$today = date("Y-m-d");
+//$today = '2021-10-01';
 $year = date("Y",strtotime($today));
 $month = date("m",strtotime($today));
 $day = date("d",strtotime($today));
@@ -186,11 +185,19 @@ if($trackerResult){
         
     }
 }
+if(isset($goalIDArr)){
+    $goalIDCount = count($goalIDArr);
+    
+}else{
+    
+    $goalIDCount = 0;
+}
 
-
-
-$goalIDCount = count($goalIDArr);
-$routineIDCount = count($routineIDArr);
+if(isset($routineIDArr)){
+    $routineIDCount = count($routineIDArr);
+}else{
+    $routineIDCount = 0;
+}
 
 for($w=0;$w<$goalIDCount;$w++){
     $goalID = $goalIDArr[$w];
@@ -279,19 +286,45 @@ for($w=0;$w<$goalIDCount;$w++){
 for($z = 0; $z < $routineIDCount; $z++){
     
     $routineID = $routineIDArr[$z];
-    $routineAchieve[$routineID] = round($countCheckRoutine[$routineID] / $countRoutine[$routineID] * 100,1);
+    if(isset($countCheckRoutine[$routineID])){
+        $routineAchieve[$routineID] = round($countCheckRoutine[$routineID] / $countRoutine[$routineID] * 100,1);
+        
+    }else{
+        $routineAchieve[$routineID] = 1;
+    }
   
         
 }
 
-$highestRoutine = max($routineAchieve);
-$highestRoutineID = array_search($highestRoutine,$routineAchieve);
+if(isset($routineAchieve)){
+    $highestRoutine = max($routineAchieve);
+    $highestRoutineID = array_search($highestRoutine,$routineAchieve);
+    $lowestRoutine = min($routineAchieve);
+    $lowestRoutineID = array_search($lowestRoutine,$routineAchieve);
+}else{
+    $highestRoutine = null;
+    $highestRoutineID = null;
+    $lowestRoutine = null;
+    $lowestRoutineID = null;
 
-$lowestRoutine = min($routineAchieve);
-$lowestRoutineID = array_search($lowestRoutine,$routineAchieve);
+}
 
-$SaveHighest = "$highestRoutineID;$countRoutine[$highestRoutineID];$countCheckRoutine[$highestRoutineID]";
-$SaveLowest = "$lowestRoutineID;$countRoutine[$lowestRoutineID];$countCheckRoutine[$lowestRoutineID]";
+if(isset($countRoutine)){
+    if(!isset($countCheckRoutine[$highestRoutineID])){
+        $countCheckRoutine[$highestRoutineID] = 0;
+    }
+    if(!isset($countCheckRoutine[$lowestRoutineID])){
+        $countCheckRoutine[$lowestRoutineID] = 0;
+    }
+    $SaveHighest = "$highestRoutineID;$countRoutine[$highestRoutineID];$countCheckRoutine[$highestRoutineID]";
+    $SaveLowest = "$lowestRoutineID;$countRoutine[$lowestRoutineID];$countCheckRoutine[$lowestRoutineID]";
+    
+}else{
+    $SaveHighest = "0;0;0";
+    $SaveLowest = "0;0;0";
+    
+    
+}
 
 
 
@@ -331,26 +364,35 @@ while($failRow = mysqli_fetch_array($failResult,MYSQLI_ASSOC)){
     
 }
 $inputFail = null;
-for($z=0;$z<count($failureArr);$z++){
-        
-        $failureID = $failureArr[$z];
-        if($failureID !=null){
-        
-            if($inputFail !=null){
-               $inputFail = "$inputFail;$failureID-$countFailure[$failureID]";
-   
-            }else{
-            
-        
-                $inputFail = "$failureID-$countFailure[$failureID]";
-      
+if(isset($failureArr)){
+    for($z=0;$z<count($failureArr);$z++){
+
+            $failureID = $failureArr[$z];
+            if($failureID !=null){
+
+                if($inputFail !=null){
+                   $inputFail = "$inputFail;$failureID-$countFailure[$failureID]";
+
+                }else{
+
+
+                    $inputFail = "$failureID-$countFailure[$failureID]";
+
+                }
+
             }
- 
-        }
-   
+
+    }
+    
+    
 }
+if($totalAchieve == 0){
+    $insertTotal = 0;
+}else{
     
 $insertTotal = round($totalCheckAchieve / $totalAchieve * 100,3);
+    
+}
 
 $updateMonthlySql = "update monthlyreport set lowestRoutine = '$SaveLowest', highestRoutine = '$SaveHighest', monthly_failure = '$inputFail',totalAchieve = $insertTotal where monthlyID = $monthlyID";
 
@@ -359,12 +401,12 @@ $updateMonthlySql = "update monthlyreport set lowestRoutine = '$SaveLowest', hig
 mysqli_query($conn, $updateMonthlySql);
 
 mysqli_close($conn);
-echo ("
-                <script>
-                    history.back();
-                </script>
-        ");
-echo $achieveTimeSql;
+echo("
+                    <script>
+                        location.href='./index.php';
+                    </script>"
+);
+/*echo $achieveTimeSql;
 echo "<br>";
 echo $achieveWeekSql;
 echo "<br>";
@@ -381,7 +423,7 @@ function pp($v){
 	echo "</xmp><br>";
 }
 
-/*
+
 echo "<br><br>시간 총 루틴";
 pp($countHour);
 echo "시간 체크 루틴<br>";
