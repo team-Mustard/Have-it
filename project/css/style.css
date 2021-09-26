@@ -703,12 +703,16 @@ footer {
     text-decoration: none;
 }
 
+.dark footer p {
+    color: #969696;
+}
+
 .dark {
     background: #343434;
     color: #bbb;
 }
 
-.dark input, .dark label, .dark p {
+.dark input[type="text"], .dark label, .dark p {
     color: #bbb;
 }
 
@@ -718,3 +722,41 @@ footer {
 }
 
 /* bottom.php css end */
+
+
+/* button design start */
+.word_2_btn {
+    width: 50px;
+    height : 28px;
+    padding : 3px 8px;
+    margin: 0 2px;
+}
+
+.word_4_btn {
+    width: 80px;
+    height : 28px;
+    padding: 3px 8px;
+    margin: 0 3px;
+}
+
+.bg_purple_btn {
+    background-color: #61019A;
+    color: #f2f2f2;
+}
+
+.bg_gray_btn {
+    background-color: #EFEFEF;
+    color: #111;
+}
+
+.bg_indigo_btn {
+    background-color: #04005E;
+    color: #f2f2f2;
+}
+
+.round_btn {
+    border: none;
+    border-radius: 5px ;
+}
+
+/* button design end */
