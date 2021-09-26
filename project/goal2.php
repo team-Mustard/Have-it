@@ -47,9 +47,8 @@ $lastID = 1;
 
         <!-- buttons --> 
         <div class="right">
-            <input value="목표 삭제" id="goalRemove" onclick="" class="word_4_btn bg_gray_btn round_btn" type="button" />
+            <input value="목표 삭제" id="goalRemove" class="word_4_btn bg_gray_btn round_btn" type="submit" />
             <input value="목표 수정" id="goalModyfy" onclick="modify();" class="word_4_btn bg_purple_btn round_btn" type="button"/>
-            
             <input value="수정 완료" id="goalSubmit" class="word_4_btn bg_purple_btn round_btn modi_form" type="submit"> 
         </div>
 
@@ -91,6 +90,40 @@ $lastID = 1;
             </div>
         </div>
 
+        <div class="routine additional_space">
+            <!-- routine id -->
+            <input type="text" value="<?=$routineID?>" style="display:none;">
+            
+            <!-- print -->
+            <div class="routinePrint">
+                <div class="routineIcon text-center left">
+                    <i class="fas fa-tools" style="font-size:30px; color: <?=$color?>;"></i>
+                    <p style="color: <?=$color?>;"><?=$color?></p>
+                </div>
+                <span class="routineName left">
+                    <p class="fa-2" style="color:<?=$color?>;"><?=$routineName?></p>
+                </span>
+                <div id="basket<?=$routineID?>" class="routineBasket clear" style="background-color: <?=$color?>; height: 50px;">
+                </div>
+            </div>
+
+            <!-- edit -->
+            <div class="routineEdit modi_form goal_set_form">
+                <input value="<?=$routineName?>" type="text" class="routine_name"/>
+                <input type="color" name="colors<?=$routineID?>" value="<?=$color?>">
+                <input id="delete" class="rou" type="submit" name="mode" value="x"/>
+                <p style="margin-bottom:10px;">주기　:
+                    <input id="sun<?=$routineID?>" type="checkbox" name="routine<?=$routineID?>[]" value="sun"><label for="sun<?=$routineID?>">일</label>
+                    <input id="mon<?=$routineID?>" type="checkbox" name="routine<?=$routineID?>[]" value="mon"><label for="mon<?=$routineID?>">월</label>
+                    <input id="tue<?=$routineID?>" type="checkbox" name="routine<?=$routineID?>[]" value="tue"><label for="tue<?=$routineID?>">화</label>
+                    <input id="wed<?=$routineID?>" type="checkbox" name="routine<?=$routineID?>[]" value="wed"><label for="wed<?=$routineID?>">수</label>
+                    <input id="thu<?=$routineID?>" type="checkbox" name="routine<?=$routineID?>[]" value="thu"><label for="thu<?=$routineID?>">목</label>
+                    <input id="fri<?=$routineID?>" type="checkbox" name="routine<?=$routineID?>[]" value="fri"><label for="fri<?=$routineID?>">금</label>
+                    <input id="sat<?=$routineID?>" type="checkbox" name="routine<?=$routineID?>[]" value="sat"><label for="sat<?=$routineID?>">토</label>
+                </p>
+            </div>
+        </div>
+        
         <!-- routine add button and logic -->
         <div class="routinePlus modi_form goal_set_form">
             <input id="plus_btn" value="+ 루틴 추가하기" onclick="addRoutine(<?=$lastID?>);" type="button" />
@@ -106,11 +139,18 @@ $lastID = 1;
     let btn_count = 0;
 
     function modify() {
-        var modi_form = document.getElementsByClassName("modi_form");
+        let modi_form = document.getElementsByClassName("modi_form");
+        let routines = document.getElementsByClassName("routinePrint");
 
-        for(var i = modi_form.length-1 ; i >= 0; i--) {
-                modi_form[i].classList.remove("modi_form");
-            }
+        for(let i = modi_form.length-1 ; i >= 0; i--) {
+            modi_form[i].classList.remove("modi_form");
+        }
+        for(let i = routines.length-1 ; i >= 0; i--) {
+            routines[i].classList += ' modi_form';
+        }
+        document.getElementsByClassName("goalPrint")[0].classList += ' modi_form';
+        document.getElementById("goalModyfy").classList += ' modi_form';
+
     }
 
     function addRoutine(routine_num) {
