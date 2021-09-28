@@ -145,17 +145,28 @@
         labels: ["일", "월", "화", "수", "목", "금", "토"],
         datasets: [
             <?php 
-            
-                $dayofweekGoalIDCount = count($goalIDArr);
-                for($i=0;$i<$dayofweekGoalIDCount;$i++){
-                    $goalID = $goalIDArr[$i];
-                
-                   echo " {
-                        data: [$dayofweek[$goalID]],
-                        backgroundColor: '$goalColor[$goalID]'
+                // $goalIDArr예외처리 하기
+                if(isset($goalIDArr)){
+                    $dayofweekGoalIDCount = count($goalIDArr);
+                    for($i=0;$i<$dayofweekGoalIDCount;$i++){
+                        $goalID = $goalIDArr[$i];
 
-                    },";
-            }
+                       echo " {
+                            data: [$dayofweek[$goalID]],
+                            backgroundColor: '$goalColor[$goalID]'
+
+                        },";
+
+                }
+                
+            }else{
+                        echo " {
+                            data: [],
+                            backgroundColor: ''
+
+                        },";
+                        
+                    }
               
                 ?>
             
@@ -235,7 +246,7 @@
     
     const term = new Date('<?=$date?>');
     var z = 1;
-    for(var i=0; i <7;i++){  
+    for(var i=1; i <8;i++){  
         var w = 0;
         
         for (let date of document.querySelectorAll('.date')) {
