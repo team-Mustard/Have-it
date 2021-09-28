@@ -17,7 +17,11 @@ $term_e = $row['endTerm'];
 $term_s_dot = str_replace("-", ".", $term_s);
 $term_e_dot = str_replace("-", ".", $term_e);
 
-$lastID = 1;
+$last = "SELECT * FROM routine ORDER BY routineID DESC LIMIT 1";
+$l_result = mysqli_query($conn, $last);
+$l_row = mysqli_fetch_array($l_result);
+$lastID = $l_row['routineID'];
+$lastID += 1;
 
 ?>
 
@@ -49,8 +53,8 @@ $lastID = 1;
         <!-- buttons --> 
         <div class="right">
             <input value="목표 삭제" id="goalRemove" onclick="goalDelete(1);" class="word_4_btn bg_gray_btn round_btn" type="button" />
-            <input value="목표 수정" id="goalModyfy" onclick="modify();" class="word_4_btn bg_purple_btn round_btn" type="button"/>
-            <input value="수정 완료" id="goalSubmit" onclick="goalDelete(2);" class="word_4_btn bg_purple_btn round_btn modi_form" type="button"> 
+            <input value="목표 수정" id="goalModify" onclick="modify()" class="word_4_btn bg_purple_btn round_btn" type="button"/>
+            <input value="수정 완료" id="goalSubmit" onclick="count_return(); goalDelete(2);" class="word_4_btn bg_purple_btn round_btn modi_form" type="button"> 
         </div>
 
         <div class="clear"></div>
@@ -59,7 +63,8 @@ $lastID = 1;
         <?php
         $routine = "SELECT * FROM Routine WHERE goalID ='$goalID'";
         $result2 = mysqli_query($conn, $routine);
-        
+        $bid = 0;
+               
         while($row2 = mysqli_fetch_array($result2)){
             $routineID = $row2['routineID'];
             $color = $row2['color'];
@@ -70,7 +75,7 @@ $lastID = 1;
         echo '    
         <div class="routine">
             <!-- routine id -->
-            <input type="text" value="'.$routineID.'" style="display:none;">
+            <input style="display:none;" type="text" name="rouID'.$bid.'" value="'.$routineID.'">
             
             <!-- print -->
             <div class="routinePrint">
@@ -120,10 +125,10 @@ $lastID = 1;
             </div>
             
             <!-- edit -->
-            <div class="routineEdit modi_form goal_set_form">
-                <input value="'.$routineName.'" type="text" class="routine_name"/>
+            <div id="rouedit" class="routineEdit modi_form goal_set_form">
+                <input name="rouName'.$routineID.'" value="'.$routineName.'" type="text" class="routine_name"/>
                 <input type="color" name="colors'.$routineID.'" value="'.$color.'">
-                <input id="delete" class="rou" type="submit" name="mode" value="x"/>
+                <input id="delete" class="rou" onclick="plusrouID('.$routineID.')" type="button" name="mode" value="x"/>
                 <p style="margin-bottom:10px;">주기　:
                     
                 
@@ -145,12 +150,14 @@ $lastID = 1;
                 </p>
             </div>
         </div>';
+        $bid++;
         }
     ?>
         <!-- routine add button and logic -->
         <div class="routinePlus modi_form goal_set_form">
             <input id="plus_btn" value="+ 루틴 추가하기" onclick="addRoutine(<?=$lastID?>);" type="button" />
             <div id="bas<?=$lastID?>"></div>
+            <div id="btn_count_return"></div>
         </div>
     
     </form>
@@ -170,14 +177,15 @@ $lastID = 1;
             modi_form[i].classList.remove("modi_form");
         }
         for(let i = routines.length-1 ; i >= 0; i--) {
-            routines[i].classList += ' modi_form';
+            routines[i].classList += 'modi_form';
         }
         document.getElementsByClassName("goalPrint")[0].classList += ' modi_form';
-        document.getElementById("goalModyfy").classList += ' modi_form';
+        document.getElementById("goalModify").classList += ' modi_form';
 
     }
     
     function addRoutine(routine_num) {
+        routine_num += btn_count;
         var newRoutine = document.getElementById("bas"+routine_num);
 
         var form = '<input name="routine_name'+routine_num+'" class="routine_name" type="text" placeholder="루틴 이름" required/>\
@@ -197,7 +205,9 @@ $lastID = 1;
         <label for="fri'+routine_num+'">금</label>\
         <input id="sat'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="sat">\
         <label for="sat'+routine_num+'">토</label>';
-
+        
+        form += '<input name="plusID'+btn_count+'" type="text" style="display:none;" value="'+routine_num+'">';
+        
         btn_count++;
         var routineSpace = routine_num + btn_count;
         form += '<div id="bas'+routineSpace+'"></div>';
@@ -214,4 +224,15 @@ $lastID = 1;
         document.goalForm.submit();
     }
     
+    function plusrouID(routineID){
+        document.goalForm.action='./db/routinedelete.php?rouID='+routineID;
+        document.goalForm.submit();
+    }
+    
+    function count_return(){
+        var con = document.getElementById("btn_count_return");
+        var plus_con = '<input name="btn_count" type="text" value="'+btn_count+'" style="display:none;">';
+        
+        con.innerHTML += plus_con;
+    }
 </script>

@@ -61,25 +61,25 @@
         /*echo $repeat.", ";*/
         
         if($repeat == "mon"){ 
-            $arr[0] = "1"; 
-        }
-        else if($repeat == "tue"){ 
             $arr[1] = "1"; 
         }
-        else if($repeat == "wed"){ 
+        else if($repeat == "tue"){ 
             $arr[2] = "1"; 
         }
-        else if($repeat == "thu"){ 
+        else if($repeat == "wed"){ 
             $arr[3] = "1"; 
         }
-        else if($repeat == "fri"){ 
+        else if($repeat == "thu"){ 
             $arr[4] = "1"; 
         }
-        else if($repeat == "sat"){ 
+        else if($repeat == "fri"){ 
             $arr[5] = "1"; 
         }
-        else if($repeat == "sun"){
+        else if($repeat == "sat"){ 
             $arr[6] = "1"; 
+        }
+        else if($repeat == "sun"){
+            $arr[7] = "1"; 
         }
         
     }
