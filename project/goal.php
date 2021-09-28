@@ -73,7 +73,7 @@ $lastID += 1;
             $rInter = explode(';', $Inter);
             
         echo '    
-        <div class="routine">
+        <div class="routine text-center">
             <!-- routine id -->
             <input style="display:none;" type="text" name="rouID'.$bid.'" value="'.$routineID.'">
             
@@ -86,7 +86,7 @@ $lastID += 1;
                 <span class="routineName left">
                     <p class="fa-2" style="color:'.$color.';">'.$routineName.'</p>
                 </span>
-                <div id="basket'.$routineID.'" class="routineBasket clear" style="background-color: '.$color.'; height: 50px;">';
+                <div id="basket'.$routineID.'" class="routineBasket clear" style="background-color: '.$color.'; height: 45px;">';
                 
                 /* 루틴 시작후 일주일 지났을 때 마다 check 초기화 */
                 $today = date("Y-m-d");
@@ -125,12 +125,11 @@ $lastID += 1;
             </div>
             
             <!-- edit -->
-            <div id="rouedit" class="routineEdit modi_form goal_set_form">
+            <div id="rouedit" class="routineEdit modi_form goal_set_form additional_space">
                 <input name="rouName'.$routineID.'" value="'.$routineName.'" type="text" class="routine_name"/>
                 <input type="color" name="colors'.$routineID.'" value="'.$color.'">
                 <input id="delete" class="rou" onclick="plusrouID('.$routineID.')" type="button" name="mode" value="x"/>
-                <p style="margin-bottom:10px;">주기　:
-                    
+                <p style="margin-bottom:10px;">주기　:      
                 
                     <input id="sun'.$routineID.'" type="checkbox"';
                     echo ($rInter[0]==1 ? 'checked' : ''); echo ' name="routine'.$routineID.'[]" value="sun"><label for="sun'.$routineID.'">일</label>
@@ -155,6 +154,7 @@ $lastID += 1;
     ?>
         <!-- routine add button and logic -->
         <div class="routinePlus modi_form goal_set_form">
+            <div id="bas<?=$lastID?>" class="text-center additional_space"></div>
             <input id="plus_btn" value="+ 루틴 추가하기" onclick="addRoutine(<?=$lastID?>);" type="button" />
             <div id="bas<?=$lastID?>"></div>
             <div id="btn_count_return"></div>
@@ -177,7 +177,7 @@ $lastID += 1;
             modi_form[i].classList.remove("modi_form");
         }
         for(let i = routines.length-1 ; i >= 0; i--) {
-            routines[i].classList += 'modi_form';
+            routines[i].classList += ' modi_form';
         }
         document.getElementsByClassName("goalPrint")[0].classList += ' modi_form';
         document.getElementById("goalModify").classList += ' modi_form';
@@ -190,7 +190,7 @@ $lastID += 1;
 
         var form = '<input name="routine_name'+routine_num+'" class="routine_name" type="text" placeholder="루틴 이름" required/>\
         <input type="color" name="colors'+routine_num+'"><br>\
-        <p style="margin-bottom:10px;" required>주기　:\
+        <p style="margin-bottom:25px;" required>주기　:\
         <input id="sun'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="sun">\
         <label for="sun'+routine_num+'">일</label>\
         <input id="mon'+routine_num+'" type="checkbox" name="routine'+routine_num+'[]" value="mon">\
@@ -210,7 +210,7 @@ $lastID += 1;
         
         btn_count++;
         var routineSpace = routine_num + btn_count;
-        form += '<div id="bas'+routineSpace+'"></div>';
+        form += '<div id="bas'+routineSpace+'" class="text-center additional_space"></div>';
         newRoutine.innerHTML += form;
     }
     

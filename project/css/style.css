@@ -541,7 +541,7 @@ hr {
 
 .con{
     background-color: white;
-    margin-right: 5px;
+    margin-left: 5px;
     margin-top: 5px;
     width: 38px;
     height: 35px;
@@ -576,14 +576,22 @@ hr {
     margin-top: 20px;
 }
 #goalName {
-    width: 55%;
+    width: 50%;
+    margin: 7px 0;
 }
-.routinePrint, .routineEdit, .routinePlus {
-    margin-top: 20px;
-    margin-left: 18%;
-    margin-right: 18%;
+.goalPrint > span {
+    margin: 3px 0;
 }
-
+.routinePrint, .routinePlus {
+    margin-bottom: 10px;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+.routineEdit {
+    margin-bottom: 30px;
+    margin-left: 20%;
+    margin-right: 20%;
+}
 .routineName {
     margin: 20px 0;
 }
@@ -601,7 +609,7 @@ hr {
   border-top: 4px double #777;
   text-align: center;
   overflow: visible;
-  margin: 45px 10%;
+  margin: 45px 0;
 }
 
 #between:after {
@@ -615,14 +623,14 @@ hr {
 }
 
 .goal_set_form input[id="goal_name"]{
-    width: 80%;
+    width: 100%;
     margin-bottom: 10px;
     margin-top: 20px;
 }
 
 .goal_set_form input[id="plus_btn"] {
-    width: 80%;
-    margin: auto;
+    width: 84%;
+    margin:0 8%;
     border-radius: 5px;
     border: 0px;
     background-color: #61019A;
@@ -631,7 +639,7 @@ hr {
 }
 
 .goal_set_form input[class="routine_name"] {
-    width: 72%;
+    width: 75%;
     margin-bottom: 10px;
 }
 

@@ -8,6 +8,28 @@
     $Interval = "";
     $arr = array("0", "0", "0", "0", "0", "0", "0");
     $goalName = $_POST['goalName'];
+    
+    $term_s_date = $_POST['termS'];
+    $term_e_date = $_POST['termE'];
+
+    $gcheck = "SELECT * FROM goal";
+    $check_result = mysqli_query($conn, $gcheck);
+    $check1 = "true";
+
+    while($grow = mysqli_fetch_array($check_result)){
+        $check_goal = $grow['goalName'];
+        
+        if($check_goal == $goalName){
+            echo("<script> alert('중복된 목표가 존재합니다.'); </script>");
+            $check1 = "false";
+            echo("<script> history.back(); </script>");
+            break;
+        }
+    }
+
+    $goal_update = "UPDATE goal SET goalName='$goalName', startTerm='$term_s_date', endTerm='$term_e_date' WHERE goalID='$goalID'";
+    $goal_result = $conn->query($goal_update);
+
 
     $sql = "SELECT * FROM routine WHERE goalID='$goalID'";
     $data = mysqli_query($conn, $sql);
@@ -105,7 +127,7 @@
                 }
                 $pInterval = implode(";", $parr);
                 
-                $sql6 = "INSERT INTO routine(routineName, color, rInterval, habbitTracker, goalID) VALUES('$p_routineName', '$pcolor', '$pInterval', '0', '$GoalID')";
+                $sql6 = "INSERT INTO routine(routineName, color, rInterval, habbitTracker, goalID) VALUES('$p_routineName', '$pcolor', '$pInterval', '0', '$goalID')";
                 $result6 = $conn->query($sql6);
                 
                 $parr = array("0", "0", "0", "0", "0", "0", "0");
@@ -113,7 +135,7 @@
         }
                 
         
-    echo("<script>history.back();</script>");
+    //echo("<script>history.back();</script>");
     
-    }
+    
 ?>
