@@ -10,6 +10,10 @@ img.logo {
     width: 180px;
 }
 
+.sign {
+    margin: 60px auto;
+}
+
 .sign .btn {
     display: inline-block;
     width: 150px;
@@ -61,21 +65,97 @@ a:visited {
     background-color: #FF1F78;
 }
 
-.blue {
-    background-color: #8190C1;
-    padding: 50px 20%;
+.problem {
+    padding: 90px 0;
+    background-color:#fafafa; 
+    margin:auto;
 }
 
-.babypink {
-    background-color: #E080C0;
-    padding: 30px 20%;
+.problemIcon {
+    margin-bottom:35px; 
+    color: #404040;
+    filter: drop-shadow(5px 5px 5px #000);
+    animation-name: up;
+    animation-duration: 2s;
 }
 
-#infoCarousel ol li{
-    border-color: purple;
+@keyframes up {
+    from {transform:translateY(35px);}
+    to {transform:translateY(0px);}
 }
 
-#infoCarousel ol li.active{
-    background: purple;
-    margin: 0 5px;
+.problemSub {
+    margin-bottom: 0px;
+}
+
+.problemTitle > b {
+    font-size:1.5em;
+}
+
+.footer .fa-arrow-circle-up {
+    font-size: 3em;
+    margin: 30px auto;
+    color: rgba(100, 100, 100, 50%);
+}
+.footer .fa-arrow-circle-up:hover {
+    color: rgba(100, 100, 100, 80%);
+    cursor: pointer;
+}
+
+.solution {
+    margin: 60px auto;
+}
+
+.carousel {
+    position: relative;
+    height: 215px;
+    
+}
+
+.carousel div {
+    position: absolute;
+    transition: transform 1s, left 1s, opacity 1s, z-index 0s;
+    opacity: 1;
+}
+
+.carousel img {
+    width: 150px;
+    transition: width 1s;
+    filter: drop-shadow(5px 5px 5px #000);
+}
+
+.prev {
+    z-index: 5;
+    left: 35%;
+    transform: translate(-50%, 50px);
+}
+
+.prev img {
+    width: 100px;
+}
+
+.selected {
+    z-index: 10;
+    left: 50%;
+    transform: translate(-50%, 0px);
+}
+
+.next {
+    z-index: 4;
+    left: 65%;
+    transform: translate(-50%, 50px);
+}
+
+.next img {
+    width: 100px;
+}
+
+.hiddenimg {
+    z-index: 0;
+    left: 50%;
+    transform: translate(-50%, 50px)
+}
+
+.hiddenimg img {
+    width: 100px;
 }
