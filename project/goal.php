@@ -29,6 +29,7 @@ $lastID += 1;
     <form name="goalForm" method="post" action="./db/goalmodify.php">
         <!-- goal id -->
         <input type="text" name="goalID" value="<?=$goalID?>" style="display:none;">
+        <input type="text" name="ex_goalName" value="<?=$goalName?>" style="display:none;"> 
         
         <div class="goalNameZone">
             <!-- goal edit -->
@@ -71,6 +72,7 @@ $lastID += 1;
             $routineName = $row2['routineName'];
             $Inter = $row2['rInterval'];
             $rInter = explode(';', $Inter);
+            $all_routine[$bid] = $routineID;
             
         echo '    
         <div class="routine text-center">
@@ -215,13 +217,72 @@ $lastID += 1;
     }
     
     function goalDelete(index){
+        var a = false;
         if (index == 1){
             document.goalForm.action='./db/goaldelete.php';
         }
         else if(index == 2){
-            document.goalForm.action='./db/goalmodify.php';
+            if(goal_submit() == false){ return; }
+            else { document.goalForm.action='./db/goalmodify.php'; }
         }
         document.goalForm.submit();
+    }
+    
+    function goal_submit(){
+        var rad = document.goalForm.term;
+        
+        //목표 입력 x, 30자 초과
+        var goal_name = document.getElementsByName("goalName")[0].value;
+        var g_length = goal_name.length;
+        
+        if(g_length == 0){
+            alert("목표 이름을 입력해 주세요!");
+            return false;
+        }
+        else if(g_length > 30){
+            alert("목표 이름이 30자를 초과하였습니다!");
+            return false;
+        }
+    
+        var arr[];
+        var num = <?=$bid?>;
+        
+        for(var a=0;a<num;a++){
+            arr[a] = <?=$all_routine[]?>;
+            
+            <? echo "'$'all_routine" ?>;
+        }
+        /*요일 체크
+        routine_num -> 현재 보여주는 루틴 개수 + btn_count
+        i -> 해당 루틴의 아이디 (어떻게?)
+        for(var i=0; i<routine_num; i++){
+            var routines = document.getElementsByName("routine"+i+"[]");
+            var check = checkbox_permit(routines);
+            if (!check) {
+                var name_routine = document.getElementsByName("routine_name"+i)[0].value;
+                alert(name_routine+" 루틴의 주기를 하루 이상 체크해 주세요!");
+                return;
+            }
+        }
+        
+        //루틴 오류처리
+        routine_num -> 루틴의 개수
+        j -> 현재 보여주는 루틴의 아이디
+        for(var j=0; j<routine_num; j++){
+            var routineName = document.getElementsByName("routine_name"+j)[0].value;
+            var r_length = routineName.length;
+            
+            if(r_length == 0){
+                var z = j+1; 
+                alert(z+"번째 루틴의 이름을 입력하세요");
+                return;
+            }
+            else if(r_length > 50){
+                var z = j+1;
+                alert(z+"번째 루틴이 50자를 초과하였습니다.");
+                return;
+            }
+        }*/
     }
     
     function plusrouID(routineID){

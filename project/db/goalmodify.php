@@ -8,7 +8,7 @@
     $Interval = "";
     $arr = array("0", "0", "0", "0", "0", "0", "0");
     $goalName = $_POST['goalName'];
-    
+    $ex_goalName = $_POST['ex_goalName'];
     $term_s_date = $_POST['termS'];
     $term_e_date = $_POST['termE'];
 
@@ -20,15 +20,19 @@
         $check_goal = $grow['goalName'];
         
         if($check_goal == $goalName){
-            echo("<script> alert('중복된 목표가 존재합니다.'); </script>");
-            $check1 = "false";
-            echo("<script> history.back(); </script>");
-            break;
+            if($goalName != $ex_goalName){
+                echo("<script> alert('중복된 목표가 존재합니다.'); </script>");
+                $check1 = "false";
+                echo("<script> history.back(); </script>");
+                break;
+                }
         }
     }
 
-    $goal_update = "UPDATE goal SET goalName='$goalName', startTerm='$term_s_date', endTerm='$term_e_date' WHERE goalID='$goalID'";
-    $goal_result = $conn->query($goal_update);
+    if($check1 == "true"){
+        $goal_update = "UPDATE goal SET goalName='$goalName', startTerm='$term_s_date', endTerm='$term_e_date' WHERE goalID='$goalID'";
+        $goal_result = $conn->query($goal_update); 
+    
 
 
     $sql = "SELECT * FROM routine WHERE goalID='$goalID'";
@@ -133,9 +137,14 @@
                 $parr = array("0", "0", "0", "0", "0", "0", "0");
             }
         }
-                
-        
-    //echo("<script>history.back();</script>");
+    }
+
+    
+    //http://localhost/Have-it/project/index.php?page=goal&goalID=84
+    //$url = "http://localhost/Have-it/project/index.php?page=goal&goalID=".$last_goalID;
+    //echo("<script>window.location.href='$url'</script>");
+
+    echo("<script>history.back();</script>");
     
     
 ?>
