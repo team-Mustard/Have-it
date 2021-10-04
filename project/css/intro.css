@@ -1,13 +1,46 @@
 html, body {
     width: 100%;
 }
-
+body {
+    -ms-user-select: none; 
+    -moz-user-select: -moz-none; 
+    -moz-user-select: none;
+    -o-user-select: none;
+    -webkit-user-select: none; 
+    -khtml-user-select: none; 
+    user-select:none;
+}
 .container-fluid {
     padding:0;
 }
 
-img.logo {
+.logo > img, .footer > img {
+    filter: drop-shadow(3px 3px 3px #404040);
     width: 180px;
+}
+
+.logo {
+    display: inline-block;
+    padding: 0px 20px;
+}
+
+.line {
+    display: inline-block;
+    animation-name: lineDown;
+    animation-duration: 1s;
+    background-color: #04005E;
+    width: 5px;
+    height: 150px;
+}
+@keyframes lineDown {
+    from { height: 0px;}
+    to { height: 150px;}
+}
+
+.buttons {
+    display: inline-block;
+    margin: 0px 30px;
+    transform: translateY(-25px);
 }
 
 .sign {
@@ -21,15 +54,34 @@ img.logo {
     border-radius: 8px;
     color: white;
     padding: 5px;
-    margin: 5px 5px 30px 5px;
+    margin: 5px 5px 20px 5px;
+    filter: drop-shadow(5px 5px 5px #404040);
 }
 
-.sign h1:after {
-    content: "";
-    display: block;
-    width: 350px;
-    border-bottom: 5px solid #04005E;
-    margin: 25px auto 10px auto;
+.btn.first {
+    animation-name: btnDown1;
+    animation-duration: 2s;
+    transform-origin: 0% 50%;
+}
+.btn.second {
+    animation-name: btnDown2;
+    animation-duration: 2.5s;
+    transform-origin: 0% 50%;
+}
+@keyframes btnDown1 {
+    0% {transform: rotateY(-90deg) }
+    50% {transform: rotateY(-90deg) }
+    100% {transform: rotateY(0deg)}
+}
+@keyframes btnDown2 {
+    0% {transform: rotateY(-90deg) }
+    60% {transform: rotateY(-90deg) }
+    100% {transform: rotateY(0deg)}
+}
+
+.additional_space {
+    margin-top: 90px;
+    margin-bottom: 90px;
 }
 
 h6.loc:after {
@@ -67,7 +119,6 @@ a:visited {
 
 .problem {
     padding: 90px 0;
-    background-color:#fafafa; 
     margin:auto;
 }
 
@@ -103,7 +154,12 @@ a:visited {
 }
 
 .solution {
-    margin: 60px auto;
+    background-color:#fafafa; 
+    padding: 90px 0px;  
+}
+
+.solution h3 {
+    margin: 40px 0px;
 }
 
 .carousel {
