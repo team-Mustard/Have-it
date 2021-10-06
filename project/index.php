@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 if(isset($_SESSION['userid']))
     $_login = true; // 로그인 안돼있으면 소개 페이지로
@@ -25,6 +24,10 @@ else {
     }
     include_once "rightside.php";
     include_once "bottom.php";
-    }
-echo "<script> bg_check(); $(function(){ $('html').removeClass('no-js'); }); </script>";
+    
+    echo "<script> bg_check(); $(function(){ $('html').removeClass('no-js'); }); </script>";
+}
+
+echo "<script> $(function() { $('*').attr('draggable', 'false').attr('unselectable', 'on').on('dragstart', function() {return false;}).find('*').attr('draggable', 'false').attr('unselectable', 'on'); }); </script>";
+
 ?>
