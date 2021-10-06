@@ -48,7 +48,12 @@
         $rouColor = "colors".$routineID;
         $color = $_POST[$rouColor];
         $week = "routine".$routineID;
-        $repeats = $_POST[$week];
+        if(isset($_POST[$week])) $repeats = $_POST[$week];
+        else { echo("<script> alert('루틴 주기를 선택해주세요'); </script>");
+                break;
+                //echo("<script> history.back(); </script>"); 
+             }
+        //$repeats = $_POST[$week];
         
         $Interval = "";
         $arr = array("0", "0", "0", "0", "0", "0", "0");
