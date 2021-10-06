@@ -796,6 +796,31 @@ hr {
     margin: 40px 0;
 }
 
+.schedule-content h3, .goal-content h3, .eval-content h3, .mode-content h3, .logout-content h3{
+    margin-left: 20px;
+    
+}
+.example-img h4{
+    margin-left: 50px;
+}
+.example-img p{
+    margin-left: 60px;
+}
+.schedule-content, .goal-content, .eval-content, .mode-content, .logout-content {
+    display:none;()
+}
+#schedule-manual:checked + .schedule-content,
+#goal-manual:checked + .goal-content,
+#eval-manual:checked + .eval-content,
+#mode-manual:checked + .mode-content,
+#logout-manual:checked + .logout-content{
+    
+    display: block;   
+}
+
+
+
+
 /* example css end */
 
 
