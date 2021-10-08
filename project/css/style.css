@@ -1,6 +1,13 @@
 body {
   padding-top: 51px;
   height: 100%;
+  -ms-user-select: none; 
+  -moz-user-select: -moz-none; 
+  -moz-user-select: none;
+  -o-user-select: none;
+  -webkit-user-select: none; 
+  -khtml-user-select: none; 
+  user-select:none;
 }
 .left {
     float: left;
@@ -787,10 +794,6 @@ hr {
 
 
 /* example css start */
-
-.no-drag {
-    -ms-user-select: none; -moz-user-select: -moz-none; -webkit-user-select: none; -khtml-user-select: none; user-select:none;
-}
 
 .example-img {
     margin: 40px 0;
