@@ -19,8 +19,10 @@
                 <input type="email" name="email" placeholder="e-mail"><br>
                 <label><i class="fas fa-key blue"></i></label>
                 <input type="password" name="password" placeholder="password"><br>
+                <P class="pw-rule">*비밀번호의 길이는 8자 이상 18자 이하만 가능합니다.</P>
                 <label><i class="fas fa-check-double blue"></i></label>
                 <input type="password" name="password_check" placeholder="password double check"><br>
+                <p class="pw-check">*비밀번호가 일치하지 않습니다.</p>
                 <hr class="hr_bord">
                 <input type="submit" class="btn purple fa-2" value="가입하기">
                 
@@ -29,3 +31,36 @@
     </div>
   </body>
 </html>
+
+<script>
+  let pwOldVal = "";
+
+  $('input[name="password"]').on("propertychange change keyup paste input", function() {
+    let currentVal = $(this).val();
+    if(currentVal == pwOldVal) {
+        return;
+    }
+
+    if((currentVal.length < 8) || (currentVal.length > 18)) {
+      $('.pw-rule').css("display", "block");
+    } else {
+      $('.pw-rule').css("display", "none");
+    }
+
+    if($('input[name="password_check"]').val() != currentVal) {
+      $('.pw-check').css("display", "block");
+    } else {
+      $('.pw-check').css("display", "none");
+    }
+    
+    pwOldVal = currentVal;
+  });
+
+  $('input[name="password_check"]').on("propertychange change keyup paste input", function() {
+    if($('input[name="password"]').val() != $(this).val()) {
+      $('.pw-check').css("display", "block");
+    } else {
+      $('.pw-check').css("display", "none");
+    }
+  })
+</script>

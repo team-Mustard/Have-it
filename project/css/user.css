@@ -6,6 +6,19 @@ img.logo {
     width: 180px;
 }
 
+.pw-rule {
+    font-size: 0.6em;
+    color: red;
+    margin: 0;
+}
+
+.pw-check {
+    font-size: 0.6em;
+    color: red;
+    margin: 0;
+    display: none;
+}
+
 .sign form input {
     margin:5px;
 }
