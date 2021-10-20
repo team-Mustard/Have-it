@@ -79,7 +79,7 @@
             $arr[6] = "1"; 
         }
         else if($repeat == "sun"){
-            $arr[7] = "1"; 
+            $arr[0] = "1"; 
         }
         
     }
@@ -103,7 +103,7 @@
     $row = mysqli_fetch_array($result2);
     $goalID = $row['goalID'];
             
-    $sql3 = "INSERT INTO routine(routineName, color, rInterval, habbitTracker, goalID) VALUES('$routine_name[$i]', '$colors', '$Interval', '0', '$goalID')";
+    $sql3 = "INSERT INTO routine(routineName, color, rInterval, goalID) VALUES('$routine_name[$i]', '$colors', '$Interval', '$goalID')";
         
     $result3 = $conn->query($sql3); 
             

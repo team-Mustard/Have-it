@@ -107,13 +107,12 @@ $e_ID = $e_row['routineID']; // 처음 루틴 ID
                 </span>
                 <div id="basket'.$routineID.'" class="routineBasket clear" style="background-color: '.$color.'; height: 45px;">';
                 
-                /* 루틴 시작후 일주일 지났을 때 마다 check 초기화 */
+                /* 루틴 시작후 월요일마다 check 초기화 */
                 $today = date("Y-m-d");
-                $start_yoli = date('w', strtotime($term_s)); //시작한 날의 요일
                 $today_yoli = date('w', strtotime($today)); //현재 요일
                 
-                if($start_yoli == $today_yoli && $term_s != $today){
-                    //시작한 요일과 현재 요일이 같고 && 지금이 시작일이 아니라면
+                if($today_yoli == 1 && $term_s != $today){
+                    //지금이 월요일이고 && 지금이 시작일이 아니라면
                     $up = "update routine set habbitTracker='0' where routineID = '$routineID'";
                     $upresult = $conn->query($up); }
             
@@ -125,14 +124,39 @@ $e_ID = $e_row['routineID']; // 처음 루틴 ID
                 while($dayNum<7){
                     $IntervalNum = $row2['rInterval'];
                     $interval = explode(';', $IntervalNum);
+                    $habbit = explode(';', $check);
                     
                     if($interval[$dayNum] == 1){
                         $bcount += 1;
-                       echo '<div class="col-xs-1 col-md-1 con">';
-                       if($check>0){
+                        echo '<div class="col-xs-1 col-md-1 con">';
+                        if($habbit[$dayNum] >= 1){ 
                            echo '<i id="jew" class="fa fa-trophy fa-2x" style="margin-top:3px; margin-left:3px; color:'.$color.'; aria-hidden="true"></i>';
-                            $check--;
-                            }                       
+                            }
+                        else if($habbit[$dayNum] == 0){
+                            switch($dayNum){
+                                case 1:
+                                    echo '<p class="wday" style="color:'.$color.';">MON</p>';
+                                    break;
+                                case 2:
+                                    echo '<p class="wday" style="color:'.$color.';">TUE</p>';
+                                    break;
+                                case 3:
+                                    echo '<p class="wday" style="color:'.$color.';">WED</p>';
+                                    break;
+                                case 4:
+                                    echo '<p class="wday" style="color:'.$color.';">THU</p>';
+                                    break;
+                                case 5:
+                                    echo '<p class="wday" style="color:'.$color.';">FRI</p>';
+                                    break;
+                                case 6:
+                                    echo '<p class="wday" style="color:'.$color.';">SAT</p>';
+                                    break;
+                                case 0:
+                                    echo '<p class="wday" style="color:'.$color.';">SUN</p>';
+                                    break;
+                            }
+                        }
                        echo '</div>'; 
                     }
                 $dayNum += 1;    
