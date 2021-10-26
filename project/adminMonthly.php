@@ -3,7 +3,7 @@ session_start();
 if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
 include "db/dbconn.php";
 $today = date("Y-m-d");
-$today = '2021-12-01';
+//$today = '2021-12-01';
 $year = date("Y",strtotime($today));
 $month = date("m",strtotime($today));
 $day = date("d",strtotime($today));
