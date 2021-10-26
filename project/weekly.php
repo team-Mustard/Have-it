@@ -48,9 +48,9 @@
             $preWeeklyRow = mysqli_fetch_array(mysqli_query($conn,$preWeeklySql),MYSQLI_ASSOC);
             
             if($preWeeklyRow){
-                $preRoutineDf = $routineCount - $preWeeklyRow['routineCount'];
-                $preHourDf = $hourCount - $preWeeklyRow['hourCount'];
-                $preCheckDf = $checkCount - $preWeeklyRow['checkCount'];
+                $preRoutineDf = $routineCount - $preWeeklyRow['routineCnt'];
+                $preHourDf = $hourCount - $preWeeklyRow['hourCnt'];
+                $preCheckDf = $checkCount - $preWeeklyRow['checkCnt'];
             }
             
             
