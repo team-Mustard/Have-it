@@ -1,17 +1,16 @@
 <?php
 if(session_status() === PHP_SESSION_NONE){
     session_start();
+    
+    $time = time();
+    $today = date("Y-m-d",$time);
+    //$today = '2021-09-06';
 }
 ?>
         <!--<div class="col-xs-12 col-sm-7 col-md-4 sidebar sidebar-right sidebar-animate text-center">-->
           <div><h2 class="right-header" style="float: left;"><i class="fas fa-dolly-flatbed"></i>광산수레</h2>
-            <?php
-                $time = time();
-                $today = date("Y-m-d", $time);
-                //$today = '2021-09-06';
-
-                echo '<h4 class="right-header" style="float: right;">'.$today.'</h4>';
-            ?>
+            
+            <h4 class="right-header" style="float:right;"><?=$today?></h4>
           </div>
 <div>
 </div>
@@ -158,6 +157,7 @@ drawNumber(ctx2,165);
                 swap($routineEnd[$min],$routineEnd[$i]);
                 swap($routineCheck[$min],$routineCheck[$i]);
                 swap($troutineID[$min],$troutineID[$i]);
+                swap($routineID[$min],$routineID[$i]);
                 
             }            
         }
@@ -169,7 +169,7 @@ drawNumber(ctx2,165);
             $time_s_to_e .= '<div class="checks"> <label> '.$routineStart[$z].' - '.$routineEnd[$z].' </label></div>';
 
             if($routineKind[$z] == 1){
-                $r_name .= '<div id = "checks" class="checks"> <input type="checkbox" onchange="changeRoutineCheck('.$troutineID[$z].');" id="checkRoutine" name="routine'.$troutineID[$z].'" value="'.$troutineID[$z].'"';
+                $r_name .= '<div id = "checks" class="checks"> <input type="checkbox" onchange="changeRoutineCheck('.$routineID[$z].','.$troutineID[$z].');" id="checkRoutine" name="routine'.$troutineID[$z].'" value="'.$troutineID[$z].'"';
                 if($routineCheck[$z] == 1){
                         $r_name .= 'checked';
                 }        
@@ -278,6 +278,8 @@ drawNumber(ctx2,165);
                                     $data[$i+$pIndex] = "\"0.5\"";
                                     $color[$i+$pIndex] = "\"$routineColor[$w]\"";
                                     $data[$i+1+$pIndex] = "\"0.5\"";
+                                    $label[$i+$pIndex+1] = "\"null\"";
+                                    $color[$i+$pIndex+1] = "\"#04005E\"";
                                     $pIndex++;
                                 }else{
                                     $label[$i+$pIndex] = "\"$routineName[$w]\"";
@@ -429,7 +431,7 @@ drawNumber(ctx2,165);
         $(".sidebar-right").load("add_schedule.php");
     }
     
-    function changeRoutineCheck(t_routineID) {
+    function changeRoutineCheck(routineID, t_routineID) {
         var checked = 0;
         var tmp = 'routine' + t_routineID;
        
@@ -442,7 +444,7 @@ drawNumber(ctx2,165);
             checked = 0;
 
             }
-            var ajaxDate = {"t_routineID":t_routineID,"checked":checked};
+            var ajaxDate = {"routineID":routineID, "t_routineID":t_routineID,"checked":checked};
             $.ajax({
                 type: 'POST',
                 url: 'adminTimetracker.php',
@@ -453,7 +455,7 @@ drawNumber(ctx2,165);
 
             });
     }
-    function changeScheduleCheck(scheduleID) {
+    function changeScheduleCheck(scheduleID,) {
         var checked = 0;
         var tmp = 'schedule' + scheduleID;
        
