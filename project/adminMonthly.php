@@ -428,6 +428,7 @@ echo("
                         location.href='./index.php';
                     </script>"
 );
+/*
 echo $achieveTimeSql;
 echo "<br>";
 echo $achieveWeekSql;
@@ -465,9 +466,7 @@ pp($countCheckRoutine);
 echo "<br><br>";
 echo $routineKind;
 echo "<br>";
-
-
-
+*/
 
 
 ?>
