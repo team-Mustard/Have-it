@@ -455,7 +455,7 @@ drawNumber(ctx2,165);
 
             });
     }
-    function changeScheduleCheck(scheduleID,) {
+    function changeScheduleCheck(scheduleID) {
         var checked = 0;
         var tmp = 'schedule' + scheduleID;
        
