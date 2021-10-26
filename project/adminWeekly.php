@@ -8,8 +8,8 @@ switch($mode){
         
     case 1:{
         
-        //$today = date("Y-m-d");   
-        $today = '2021-12-10';    
+        $today = date("Y-m-d");   
+        //$today = '2021-12-10';    
         $year = date("Y",strtotime($today));
         $month = date("m",strtotime($today));
         $day = date("d",strtotime($today));
