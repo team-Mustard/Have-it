@@ -289,8 +289,7 @@ hr {
 }
 #calender {
     padding: 15px;
-    padding-right: 30px;
-    height: 200px;
+    height: 210px;
     border:5px solid;
     margin: 10px;
     border-radius: 20px;
@@ -300,7 +299,7 @@ hr {
 #image {
     text-align: center;
     padding: 5px;
-    height: 200px;
+    height: 210px;
     border:5px solid;
     margin: 10px;
     border-radius: 20px;
@@ -311,7 +310,7 @@ hr {
     padding: 15px;
     text-align: center;
     padding-top: 80px;
-    height: 200px;
+    height: 210px;
 
 }
 
@@ -355,7 +354,11 @@ hr {
     font-weight: bold;
     
 }
-
+.writeEval {
+    margin-bottom:20px;
+    
+    
+}
 .writeEval textarea{
     width:100%;
     height:150px;
@@ -408,7 +411,7 @@ hr {
 .date, .preDate, .nextDate {
     width: calc(100% / 7);
     padding: 3px;
-    text-align: right;
+    text-align: center;
 
 }
 
@@ -439,6 +442,49 @@ hr {
     
     
 }
+
+
+
+.weeklyTop {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.weeklyContent{
+    margin: 10px 0px 20px 0px; 
+}
+
+.weeklyContent #weeklyTime{
+    margin: 15px 15px 15px 20px;
+    display: flex;
+    padding: 0;
+    /*border-radius: 20px;*/
+    /*border-right: 3px solid;*/
+}
+
+.weeklyContent #weeklyAll{
+    margin: 15px 15px 15px 0px;
+    display: flex;
+    padding: 0;
+    /*border-radius: 20px;*/
+    /*border-right: 3px solid;*/
+} 
+.weeklyContent #weeklyCheck{
+    display: flex;
+    /*border: 5px solid;*/
+     margin: 15px 15px 15px 0px;
+    padding: 0;
+    /*border-radius: 20px;*/
+   
+}
+.weeklyVertical{
+    flex:5%;
+    border-right: 3px dotted;
+    display: 
+}
+
+
+
 
 /* Weekly Report css end */
 

@@ -4,18 +4,30 @@
 
 
 </head>
-
+<div class="col-md-1"></div>
 <div class="main col-md-8 col-md-offset-2">
-    <div class="container col-md-10" id="weekButton">
-        <a class="glyphicon glyphicon-ok-circle" aria-hidden="true" onclick="document.getElementById('weeklyform').submit();"></a>
+    <div class="weeklyTop">
+        <div class="weeklyName">
+            <b style="font-size:25px; text-align:center; float:left;">10월 4주차 품질보증서</b>
+        </div>
+        <div  id="weekButton">
+            <a class="glyphicon glyphicon-ok-circle" aria-hidden="true" onclick="document.getElementById('weeklyform').submit();"></a>
+        </div>
+  
     </div>
+    <hr style="border:0; height:3px; background: #04005E;">
+    <div class="clear"></div>
+
+    
     <?php 
         include "db/dbconn.php";
-        
+        ini_set('error_reporting','E_ALL ^ E_NOTICE');
         if(isset($_GET['weeklyID'])) $weeklyID = $_GET['weeklyID'];
         $selectWeeklySql = "select * from WeeklyReport where weeklyID = $weeklyID";
         $weeklyResult = mysqli_query($conn,$selectWeeklySql);
         $weeklyRow = mysqli_fetch_array($weeklyResult, MYSQLI_ASSOC);
+        
+     
         if($weeklyRow){
 
             
@@ -23,7 +35,34 @@
             $bad = $weeklyRow['badEvaluation'];
             $score = $weeklyRow['score'];
             $date = $weeklyRow['date'];
+            $routineCount = $weeklyRow['routineCnt'];
+            $hourCount = $weeklyRow['hourCnt'];
+            $checkCount = $weeklyRow['checkCnt'];
+            $preDate = date("Y-m-d",strtotime($date.'-7 days'));
+            $preRoutineDf = $routineCount;
+            $preHourDf = $hourCount;
+            $preCheckDf = $checkCount;
+            
+            
+            $preWeeklySql = "select * from WeeklyReport where userid = $userid and date = '$preDate'";
+            $preWeeklyRow = mysqli_fetch_array(mysqli_query($conn,$preWeeklySql),MYSQLI_ASSOC);
+            
+            if($preWeeklyRow){
+                $preRoutineDf = $routineCount - $preWeeklyRow['routineCount'];
+                $preHourDf = $hourCount - $preWeeklyRow['hourCount'];
+                $preCheckDf = $checkCount - $preWeeklyRow['checkCount'];
+            }
+            
+            
+            if(!$routineCount){
+                $weeklyAchievement = 0;
+            }else{
+                
+                $weeklyAchievement = round($checkCount/$routineCount * 100,1);
+            }
+            
 
+            
             $month = date("m",strtotime($date));
             $year = date("Y",strtotime($date));
             $day = date("d",strtotime($date));
@@ -34,6 +73,16 @@
                 $image = "img/logoRail.jpg";
             }
             
+            function checkUpDown($diff){
+                
+                if($diff < 0){
+                    echo "감소";
+                    
+                }else{
+                    echo "증가";
+                }
+            }
+            
 
         
 ?>
@@ -41,31 +90,77 @@
 
         <div class="container col-md-12">
             <row>
+                <div class="col-md-1"></div>
                 <div id="calender" class="col-md-3">
                     <div class="year-month"></div>
                     <div class="dates"></div>
                 </div>
                 <div id="image" class="col-md-3">
                     <input type="file" name="inputImg" id = "inputImg" style='display: none;' accept="image/*">
-                    <img src='<?=$image?>' width="180px"height="180px" id = 'weeklyImg' onclick='document.all.inputImg.click();'>
-
-
+                    <img src='<?=$image?>' width="150px"height="160px" id = 'weeklyImg' onclick='document.all.inputImg.click();'>
                 </div>
-
                 <div id="score" class="col-md-3">
                     <span class="mScore">이번 주 나의 점수
-                        <input type="text" name="weeklyScore" value="<?=$score?>">
+                        <br><input type="text" name="weeklyScore" value="<?=$score?>">
                         점</span>
 
                 </div>
-
+                <div class="col-md-1"></div>
             </row>
         </div>
-        <div class="container col-md-9">
-            <canvas id="myChart"></canvas>
-        </div>
-        <div class="container writeEval col-md-10">
+        <div class=" container col-md-12 weeklyContent">
             <row>
+                <div class="col-md-1"></div>
+                <div id="weeklyTime" class="col-md-3">
+                    <div style="flex:100%; margin-right:5px;">
+                        <p style="margin: 0; font-size: 14px;"><b>이번 주 Have-it과 계획한 시간</b></p>
+                        <p class="text-center" style="margin: 20px; font-weight:bold;"><span style="font-size:50px;"><?=$hourCount?></span> 시간</p>
+                        <p class="text-center" style="margin: 0; font-size: 13px;">지난 주 대비 <?php echo abs($preHourDf)?>시간 <?php checkUpDown($preHourDf);?>했어요!</p>
+                    </div>
+                    <div class="weeklyVertical"></div>
+                    
+                </div>
+                <div id="weeklyAll" class="col-md-3">
+                    <div style="flex:100%; margin-right:5px;">
+                        <p style="margin: 0; font-size: 14px;"><b>이번 주 루틴 등록 횟수</b></p>
+                        <p class="text-center" style="margin: 20px; font-weight:bold;"><span style="font-size:50px;"><?=$routineCount?></span> 번</p>
+                        <p class="text-center" style="margin: 0; font-size: 13px;">지난 주 대비 <?php echo abs($preRoutineDf)?>번 <?php checkUpDown($preRoutineDf); ?>했어요!</p>
+                    </div>
+                    <div class="weeklyVertical"></div>
+                </div>
+                <div id = "weeklyCheck"class="col-md-3">
+                    <div style="flex:100%; margin-right:5px; ">
+                        <p style="margin: 0; font-size: 14px;"><b>이번 주 루틴 성공 횟수</b></p>
+                        <p class="text-center" style="margin: 20px; font-weight:bold;"><span style="font-size:50px;"><?=$checkCount;?></span> 번</p>
+                        <p class="text-center" style="margin: 0; font-size: 13px;">지난 주 대비 <?php echo abs($preCheckDf)?>번 <?php checkUpDown($preCheckDf); ?>했어요!</p>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </row>
+        </div>
+        <div class="col-md-12 text-center" style="margin-bottom:20px;">
+            <b style="font-size:20px;">위와 같이, 이번 주 <?=$weeklyAchievement?>%의 보석 품질을 보증합니다💎</b>
+            <br>
+            <hr>
+            임시선
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <b style="font-size: 18px;"> 요일별 목표 성취도</b>
+            <canvas id="myChart" style="margin:25px 0px 25px 0px;"></canvas>
+        </div>
+        <div class="col-md-1"></div>
+        
+        
+        <div class="col-md-12 text-left">
+            <div class="col-md-1"></div>
+            <b style="font-size: 18px; margin-bottom:20px;"> 나의 품질 평가</b>
+        </div>
+        <div class="container writeEval col-md-12">
+            <row>
+     
+                <div class="col-md-1"></div>
+                
                 <div id="good" class="col-md-5">
                     <p>칭찬</p>
                     <textarea name="good"><?=$good?></textarea>
@@ -74,32 +169,40 @@
                     <p>반성</p>
                     <textarea name="bad"><?=$bad?></textarea>
                 </div>
+                <div class="col-md-1"></div>
             </row>
         </div>
-        <div class = "container checkFailure col-md-10">
-            <h4>Q. 왜 루틴을 수행하지 못했나요?</h4>
+        <div class="col-md-12 text-left">
+            <div class="col-md-1"></div>
+            <b style="font-size: 18px;"> Q. 왜 루틴을 수행하지 못했나요?</b>
+        </div>
+        <div class = "checkFailure col-md-12">
+        
+            <div class="col-md-1"></div>
             <div class = "col-md-10" id = "labels">
-            <label for="1"><input type="checkbox" name="failure[]"id="1" value="1"> 핸드폰 게임</label> 
-            <label for="2"><input type="checkbox" name="failure[]" id="2" value="2"> 인터넷방송 시청</label> 
-            <label for="3"><input type="checkbox" name="failure[]" id="3" value="3"> 야외 활동</label> 
-            <label for="4"><input type="checkbox" name="failure[]" id="4" value="4"> 무리한 계획</label> 
-            <br>
-            <label for="5"><input type="checkbox" name="failure[]" id="5" value="5"> 유튜브</label> 
-            <label for="6"><input type="checkbox" name="failure[]" id="6" value="6"> PC 게임</label> 
-            <label for="7"><input type="checkbox" name="failure[]" id="7" value="7"> 음주</label> 
-            <label for="8"><input type="checkbox" name="failure[]" id="8" value="8"> 예정에 없던 외출</label> 
-            <br>
-            <label for="9"><input type="checkbox" name="failure[]" id="9" value="9"> TV 시청</label> 
-            <label for="10"><input type="checkbox" name="failure[]" id="10" value="10"> 수면</label> 
-            <label for="11"><input type="checkbox" name="failure[]" id="11" value="11"> 사고</label> 
-            <label for="12"><input type="checkbox" name="failure[]" id="12" value="12"> 넷플릭스/왓챠</label> 
-            <br>
-            <label for="13"><input type="checkbox" name="failure[]" id="13" value="13"> SNS</label> 
-            <label for="14"><input type="checkbox" name="failure[]" id="14" value="14"> 능력 부족</label> 
-            <label for="15"><input type="checkbox" name="failure[]" id="15" value="15"> 집중력 부족</label> 
-            <label for="16"><input type="checkbox" name="failure[]" id="16" value="16"> 아픔</label> 
+            
+                <label for="1"><input type="checkbox" name="failure[]"id="1" value="1"> 핸드폰 게임</label> 
+                <label for="2"><input type="checkbox" name="failure[]" id="2" value="2"> 인터넷방송 시청</label> 
+                <label for="3"><input type="checkbox" name="failure[]" id="3" value="3"> 야외 활동</label> 
+                <label for="4"><input type="checkbox" name="failure[]" id="4" value="4"> 무리한 계획</label> 
+                <br>
+                <label for="5"><input type="checkbox" name="failure[]" id="5" value="5"> 유튜브</label> 
+                <label for="6"><input type="checkbox" name="failure[]" id="6" value="6"> PC 게임</label> 
+                <label for="7"><input type="checkbox" name="failure[]" id="7" value="7"> 음주</label> 
+                <label for="8"><input type="checkbox" name="failure[]" id="8" value="8"> 예정에 없던 외출</label> 
+                <br>
+                <label for="9"><input type="checkbox" name="failure[]" id="9" value="9"> TV 시청</label> 
+                <label for="10"><input type="checkbox" name="failure[]" id="10" value="10"> 수면</label> 
+                <label for="11"><input type="checkbox" name="failure[]" id="11" value="11"> 사고</label> 
+                <label for="12"><input type="checkbox" name="failure[]" id="12" value="12"> 넷플릭스/왓챠</label> 
+                <br>
+                <label for="13"><input type="checkbox" name="failure[]" id="13" value="13"> SNS</label> 
+                <label for="14"><input type="checkbox" name="failure[]" id="14" value="14"> 능력 부족</label> 
+                <label for="15"><input type="checkbox" name="failure[]" id="15" value="15"> 집중력 부족</label> 
+                <label for="16"><input type="checkbox" name="failure[]" id="16" value="16"> 아픔</label> 
         
             </div>
+            <div class="col-md-1"></div>
         
         </div>
         <input type="hidden" name="weeklyID" value="<?=$weeklyID?>">
@@ -112,6 +215,9 @@
         $dayofweekResult = mysqli_query($conn,$achieveDayofWeekSql);
         while($dayofweekRow = mysqli_fetch_array($dayofweekResult,MYSQLI_ASSOC)){
             $dayofweekGoalID = $dayofweekRow['goalID'];
+            if(!$dayofweekGoalID){
+                break;
+            }
             $achieveDayofWeek = $dayofweekRow['achieveDayofWeek'];
             $achieveDayofWeek = explode(';',$achieveDayofWeek);
             if(isset($goalIDArr)){
@@ -135,7 +241,7 @@
             $selectRoutineSql = "select color from routine where goalID = $dayofweekGoalID";
             $routineRow = mysqli_fetch_array(mysqli_query($conn,$selectRoutineSql),MYSQLI_ASSOC);
             
-
+            
             $goalColor[$dayofweekGoalID] = $routineRow['color'];
         }
 ?>
@@ -162,7 +268,7 @@
             }else{
                         echo " {
                             data: [],
-                            backgroundColor: ''
+                            backgroundColor: []
 
                         },";
                         
