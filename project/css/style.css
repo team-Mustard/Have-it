@@ -1,6 +1,8 @@
+html { height: 100%;}
 body {
   padding-top: 51px;
-  height: 100%;
+  min-height: 100%;
+  position: relative;
 }
 .left {
     float: left;
@@ -839,8 +841,21 @@ hr {
     -ms-user-select: none; -moz-user-select: -moz-none; -webkit-user-select: none; -khtml-user-select: none; user-select:none;
 }
 
-.example-img {
-    margin: 40px 0;
+
+
+
+
+.schedule-content, .goal-content, .eval-content, .mode-content, .logout-content {
+    display:none;
+}
+
+#schedule-manual:checked + .schedule-content,
+#goal-manual:checked + .goal-content,
+#eval-manual:checked + .eval-content,
+#mode-manual:checked + .mode-content,
+#logout-manual:checked + .logout-content{
+    
+    display: block;   
 }
 
 /* example css end */
@@ -856,31 +871,32 @@ html {
 }
 
 .contents-wrap {
-   min-height:84%;
-   position:relative;
+    padding-bottom: 100px;
 }
 .space {
     height: 50px;
 }
 footer {
-    min-width: fit-content;
-    min-height: fit-content;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
    background:#F8F8F8;
    color: #969696;
    padding-top:10px;
 }
 
-.logout, #bg_mode, .github {
+.logout, #bg_mode, #manual, .github {
     color: #969696;
     text-decoration: none;
 }
 
-.logout:hover, #bg_mode:hover, .github:hover {
+.logout:hover, #bg_mode:hover, #manual:hover, .github:hover {
     color: #969696;
     text-decoration: none;
 }
 
-.logout:valid, #bg_mode:valid, .github:valid {
+.logout:valid, #bg_mode:valid, #manual:valid, .github:valid {
     color: #969696;
     text-decoration: none;
 }
