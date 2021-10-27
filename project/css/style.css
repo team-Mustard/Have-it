@@ -1,8 +1,14 @@
 html { height: 100%;}
 body {
   padding-top: 51px;
-  min-height: 100%;
-  position: relative;
+  height: 100%;
+  -ms-user-select: none; 
+  -moz-user-select: -moz-none; 
+  -moz-user-select: none;
+  -o-user-select: none;
+  -webkit-user-select: none; 
+  -khtml-user-select: none; 
+  user-select:none;
 }
 .left {
     float: left;
@@ -856,6 +862,7 @@ hr {
 #logout-manual:checked + .logout-content{
     
     display: block;   
+
 }
 
 /* example css end */
