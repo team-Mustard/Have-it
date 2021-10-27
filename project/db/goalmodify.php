@@ -8,7 +8,7 @@
     $Interval = "";
     $arr = array("0", "0", "0", "0", "0", "0", "0");
     $goalName = $_POST['goalName'];
-    
+    $ex_goalName = $_POST['ex_goalName'];
     $term_s_date = $_POST['termS'];
     $term_e_date = $_POST['termE'];
 
@@ -20,15 +20,19 @@
         $check_goal = $grow['goalName'];
         
         if($check_goal == $goalName){
-            echo("<script> alert('중복된 목표가 존재합니다.'); </script>");
-            $check1 = "false";
-            echo("<script> history.back(); </script>");
-            break;
+            if($goalName != $ex_goalName){
+                echo("<script> alert('중복된 목표가 존재합니다.'); </script>");
+                $check1 = "false";
+                echo("<script> history.back(); </script>");
+                break;
+                }
         }
     }
 
-    $goal_update = "UPDATE goal SET goalName='$goalName', startTerm='$term_s_date', endTerm='$term_e_date' WHERE goalID='$goalID'";
-    $goal_result = $conn->query($goal_update);
+    if($check1 == "true"){
+        $goal_update = "UPDATE goal SET goalName='$goalName', startTerm='$term_s_date', endTerm='$term_e_date' WHERE goalID='$goalID'";
+        $goal_result = $conn->query($goal_update); 
+    
 
 
     $sql = "SELECT * FROM routine WHERE goalID='$goalID'";
@@ -44,7 +48,12 @@
         $rouColor = "colors".$routineID;
         $color = $_POST[$rouColor];
         $week = "routine".$routineID;
-        $repeats = $_POST[$week];
+        if(isset($_POST[$week])) $repeats = $_POST[$week];
+        else { echo("<script> alert('루틴 주기를 선택해주세요'); </script>");
+                break;
+                //echo("<script> history.back(); </script>"); 
+             }
+        //$repeats = $_POST[$week];
         
         $Interval = "";
         $arr = array("0", "0", "0", "0", "0", "0", "0");
@@ -53,25 +62,25 @@
         //echo $repeat.", ";
         
             if($repeat == "mon"){ 
-                $arr[0] = "1"; 
-            }
-            else if($repeat == "tue"){ 
                 $arr[1] = "1"; 
             }
-            else if($repeat == "wed"){ 
+            else if($repeat == "tue"){ 
                 $arr[2] = "1"; 
             }
-            else if($repeat == "thu"){ 
+            else if($repeat == "wed"){ 
                 $arr[3] = "1"; 
             }
-            else if($repeat == "fri"){ 
+            else if($repeat == "thu"){ 
                 $arr[4] = "1"; 
             }
-            else if($repeat == "sat"){ 
+            else if($repeat == "fri"){ 
                 $arr[5] = "1"; 
             }
-            else if($repeat == "sun"){
+            else if($repeat == "sat"){ 
                 $arr[6] = "1"; 
+            }
+            else if($repeat == "sun"){
+                $arr[0] = "1"; 
             }
         }
         $Interval = implode(";", $arr);
@@ -104,38 +113,43 @@
                 
                 foreach($prepeats as $prepeat){
                     if($prepeat == "mon"){ 
-                        $parr[0] = "1"; 
-                    }
-                    else if($prepeat == "tue"){ 
                         $parr[1] = "1"; 
                     }
-                    else if($prepeat == "wed"){ 
+                    else if($prepeat == "tue"){ 
                         $parr[2] = "1"; 
                     }
-                    else if($prepeat == "thu"){ 
+                    else if($prepeat == "wed"){ 
                         $parr[3] = "1"; 
                     }
-                    else if($prepeat == "fri"){ 
+                    else if($prepeat == "thu"){ 
                         $parr[4] = "1"; 
                     }
-                    else if($prepeat == "sat"){ 
+                    else if($prepeat == "fri"){ 
                         $parr[5] = "1"; 
                     }
-                    else if($prepeat == "sun"){
+                    else if($prepeat == "sat"){ 
                         $parr[6] = "1"; 
+                    }
+                    else if($prepeat == "sun"){
+                        $parr[0] = "1"; 
                     }
                 }
                 $pInterval = implode(";", $parr);
                 
-                $sql6 = "INSERT INTO routine(routineName, color, rInterval, habbitTracker, goalID) VALUES('$p_routineName', '$pcolor', '$pInterval', '0', '$goalID')";
+                $sql6 = "INSERT INTO routine(routineName, color, rInterval, goalID) VALUES('$p_routineName', '$pcolor', '$pInterval', '$goalID')";
                 $result6 = $conn->query($sql6);
                 
                 $parr = array("0", "0", "0", "0", "0", "0", "0");
             }
         }
-                
-        
-    //echo("<script>history.back();</script>");
+    }
+
+    
+    //http://localhost/Have-it/project/index.php?page=goal&goalID=84
+    //$url = "http://localhost/Have-it/project/index.php?page=goal&goalID=".$last_goalID;
+    //echo("<script>window.location.href='$url'</script>");
+
+    echo("<script>history.back();</script>");
     
     
 ?>

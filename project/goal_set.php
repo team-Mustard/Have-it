@@ -49,7 +49,7 @@
             <input id="plus_btn" type="button" value="+ 루틴 추가하기" onclick="plus_routine()"><br/><br/>
             <p style="float:right; margin-right: 80px;">
                 <input type="reset" value="삭제" class="word_2_btn bg_gray_btn round_btn">
-                <input type="submit" onclick="goal_set_submit()" value="저장" class="word_2_btn bg_purple_btn round_btn">
+                <input type="button" onclick="goal_set_submit()" value="저장" class="word_2_btn bg_purple_btn round_btn">
             </p>
             <input style="display:none" id="routineNum" type="text" name="routineNum" value="">
         </form>
@@ -64,6 +64,7 @@
 <script>
     var routine_num = 0;
     var rad = document.goal_set_form.term;
+    
     for (var i = 0; i < rad.length; i++) {
         rad[i].addEventListener('change', function() {
             if (this.value == "select") {
@@ -87,6 +88,33 @@
     
     function goal_set_submit() {
         var form = document.goal_set_form;
+        
+        //목표 기간
+        var t_check = 0;
+        for(var z=0; z < rad.length; z++){
+            if(document.getElementsByName("term")[z].checked){
+                t_check = 1;
+            }
+        }
+        if(t_check == 0){
+            alert("목표 기간을 선택하세요!");
+            return;
+        }
+        
+        //목표 입력 x, 30자 초과
+        var goal_name = document.getElementsByName("goal_name")[0].value;
+        var g_length = goal_name.length;
+        
+        if(g_length == 0){
+            alert("목표 이름을 입력해 주세요!");
+            return;
+        }
+        else if(g_length > 30){
+            alert("목표 이름이 30자를 초과하였습니다!");
+            return;
+        }
+    
+        //요일 체크
         for(var i=0; i<routine_num; i++){
             var routines = document.getElementsByName("routine"+i+"[]");
             var check = checkbox_permit(routines);
@@ -96,7 +124,25 @@
                 return;
             }
         }
-        form.submit();
+        
+        //루틴 오류처리
+        for(var j=0; j<routine_num; j++){
+            var routineName = document.getElementsByName("routine_name"+j)[0].value;
+            var r_length = routineName.length;
+            
+            if(r_length == 0){
+                var z = j+1; 
+                alert(z+"번째 루틴의 이름을 입력하세요");
+                return;
+            }
+            else if(r_length > 50){
+                var z = j+1;
+                alert(z+"번째 루틴이 50자를 초과하였습니다.");
+                return;
+            }
+        }
+        
+        form.submit(); 
     }
     
     function checkbox_permit(routines) {
