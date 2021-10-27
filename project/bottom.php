@@ -12,13 +12,9 @@
             　|　
             <a class="logout" href="logout.php">[로그아웃]</a>
         </div>
+        
         <div class="text-left">
-            <p>Front-end Developer : 이송이 <i class="fab fa-github"> elephantLikesApple</i>
-            <br>Back-end Developer : 이주영 <i class="fab fa-github"> jyoungl</i>
-            　최승혜 <i class="fab fa-github"> seunghye0627</i></p>
-        </div>
-        <div class="text-left">
-        ver. : 1.1.0 <a class="github" href="https://github.com/team-Mustard/Have-it" target="_blank"><i class="fab fa-github"></i></a>
+            Developers: (Front)이송이　(Back)이주영, 최승혜　　<b>|</b>　　ver. : 1.1.0 <a class="github" href="https://github.com/team-Mustard/Have-it" target="_blank"><i class="fab fa-github"></i></a>
         </div>
     </div>
 </footer>
