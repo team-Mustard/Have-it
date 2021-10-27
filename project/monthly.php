@@ -18,6 +18,8 @@
         $monthlyTotalAchieve = $monthlyRow['totalAchieve'];
         $highestRoutine = explode(';',$highestRoutine);
         $lowestRoutine = explode(';',$lowestRoutine);
+        $routineKind = $monthlyRow['routineKind'];
+        
         
         $highestRoutineSql = "select routineName,goalID from routine where routineID = $highestRoutine[0]";
         
@@ -42,58 +44,66 @@
         $dayofweekResult = mysqli_query($conn,$achieveDayofWeekSql);
         while($timeRow = mysqli_fetch_array($timeResult,MYSQLI_ASSOC)){
             
-            $timeGoalID = $timeRow['goalID'];
-            $achieveTime = $timeRow['achieveTime'];
-            $achieveTime = explode(';',$achieveTime);
-            if(isset($timeGoalIDArr)){
-                if(!in_array($timeGoalID,$timeGoalIDArr)){
-                    $timeGoalIDArr[count($timeGoalIDArr)] = $timeGoalID;
+            if($timeRow['goalID']){
+                
+                $timeGoalID = $timeRow['goalID'];
+                $achieveTime = $timeRow['achieveTime'];
+                $achieveTime = explode(';',$achieveTime);
+                if(isset($timeGoalIDArr)){
+                    if(!in_array($timeGoalID,$timeGoalIDArr)){
+                        $timeGoalIDArr[count($timeGoalIDArr)] = $timeGoalID;
+                    }
+                }else{
+                    $timeGoalIDArr[0] = $timeGoalID;
+
                 }
-            }else{
-                $timeGoalIDArr[0] = $timeGoalID;
+                for($i = 0; $i <24; $i++){
+
+                    if(isset($hour[$timeGoalID])){
+                        $hour[$timeGoalID] = "$hour[$timeGoalID],$achieveTime[$i]";
+
+                    }else {
+                       $hour[$timeGoalID] = "$achieveTime[$i]";
+                    }
+
+                } 
+                $selectRoutineSql = "select color from routine where goalID = $timeGoalID";
+                $routineRow = mysqli_fetch_array(mysqli_query($conn,$selectRoutineSql),MYSQLI_ASSOC);
+
+                $timeGoalColor[$timeGoalID] = $routineRow['color'];
                 
             }
-            for($i = 0; $i <24; $i++){
-                
-                if(isset($hour[$timeGoalID])){
-                    $hour[$timeGoalID] = "$hour[$timeGoalID],$achieveTime[$i]";
-                    
-                }else {
-                   $hour[$timeGoalID] = "$achieveTime[$i]";
-                }
-                                
-            } 
-            $selectRoutineSql = "select color from routine where goalID = $timeGoalID";
-            $routineRow = mysqli_fetch_array(mysqli_query($conn,$selectRoutineSql),MYSQLI_ASSOC);
-            
-            $timeGoalColor[$timeGoalID] = $routineRow['color'];
         }
         while($weekRow = mysqli_fetch_array($weekResult,MYSQLI_ASSOC)){
             
-            $weekGoalID = $weekRow['goalID'];
-            $achieveWeek = $weekRow['achieveWeek'];
-            $achieveWeek = explode(';',$achieveWeek);
-            if(isset($weekGoalIDArr)){
-                if(!in_array($weekGoalID,$weekGoalIDArr)){
-                    $weekGoalIDArr[count($weekGoalIDArr)] = $weekGoalID;
+            if($weekRow['goalID']){
+                
+                $weekGoalID = $weekRow['goalID'];
+                $achieveWeek = $weekRow['achieveWeek'];
+                $achieveWeek = explode(';',$achieveWeek);
+                if(isset($weekGoalIDArr)){
+                    if(!in_array($weekGoalID,$weekGoalIDArr)){
+                        $weekGoalIDArr[count($weekGoalIDArr)] = $weekGoalID;
+                    }
+                }else{
+                    $weekGoalIDArr[0] = $weekGoalID;
                 }
-            }else{
-                $weekGoalIDArr[0] = $weekGoalID;
-            }
-            for($i=0;$i < count($achieveWeek);$i++){
-                
-                if(isset($week[$weekGoalID])){
-                    $week[$weekGoalID] = "$week[$weekGoalID],$achieveWeek[$i]";
-                    
-                }else {
-                    $week[$weekGoalID] = "$achieveWeek[$i]";
+                for($i=0;$i < count($achieveWeek);$i++){
+
+                    if(isset($week[$weekGoalID])){
+                        $week[$weekGoalID] = "$week[$weekGoalID],$achieveWeek[$i]";
+
+                    }else {
+                        $week[$weekGoalID] = "$achieveWeek[$i]";
+                    }
+
+
+                    $selectRoutineSql = "select color from routine where goalID = $weekGoalID";        
+                    $routineRow = mysqli_fetch_array(mysqli_query($conn,$selectRoutineSql),MYSQLI_ASSOC);  
+                    $weekGoalColor[$weekGoalID] = $routineRow['color'];
+
+
                 }
-                
-                
-                $selectRoutineSql = "select color from routine where goalID = $weekGoalID";        
-                $routineRow = mysqli_fetch_array(mysqli_query($conn,$selectRoutineSql),MYSQLI_ASSOC);  
-                $weekGoalColor[$weekGoalID] = $routineRow['color'];
-                
                 
             }
             
@@ -102,30 +112,34 @@
         }
         while($dayofweekRow = mysqli_fetch_array($dayofweekResult,MYSQLI_ASSOC)){
             
-            $dayofweekGoalID = $dayofweekRow['goalID'];
-            $achieveDayofWeek = $dayofweekRow['achieveDayofWeek'];
-            $achieveDayofWeek = explode(';',$achieveDayofWeek);
-            if(isset($dayofweekGoalIDArr)){
-                if(!in_array($dayofweekGoalID,$dayofweekGoalIDArr)){
-                    $dayofweekGoalIDArr[count($dayofweekGoalIDArr)] = $dayofweekGoalID;
+            if($dayofweekRow['goalID']){
+                
+                $dayofweekGoalID = $dayofweekRow['goalID'];
+                $achieveDayofWeek = $dayofweekRow['achieveDayofWeek'];
+                $achieveDayofWeek = explode(';',$achieveDayofWeek);
+                if(isset($dayofweekGoalIDArr)){
+                    if(!in_array($dayofweekGoalID,$dayofweekGoalIDArr)){
+                        $dayofweekGoalIDArr[count($dayofweekGoalIDArr)] = $dayofweekGoalID;
+                    }
+                }else{
+                    $dayofweekGoalIDArr[0] = $dayofweekGoalID;
                 }
-            }else{
-                $dayofweekGoalIDArr[0] = $dayofweekGoalID;
-            }
-            for($i=0;$i < 7;$i++){
-                
-                if(isset($dayofweek[$dayofweekGoalID])){
-                    $dayofweek[$dayofweekGoalID] = "$dayofweek[$dayofweekGoalID],$achieveDayofWeek[$i]";
-                    
-                }else {
-                    $dayofweek[$dayofweekGoalID] = "$achieveDayofWeek[$i]";
+                for($i=0;$i < 7;$i++){
+
+                    if(isset($dayofweek[$dayofweekGoalID])){
+                        $dayofweek[$dayofweekGoalID] = "$dayofweek[$dayofweekGoalID],$achieveDayofWeek[$i]";
+
+                    }else {
+                        $dayofweek[$dayofweekGoalID] = "$achieveDayofWeek[$i]";
+                    }
+
+
+                    $selectRoutineSql = "select color from routine where goalID = $dayofweekGoalID";        
+                    $routineRow = mysqli_fetch_array(mysqli_query($conn,$selectRoutineSql),MYSQLI_ASSOC);  
+                    $dayofweekGoalColor[$dayofweekGoalID] = $routineRow['color'];
+
+
                 }
-                
-                
-                $selectRoutineSql = "select color from routine where goalID = $dayofweekGoalID";        
-                $routineRow = mysqli_fetch_array(mysqli_query($conn,$selectRoutineSql),MYSQLI_ASSOC);  
-                $dayofweekGoalColor[$dayofweekGoalID] = $routineRow['color'];
-                
                 
             }
             
@@ -149,34 +163,63 @@
             }
         }
         if($countReport !=1){
-            /*$grade = 100 - ((($countReport -$rank) +($sameRank/2))  / $countReport * 100);*/
-            $grade = (($rank / ($countReport))*100);
+            $grade = round(100 - ((($countReport -$rank) +($sameRank/2)) / $countReport * 100),1);
+            //$grade = (($rank / ($countReport))*100);
             
         }else {
-            $grade = 10;
+            $grade = 0;
         }
     ?>
+    <div class="col-md-1"></div>
     <div class="main col-md-8 col-md-offset-2">
-        <div class="container text-center col-md-10">
+        <div class="monthlyTop" style="display:grid;">
+            <div class="monthlyName">
+                <b style="font-size:25px; text-align:center; float:left;">10월 품질 보증서</b>
+            </div>
+        </div>
+        <hr style="border:0; height:3px; background: #04005E;">
+        <div class="clear"></div>
+        
+        <div class="container text-center col-md-12">
+            <div class="col-md-1"></div>
             <div id="grade">
                 <p class="gradetitle">이번 달 나의 등급</p>
                 <span class="gradeprint">상위 <?=$grade?>%</span>
             </div>
+            <div class="col-md-1"></div>
         </div>
-        <div id="routineChartBtn" class="container">
+        <div class= "col-md-12 monthlyContent">
+            <div class="col-md-1"></div>
+            <div class="addedRoutine col-md-5">
+                <p style="text-align:center; font-size:18px;">이번 달 수행한 루틴</p>
+                <canvas id="addedRoutineChart"></canvas>
+            </div>
+            <div class="totalAchievement col-md-5">
+                <p style="text-align:center; font-size:18px;">이번 달 총 성취도</p>
+                <canvas id="totalAchievementChart"></canvas>
+            </div>
+            <div class="col-md-1"></div>
+                    
+        </div>
+        
+        
+        <div class="col-md-1"></div>
+        <div id="routineChartBtn" class="col-md-10">
             <a onclick="showRoutineTime();">시간</a>
             <span>|</span>
             <a onclick="showRoutineWeek();">주차</a>
             <span>|</span>
             <a onclick="showRoutineDayofweek();">요일</a>
         </div>
-
-        <div id="routineChart" class="container col-md-10">
+        
+        <div class="col-md-1"></div>
+        <div id="routineChart" class="col-md-10">
             <canvas id="monthlyChart"></canvas>
         </div>
-        <div class="container col-md-10">
+        <div class="container col-md-12">
             <row>
-                <div id="fail" class="col-md-6">
+                <div class="col-md-1"></div>
+                <div id="fail" class="col-md-5">
                     <p>가장 실패율이 높은 루틴</p>
                     <p>"<?php
                             if(isset($lowestRow['routineName']))
@@ -229,7 +272,7 @@
 
 
                 </div>
-                <div id="success" class="col-md-6">
+                <div id="success" class="col-md-5">
                     <p>가장 성공률이 높은 루틴</p>
                     <p>"<?php
                             if(isset($highestRow['routineName'])){
@@ -259,7 +302,7 @@
                         ?> </p>
 
                     <?php
-                    if($highestRow){
+                    if(isset($highestRow)){
             
                                 $highestGoalID = $highestRow['goalID'];
                         
@@ -293,18 +336,26 @@
 
 
                 </div>
+                <div class="col-md-1"></div>
             </row>
         </div>
-
-        <div id="failureChart" class="contatiner col-md-10">
+        <div class="col-md-1"></div>
+        <div id="failureChart" class="col-md-10">
             <h4 style="text-align:center;">실패 원인 분석</h4>
             <canvas id="mChartFailure" width="300" height="300"></canvas>
             <div id='customLegend' class="customLegend"></div>
         </div>
-        <div id="monthChart" class="contatiner col-md-10">
-            <h4 style="text-align:right;">5달간 성취도 추이</h4>
-            <canvas id="mChartMonth"></canvas>
+        <div class="col-md-1"></div>
+        
+        <div id="monthChart" class="col-md-12">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <h4 style="text-align:right;">5달간 성취도 추이</h4>
+                <canvas id="mChartMonth"></canvas>
+            </div>
+            <div class="col-md-1"></div>
         </div>
+        <div class="col-md-1"></div>
     </div>
 
 
@@ -528,12 +579,11 @@
                 <?php 
             for($z=0;$z<count($failure);$z++){
                 if($failure[$z] != null){
-                    
-                $failtmp = explode('-',$failure[$z]);
-                $failString = $failList[$failtmp[0]-1];
-                echo "\"$failString\"";
-                if($z!=count($failure)){
-                    echo ",";
+                    $failtmp = explode('-',$failure[$z]);
+                    $failString = $failList[$failtmp[0]-1];
+                    echo "\"$failString\"";
+                    if($z!=count($failure)){
+                        echo ",";
                 }
  
                     
@@ -593,8 +643,7 @@
             responsive: false,
             legend: {
 
-                display: false,
-                position: 'right'
+                display: false
 
             },
             legendCallback: customLegend,
@@ -692,9 +741,121 @@
     var chartmonth = new Chart(ctx5Month, monthData);
 
     <?php 
+    }
     
-    }    
+        $addedRoutineName = null;
+        $addedRoutineColor = null;
+        $addedRoutineCnt = null;
+        $routineKind = explode(';',$routineKind);
+        if($routineKind[0]){
+            for($k=0;$k<count($routineKind);$k++){
+                $routinetmp = explode('-',$routineKind[$k]);
+                $addedRoutineSql = "select color,routineName from routine where routineID = $routinetmp[0]";
+                $addedRow = mysqli_fetch_array(mysqli_query($conn,$addedRoutineSql),MYSQLI_ASSOC);
+                $addedRoutineName[$k] = $addedRow['routineName'];
+                $addedRoutineColor[$k] = $addedRow['color'];
+                $addedRoutineCnt[$k] = $routinetmp[1];
+
+            }
+            
+        }
+
+
+
+
+    
+    
 
 ?>
+    var ctxAdded = document.getElementById("addedRoutineChart");
+    var addedRoutineData = { 
+        type: 'doughnut',    
+        data: {
+            labels: [
+                <?php 
+                if($addedRoutineName){
+                    for($w=0;$w<count($routineKind);$w++){
+                            echo "'$addedRoutineName[$w]',";
+
+                        }
+                }else{
+                    echo "\"데이터 없음\"";
+                    
+                }
+
+            ?>
+            ],
+
+            datasets: [{
+                <?php 
+                    echo "data:[";
+                    if($addedRoutineCnt){
+                        for($i=0;$i<count($routineKind);$i++){
+                                echo "$addedRoutineCnt[$i],";
+                            }
+                    }else{
+                        echo "1";
+                        
+                    }
+                    echo "],backgroundColor:[";
+                    if($addedRoutineColor){
+                        for($i= 0; $i<count($routineKind);$i++){
+                            echo "'$addedRoutineColor[$i]',";
+                        }
+
+                    }else{
+                        echo "\"#C2C7EB\"";
+                        
+                    }
+                    echo "]";
+            
+            
+            ?>
+            }]},
+        options: {
+            legend: {
+                position: 'right'
+            }
+        },
+    }
+    var addedRoutineChart = new Chart(ctxAdded, addedRoutineData);
+    
+    var ctxTotal = document.getElementById("totalAchievementChart");
+    var totalAchievementData = {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+            data: [
+                <?php 
+                    $monthlyTotalAchieve = round($monthlyTotalAchieve,1);
+                    $monthlyTotalFail = 100 - $monthlyTotalAchieve;
+                    echo "$monthlyTotalAchieve,$monthlyTotalFail";
+                
+                
+                ?>],
+            backgroundColor:['#BAE6E8','grey']
+            }],
+
+            labels: [
+                
+                '성공',
+                '실패'
+            ]
+        },
+
+        options: {
+            legend:{
+                display: false
+            }
+
+        },
+    }
+    var addedRoutineChar = new Chart(ctxTotal, totalAchievementData);
+    
+    
+    
+
+    
+    
 
 </script>

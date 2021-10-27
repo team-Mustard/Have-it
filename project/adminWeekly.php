@@ -9,11 +9,10 @@ switch($mode){
     case 1:{
         
         $today = date("Y-m-d");   
-        //$today = '2021-09-06';    
+        //$today = '2021-12-10';    
         $year = date("Y",strtotime($today));
         $month = date("m",strtotime($today));
         $day = date("d",strtotime($today));
-        
         $preLastday = date('t',mktime(0, 0, 1, $month-1, $day, $year));
 
         if($day > 7){
@@ -35,9 +34,11 @@ switch($mode){
         
         $trackerResult = mysqli_query($conn,$trackerSql);
         $achieveRoutine = null;
-        
+        $routineCount = 0;
+        $hourCount = 0;
+        $checkCount = 0;
+        $minuteCount = 0;
         if($trackerResult){ 
-
             while($trackerRow = mysqli_fetch_array($trackerResult, MYSQLI_ASSOC)){
                 $trackerID = $trackerRow['trackerID'];
                 $trackerDate = $trackerRow['date'];
@@ -47,7 +48,15 @@ switch($mode){
                 
                 if($t_routineResult){                 
                     while($t_routineRow = mysqli_fetch_array($t_routineResult, MYSQLI_ASSOC)){
+                        
+                        $routineCount++;
                         $routineID = $t_routineRow['routineID'];
+                        $startHour = date('G',strtotime($t_routineRow['startTime']));
+                        $endHour = date('G',strtotime($t_routineRow['endTime']));
+                        $minuteDf = (int)((strtotime($t_routineRow['endTime']) -strtotime($t_routineRow['startTime'])) / 60);
+                        $hourDf = $endHour - $startHour;
+                        
+                        
                         $routineSql = "select goalID from routine where routineID = $routineID";
                         $routineResult = mysqli_query($conn,$routineSql);
                         $routineRow = mysqli_fetch_array($routineResult,MYSQLI_ASSOC);
@@ -70,6 +79,7 @@ switch($mode){
                         }
                         
                         if($t_routineRow['checkRoutine'] == 1){
+                            $checkCount++;
                             if(isset($checkWeeklyRoutine[$dayofweek][$goalID])){                      
                                 $checkWeeklyRoutine[$dayofweek][$goalID]++;
                             }else{ 
@@ -84,56 +94,75 @@ switch($mode){
             }
 
         }
-        $insertWeeklySql = "insert into WeeklyReport (userID, date) 
-                    values($userid,'$today')";
+        
+        /*$hourCount += floor($minuteCount/60);
+        echo "$checkCount<br>";
+        echo "$routineCount<br>";
+        echo "$hourCount<br>";*/
+
+        
+        
+        $insertWeeklySql = "insert into WeeklyReport (userID, date,hourCnt,routineCnt,checkCnt) 
+                    values($userid,'$today',$hourCount,$routineCount,$checkCount)";
         mysqli_query($conn, $insertWeeklySql);
         $selectWeeklySql = "select weeklyID from weeklyreport where date = '$today' and userid = $userid";
         $weeklyResult = mysqli_query($conn, $selectWeeklySql);
         $weeklyRow = mysqli_fetch_array($weeklyResult, MYSQLI_ASSOC);
         $weeklyID = $weeklyRow['weeklyID'];
+        $goalIDCount = 0;
         if(isset($goalIDArr)){
             $goalIDCount = count($goalIDArr);
             
-        }else{
-            $goalIDCount = 0;
         }
         
-                             
-        for($w=0;$w<$goalIDCount;$w++){
-            $goalID = $goalIDArr[$w];
+        if($goalIDCount){
+            for($w=0;$w<$goalIDCount;$w++){
+                $goalID = $goalIDArr[$w];
 
-            $dayweekAchieve = null;
-        
-            for($i=0;$i<7;$i++){
+                $dayweekAchieve = null;
 
-                if(isset($weeklyRoutine[$i][$goalID])){
-                    if(isset($checkWeeklyRoutine[$i][$goalID])) {    
-                        $dayweekPercent = round($checkWeeklyRoutine[$i][$goalID] / $weeklyRoutine[$i][$goalID] * 100 ,1);
+                for($i=0;$i<7;$i++){
 
-                    }else{                
-                        $dayweekPercent = 0;
-                    }     
-                }else        
-                    $dayweekPercent = 0;                
+                    if(isset($weeklyRoutine[$i][$goalID])){
+                        if(isset($checkWeeklyRoutine[$i][$goalID])) {    
+                            $dayweekPercent = round($checkWeeklyRoutine[$i][$goalID] / $weeklyRoutine[$i][$goalID] * 100 ,1);
 
-                if($dayweekAchieve != null){            
+                        }else{                
+                            $dayweekPercent = 0;
+                        }     
+                    }else        
+                        $dayweekPercent = 0;                
 
-                    $dayweekAchieve = "$dayweekAchieve;$dayweekPercent";
+                    if($dayweekAchieve != null){            
 
-                }else{            
-                    $dayweekAchieve = "$dayweekPercent";        
-                }      
+                        $dayweekAchieve = "$dayweekAchieve;$dayweekPercent";
 
-            }    
-            $insertWeeklyAchieveSql = "insert into weekly_achieve_dayofweek (goalID, weeklyID,achieveDayofWeek) values($goalID,$weeklyID,'$dayweekAchieve')";
-              
-        
-           
+                    }else{            
+                        $dayweekAchieve = "$dayweekPercent";        
+                    }      
+
+                }    
+                $insertWeeklyAchieveSql = "insert into weekly_achieve_dayofweek (goalID, weeklyID,achieveDayofWeek) values($goalID,$weeklyID,'$dayweekAchieve')";
+
+
+
+                mysqli_query($conn, $insertWeeklyAchieveSql);
+
+
+
+            }
+
+        }else{
+            $insertWeeklyAchieveSql = "insert into weekly_achieve_dayofweek ( weeklyID,achieveDayofWeek) values($weeklyID,'0;0;0;0;0;0;0')";
+
+
+
             mysqli_query($conn, $insertWeeklyAchieveSql);
             
-
-           
-        }
+            
+            
+        }   
+        
         
         
         
@@ -170,7 +199,6 @@ switch($mode){
         }else{
             $failureCount = 0;
         }
-        echo $failureCount;
         for($i=0;$i<$failureCount;$i++){
               
             if($inputFailure!=null){

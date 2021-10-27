@@ -65,12 +65,12 @@ values ('건강해지기', '2021-03-17','2021-05-17','2');
 
 
 
-create table Routine (
+create table routine (
 routineID int auto_increment,
 routineName varchar(30),
 color char(7),
 rInterval varchar(14) default 0,
-habbitTracker int default 0,
+habbitTracker varchar(14) default 0,
 goalID int,
 constraint routine_routineID_PK primary key (routineID),
 constraint routine_goalID_FK Foreign Key (goalID) references goal(goalID) on delete cascade
@@ -80,7 +80,7 @@ constraint routine_goalID_FK Foreign Key (goalID) references goal(goalID) on del
 
 
 /* goal 2 건강하게 살기*/
-insert into Routine(routineName, color,rInterval, goalID) 
+insert into routine(routineName, color,rInterval, goalID) 
 values ('운동 가기','#FF0000' ,'0;1;1;1;1;1;0',2);
 insert into Routine(routineName, color,rInterval, goalID) 
 values ('아침밥 먹기','#800000' ,'1;1;1;1;1;1;1',2);
@@ -89,57 +89,57 @@ values ('영양제 먹기','#FFFF00' ,'1;1;1;1;1;1;1',2);
 
 /*goal 1 팀 프로젝트 */
 
-insert into Routine(routineName, color,rInterval, goalID) 
+insert into routine(routineName, color,rInterval, goalID) 
 values ('팀 정기회의','#660099' ,'0;1;0;0;0;0;0',1);
 
-insert into Routine(routineName, color,rInterval, goalID) 
+insert into routine(routineName, color,rInterval, goalID) 
 values ('코딩하기','#584329' ,'1;1;1;1;1;1;0',1);
 
-insert into Routine(routineName, color,rInterval, goalID) 
+insert into routine(routineName, color,rInterval, goalID) 
 values ('주간 결과물 깃허브 업로드','#584329' ,'0;0;0;0;0;0;1',1);
 
 /* goal 3 토익 800점 */
 
-insert into Routine(routineName, color,rInterval, goalID) 
+insert into routine(routineName, color,rInterval, goalID) 
 values ('단어 암기','#6937a1' ,'1;1;1;1;1;0;0',3);
 
-insert into Routine(routineName, color,rInterval, goalID) 
+insert into routine(routineName, color,rInterval, goalID) 
 values ('LC 공부','#8977ad' ,'1;1;1;1;1;1;0',3);
 
-insert into Routine(routineName, color,rInterval, goalID) 
+insert into routine(routineName, color,rInterval, goalID) 
 values ('RC 공부','#8b00ff' ,'1;1;1;1;1;1;0',3);
 
 
 /* goal 4 유기동물 검색 사이트 구현 */
 
-insert into Routine(routineName, color,rInterval, goalID) 
+insert into routine(routineName, color,rInterval, goalID) 
 values ('페이지 구현','#00498c' ,'1;1;1;1;1;1;0',4);
 
-insert into Routine(routineName, color,rInterval, goalID) 
+insert into routine(routineName, color,rInterval, goalID) 
 values ('진척도 보고서 작성','#0099a4' ,'0;0;0;0;0;0;1',4);
 
 
 /* goal 5 학점 4.0 이상 받기 */
 
-insert into Routine(routineName, color,rInterval, goalID) 
+insert into routine(routineName, color,rInterval, goalID) 
 values ('수업 내용 복습','#edacb1' ,'1;1;1;1;1;0;0',5);
 
-insert into Routine(routineName, color,rInterval, goalID) 
+insert into routine(routineName, color,rInterval, goalID) 
 values ('다음 날 내용 예습','#f29886' ,'1;1;1;1;1;0;0',5);
 
 
 /* goal 6 기말 프로젝트 */
 
-insert into Routine(routineName, color,rInterval, goalID) 
+insert into routine(routineName, color,rInterval, goalID) 
 values ('프로젝트 회의','#83dcb7' ,'0;0;1;0;0;0;0',6);
 
-insert into Routine(routineName, color,rInterval, goalID) 
+insert into routine(routineName, color,rInterval, goalID) 
 values ('프로젝트 구현','#f5f5dc' ,'1;1;1;1;1;1;1',6);
 
-insert into Routine(routineName, color,rInterval, goalID) 
+insert into routine(routineName, color,rInterval, goalID) 
 values ('주간 보고서 작성','#f7e600' ,'0;0;0;0;0;0;1',6);
 
-insert into Routine(routineName, color,rInterval, goalID) 
+insert into routine(routineName, color,rInterval, goalID) 
 values ('회의록 작성','#464964','0;0;1;0;0;0;0',6);
 
 
@@ -179,7 +179,7 @@ constraint t_routine_trackerID_FK Foreign Key (trackerID) references timetracker
 
 
 
-create table MonthlyReport (
+create table monthlyreport (
 monthlyID int auto_increment,
 lowestRoutine varchar(10),
 highestRoutine varchar(10),
@@ -188,6 +188,7 @@ grade int,
 date date,
 userID int,
 totalAchieve float,
+routineKind text,
 constraint MonthlyReport_monthlyID_PK primary key (monthlyID),
 constraint MonthlyReport_userID_FK Foreign Key (userID) references userinfo(userID) on delete cascade
 
@@ -224,7 +225,7 @@ constraint monthly_achieveDayofweek_monthlyID_FK Foreign Key (monthlyID) referen
 );
 
 
-create table WeeklyReport(
+create table weeklyreport(
 weeklyID int auto_increment,
 goodEvaluation text,
 badEvaluation text, 
@@ -232,6 +233,9 @@ score int default 0,
 date date,
 userID int,
 image text,
+hourCnt int,
+routineCnt int,
+checkCnt int,
 weekly_failure varchar(50) default null,
 constraint WeeklyReport_weeklyID_PK primary key (weeklyID),
 constraint WeeklyReport_userID_FK Foreign Key (userID) references userinfo(userID) on delete cascade

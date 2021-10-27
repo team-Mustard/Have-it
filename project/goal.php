@@ -23,12 +23,21 @@ $l_row = mysqli_fetch_array($l_result);
 $lastID = $l_row['routineID'];
 $lastID += 1;
 
+/* 루틴 예외처리를 위해 필요한 데이터들 */
+$e_routine = "SELECT * FROM Routine WHERE goalID ='$goalID'";
+$e_result = mysqli_query($conn, $e_routine);
+$e_row = mysqli_fetch_array($e_result);
+
+$e_count = mysqli_num_rows($e_result); //루틴 개수
+$e_ID = $e_row['routineID']; // 처음 루틴 ID
+
 ?>
 
 <div class="main col-md-8 col-md-offset-2">
     <form name="goalForm" method="post" action="./db/goalmodify.php">
         <!-- goal id -->
         <input type="text" name="goalID" value="<?=$goalID?>" style="display:none;">
+        <input type="text" name="ex_goalName" value="<?=$goalName?>" style="display:none;"> 
         
         <div class="goalNameZone">
             <!-- goal edit -->
@@ -52,18 +61,22 @@ $lastID += 1;
 
         <!-- buttons --> 
         <div class="right">
-            <input value="목표 삭제" id="goalRemove" onclick="goalDelete(1);" class="word_4_btn bg_gray_btn round_btn" type="button" />
+            <input value="목표 삭제" id="goalRemove" onclick="goalDelete();" class="word_4_btn bg_gray_btn round_btn" type="button" />
             <input value="목표 수정" id="goalModify" onclick="modify()" class="word_4_btn bg_purple_btn round_btn" type="button"/>
-            <input value="수정 완료" id="goalSubmit" onclick="count_return(); goalDelete(2);" class="word_4_btn bg_purple_btn round_btn modi_form" type="button"> 
+            <input value="수정 완료" id="goalSubmit" onclick="count_return(); modifyDone();" class="word_4_btn bg_purple_btn round_btn modi_form" type="button"> 
         </div>
 
         <div class="clear"></div>
-
+        
         <!-- routine (for) -->
         <?php
         $routine = "SELECT * FROM Routine WHERE goalID ='$goalID'";
         $result2 = mysqli_query($conn, $routine);
         $bid = 0;
+        
+        echo "<script> let a = 0; let arrID = []; 
+        let plus_a = 0; let plus_arrID = [];
+        </script>";
                
         while($row2 = mysqli_fetch_array($result2)){
             $routineID = $row2['routineID'];
@@ -71,6 +84,12 @@ $lastID += 1;
             $routineName = $row2['routineName'];
             $Inter = $row2['rInterval'];
             $rInter = explode(';', $Inter);
+            $all_routine[$bid] = $routineID;
+            
+            echo "
+            <script>
+            arrID[a] = ".$routineID.";
+            a++; </script>";
             
         echo '    
         <div class="routine text-center">
@@ -88,13 +107,12 @@ $lastID += 1;
                 </span>
                 <div id="basket'.$routineID.'" class="routineBasket clear" style="background-color: '.$color.'; height: 45px;">';
                 
-                /* 루틴 시작후 일주일 지났을 때 마다 check 초기화 */
+                /* 루틴 시작후 월요일마다 check 초기화 */
                 $today = date("Y-m-d");
-                $start_yoli = date('w', strtotime($term_s)); //시작한 날의 요일
                 $today_yoli = date('w', strtotime($today)); //현재 요일
                 
-                if($start_yoli == $today_yoli && $term_s != $today){
-                    //시작한 요일과 현재 요일이 같고 && 지금이 시작일이 아니라면
+                if($today_yoli == 1 && $term_s != $today){
+                    //지금이 월요일이고 && 지금이 시작일이 아니라면
                     $up = "update routine set habbitTracker='0' where routineID = '$routineID'";
                     $upresult = $conn->query($up); }
             
@@ -106,14 +124,39 @@ $lastID += 1;
                 while($dayNum<7){
                     $IntervalNum = $row2['rInterval'];
                     $interval = explode(';', $IntervalNum);
+                    $habbit = explode(';', $check);
                     
                     if($interval[$dayNum] == 1){
                         $bcount += 1;
-                       echo '<div class="col-xs-1 col-md-1 con">';
-                       if($check>0){
-                           echo '<i id="jew" class="fa fa-trophy fa-2x" style="margin-top:3px; margin-left:3px; color:'.$color.'; aria-hidden="true"></i>';
-                            $check--;
-                            }                       
+                        echo '<div class="col-xs-1 col-md-1 con">';
+                        if($habbit[$dayNum] >= 1){ 
+                           echo '<i id="jew" class="fa fa-trophy fa-2x" style="margin-top:4px; margin-left:-11.5px; color:'.$color.'; aria-hidden="true"></i>';
+                            }
+                        else if($habbit[$dayNum] == 0){
+                            switch($dayNum){
+                                case 1:
+                                    echo '<p class="wday" style="margin-top:7px; margin-left:-11.5px; color:'.$color.';">MON</p>';
+                                    break;
+                                case 2:
+                                    echo '<p class="wday" style="margin-top:7px; margin-left:-11.5px; color:'.$color.';">TUE</p>';
+                                    break;
+                                case 3:
+                                    echo '<p class="wday" style="margin-top:7px; margin-left:-11.5px; color:'.$color.';">WED</p>';
+                                    break;
+                                case 4:
+                                    echo '<p class="wday" style="margin-top:7px; margin-left:-11.5px; color:'.$color.';">THU</p>';
+                                    break;
+                                case 5:
+                                    echo '<p class="wday" style="margin-top:7px; margin-left:-11.5px; color:'.$color.';">FRI</p>';
+                                    break;
+                                case 6:
+                                    echo '<p class="wday" style="margin-top:7px; margin-left:-11.5px; color:'.$color.';">SAT</p>';
+                                    break;
+                                case 0:
+                                    echo '<p class="wday" style="margin-top:7px; margin-left:-11.5px; color:'.$color.';">SUN</p>';
+                                    break;
+                            }
+                        }
                        echo '</div>'; 
                     }
                 $dayNum += 1;    
@@ -209,19 +252,122 @@ $lastID += 1;
         form += '<input name="plusID'+btn_count+'" type="text" style="display:none;" value="'+routine_num+'">';
         
         btn_count++;
-        var routineSpace = routine_num + btn_count;
+        var routineSpace = routine_num + 1;
+        //arrID[a++] = routine_num;
+        plus_arrID[plus_a++] = routine_num;
         form += '<div id="bas'+routineSpace+'" class="text-center additional_space"></div>';
         newRoutine.innerHTML += form;
     }
     
-    function goalDelete(index){
-        if (index == 1){
-            document.goalForm.action='./db/goaldelete.php';
-        }
-        else if(index == 2){
-            document.goalForm.action='./db/goalmodify.php';
-        }
+    function goalDelete(){
+        document.goalForm.action='./db/goaldelete.php';
         document.goalForm.submit();
+    }
+    
+    function modifyDone(){
+        //받아와야 하는 것 -> 첫번째 루틴의 아이디, 루틴의 개수, 새로 추가한 루틴의 아이디/개수는->btn_count 있음
+       
+        if(goal_submit() == false){
+            return;
+        }
+        else{
+            document.goalForm.action='./db/goalmodify.php';
+            document.goalForm.submit();
+        }
+        
+    }
+    
+    function goal_submit(){
+        var rad = document.goalForm.term;
+        
+        let c = <?=$e_count?>;
+        let r = <?=$e_ID?>;
+        
+        //목표 입력 x, 30자 초과
+        var goal_name = document.getElementsByName("goalName")[0].value;
+        var g_length = goal_name.length;
+        
+        if(g_length == 0){
+            alert("목표 이름을 입력해 주세요!");
+            return false;
+        }
+        else if(g_length > 30){
+            alert("목표 이름이 30자를 초과하였습니다!");
+            return false;
+        }
+      
+        /* 기존의 루틴 요일 체크 */
+        for(var i=0; i<a; i++){
+            var x = arrID[i];
+            var routines = document.getElementsByName("routine"+x+"[]");
+            var check = checkbox_permit(routines);
+            
+            if (check == false) {
+                //var name_routine = document.getElementsByName("routine_name"+r)[0].value;
+                alert("루틴의 주기를 하루 이상 체크해 주세요!");
+                return false;
+            }
+        }
+        
+        /* 추가된 루틴 요일 체크 */
+        for(var h=0; h<a; h++){
+            var n = arrID[h];
+            var p_routines = document.getElementsByName("routine"+n+"[]");
+            var p_check = checkbox_permit(p_routines);
+            
+            if (p_check == false) {
+                //var name_routine = document.getElementsByName("routine_name"+r)[0].value;
+                alert("루틴의 주기를 하루 이상 체크해 주세요!");
+                return false;
+            }
+        }
+        
+        /* 기존의 루틴 오류처리 */
+        for(var j=0; j<a; j++){
+            var y = arrID[j];
+            var routineName = document.getElementsByName("rouName"+y)[0].value;
+            var r_length = routineName.length;
+            
+            if(r_length == 0){
+                var z = j+1; 
+                alert(z+"번째 루틴의 이름을 입력하세요");
+                return false;
+            }
+            else if(r_length > 50){
+                var z = j+1;
+                alert(z+"번째 루틴이 50자를 초과하였습니다.");
+                return false;
+            }
+        }
+        
+        /* 추가된 루틴 오류처리 */
+        for(var q=0; q<plus_a; q++){
+            var k = plus_arrID[q];
+            var p_routineName = document.getElementsByName("routine_name"+k)[0].value;
+            var p_r_length = p_routineName.length;
+            
+            if(p_r_length == 0){
+                var t = a+q+1; 
+                alert(t+"번째 루틴의 이름을 입력하세요");
+                return false;
+            }
+            else if(p_r_length > 50){
+                var t = a+q+1;
+                alert(t+"번째 루틴이 50자를 초과하였습니다.");
+                return false;
+            }
+        }
+    }
+    
+    function checkbox_permit(routines) {
+        let result = false;
+        for(var i=0; i<routines.length; i++) {
+            if(routines[i].checked){
+                //console.log(routines[i]);
+                result = true;
+            }
+        }
+        return result;
     }
     
     function plusrouID(routineID){

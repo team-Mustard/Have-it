@@ -3,7 +3,7 @@ session_start();
 if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
 include "db/dbconn.php";
 $today = date("Y-m-d");
-//$today = '2021-10-01';
+//$today = '2021-12-01';
 $year = date("Y",strtotime($today));
 $month = date("m",strtotime($today));
 $day = date("d",strtotime($today));
@@ -42,6 +42,8 @@ $trackerSql = "select * from timetracker where userID = $userid and date(date) b
 $trackerResult = mysqli_query($conn,$trackerSql);
 $totalAchieve = 0;
 $totalCheckAchieve = 0;
+$routineKind = null;
+
 if($trackerResult){
     while($trackerRow = mysqli_fetch_array($trackerResult, MYSQLI_ASSOC)){
         $trackerID = $trackerRow['trackerID'];
@@ -56,6 +58,7 @@ if($trackerResult){
             $routineResult = mysqli_query($conn,$routineSql);
             $routineRow = mysqli_fetch_array($routineResult,MYSQLI_ASSOC);
             $goalID = $routineRow['goalID'];
+            
             
             if(isset($goalIDArr)){
                 if(!in_array($goalID,$goalIDArr)){
@@ -198,89 +201,102 @@ if(isset($routineIDArr)){
 }else{
     $routineIDCount = 0;
 }
+if($goalIDCount){
+    for($w=0;$w<$goalIDCount;$w++){
+        $goalID = $goalIDArr[$w];
+        $hourAchieve = null;
+        $weekAchieve = null;
+        $dayweekAchieve = null;
+        for($i = 0;$i<24;$i++){
+            if(isset($countHour[$i][$goalID])){
+                if(isset($countCheckHour[$i][$goalID])){
+                    $hourPercent = round($countCheckHour[$i][$goalID] / $countHour[$i][$goalID] * 100 ,1);
 
-for($w=0;$w<$goalIDCount;$w++){
-    $goalID = $goalIDArr[$w];
-    $hourAchieve = null;
-    $weekAchieve = null;
-    $dayweekAchieve = null;
-    for($i = 0;$i<24;$i++){
-        if(isset($countHour[$i][$goalID])){
-            if(isset($countCheckHour[$i][$goalID])){
-                $hourPercent = round($countCheckHour[$i][$goalID] / $countHour[$i][$goalID] * 100 ,1);
-                
+                }else{
+                    $hourPercent = 0;
+
+                }   
             }else{
-                $hourPercent = 0;
-                
-            }   
-        }else{
-                $hourPercent = 0;
-                
-        }  
-        
-        if($hourAchieve != null){
-            $hourAchieve = "$hourAchieve;$hourPercent";
-        }else{
+                    $hourPercent = 0;
 
-            $hourAchieve = "$hourPercent";
+            }  
+
+            if($hourAchieve != null){
+                $hourAchieve = "$hourAchieve;$hourPercent";
+            }else{
+
+                $hourAchieve = "$hourPercent";
+            }
         }
+
+        for($i=1;$i<$preLastWeek+1; $i++){
+            if(isset($countWeek[$i][$goalID])){
+                if(isset($countCheckWeek[$i][$goalID])){
+                    $weekPercent = round($countCheckWeek[$i][$goalID] / $countWeek[$i][$goalID] * 100 ,1);
+
+                }else{
+                    $weekPercent = 0;
+
+                }   
+            }else{
+                    $weekPercent = 0;
+
+            }  
+
+            if($weekAchieve != null){
+                $weekAchieve = "$weekAchieve;$weekPercent";
+            }else{
+
+                $weekAchieve = "$weekPercent";
+            }
+
+        }
+        for($i=0;$i<7;$i++){
+            if(isset($countDayWeek[$i][$goalID])){
+                if(isset($countCheckDayWeek[$i][$goalID])){
+                    $dayweekPercent = round($countCheckDayWeek[$i][$goalID] / $countDayWeek[$i][$goalID] * 100 ,1);
+
+                }else{
+                    $dayweekPercent = 0;
+
+                }   
+            }else{
+                    $dayweekPercent = 0;
+
+            }  
+
+            if($dayweekAchieve != null){
+                $dayweekAchieve = "$dayweekAchieve;$dayweekPercent";
+            }else{
+
+                $dayweekAchieve = "$dayweekPercent";
+            }
+
+        }
+        $achieveTimeSql = "insert into monthly_achieve_Time(goalID,monthlyID,achieveTime)
+                            values($goalID,$monthlyID,'$hourAchieve')";
+        $achieveWeekSql = "insert into monthly_achieve_Week(goalID,monthlyID,achieveWeek)
+                            values($goalID,$monthlyID,'$weekAchieve')";
+        $achieveDayWeekSql = "insert into monthly_achieve_Dayofweek(goalID,monthlyID,achieveDayofWeek)
+                            values($goalID,$monthlyID,'$dayweekAchieve')";
+        mysqli_query($conn, $achieveTimeSql);
+        mysqli_query($conn, $achieveWeekSql);
+        mysqli_query($conn, $achieveDayWeekSql);
+
     }
     
-    for($i=1;$i<$preLastWeek+1; $i++){
-        if(isset($countWeek[$i][$goalID])){
-            if(isset($countCheckWeek[$i][$goalID])){
-                $weekPercent = round($countCheckWeek[$i][$goalID] / $countWeek[$i][$goalID] * 100 ,1);
-                
-            }else{
-                $weekPercent = 0;
-                
-            }   
-        }else{
-                $weekPercent = 0;
-                
-        }  
-        
-        if($weekAchieve != null){
-            $weekAchieve = "$weekAchieve;$weekPercent";
-        }else{
-
-            $weekAchieve = "$weekPercent";
-        }
-        
-    }
-    for($i=0;$i<7;$i++){
-        if(isset($countDayWeek[$i][$goalID])){
-            if(isset($countCheckDayWeek[$i][$goalID])){
-                $dayweekPercent = round($countCheckDayWeek[$i][$goalID] / $countDayWeek[$i][$goalID] * 100 ,1);
-                
-            }else{
-                $dayweekPercent = 0;
-                
-            }   
-        }else{
-                $dayweekPercent = 0;
-                
-        }  
-        
-        if($dayweekAchieve != null){
-            $dayweekAchieve = "$dayweekAchieve;$dayweekPercent";
-        }else{
-
-            $dayweekAchieve = "$dayweekPercent";
-        }
-        
-    }
     
-    $achieveTimeSql = "insert into monthly_achieve_Time(goalID,monthlyID,achieveTime)
-                        values($goalID,$monthlyID,'$hourAchieve')";
-    $achieveWeekSql = "insert into monthly_achieve_Week(goalID,monthlyID,achieveWeek)
-                        values($goalID,$monthlyID,'$weekAchieve')";
-    $achieveDayWeekSql = "insert into monthly_achieve_Dayofweek(goalID,monthlyID,achieveDayofWeek)
-                        values($goalID,$monthlyID,'$dayweekAchieve')";
-    mysqli_query($conn, $achieveTimeSql);
-    mysqli_query($conn, $achieveWeekSql);
-    mysqli_query($conn, $achieveDayWeekSql);
-
+}else{
+        $achieveTimeSql = "insert into monthly_achieve_Time(monthlyID,achieveTime)
+                            values($monthlyID,'0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0')";
+        $achieveWeekSql = "insert into monthly_achieve_Week(monthlyID,achieveWeek)
+                            values($monthlyID,'0;0;0;0')";
+        $achieveDayWeekSql = "insert into monthly_achieve_Dayofweek(monthlyID,achieveDayofWeek)
+                            values($monthlyID,'0;0;0;0;0;0;0')";
+        mysqli_query($conn, $achieveTimeSql);
+        mysqli_query($conn, $achieveWeekSql);
+        mysqli_query($conn, $achieveDayWeekSql);
+    
 }
 
 for($z = 0; $z < $routineIDCount; $z++){
@@ -292,6 +308,14 @@ for($z = 0; $z < $routineIDCount; $z++){
     }else{
         $routineAchieve[$routineID] = 1;
     }
+    
+    if($routineKind != null){
+            $routineKind = "$routineKind;$routineID-$countRoutine[$routineID]";
+    }else{
+
+        $routineKind = "$routineID-$countRoutine[$routineID]";
+    }
+    
   
         
 }
@@ -394,9 +418,7 @@ $insertTotal = round($totalCheckAchieve / $totalAchieve * 100,3);
     
 }
 
-$updateMonthlySql = "update monthlyreport set lowestRoutine = '$SaveLowest', highestRoutine = '$SaveHighest', monthly_failure = '$inputFail',totalAchieve = $insertTotal where monthlyID = $monthlyID";
-
-
+$updateMonthlySql = "update monthlyreport set lowestRoutine = '$SaveLowest', highestRoutine = '$SaveHighest', monthly_failure = '$inputFail',totalAchieve = $insertTotal,routineKind='$routineKind' where monthlyID = $monthlyID";
 
 mysqli_query($conn, $updateMonthlySql);
 
@@ -406,7 +428,8 @@ echo("
                         location.href='./index.php';
                     </script>"
 );
-/*echo $achieveTimeSql;
+/*
+echo $achieveTimeSql;
 echo "<br>";
 echo $achieveWeekSql;
 echo "<br>";
@@ -440,9 +463,10 @@ echo "총 루틴 개수<br>";
 pp($countRoutine);
 echo "총 체크 루틴 개수<br>";
 pp($countCheckRoutine);
+echo "<br><br>";
+echo $routineKind;
+echo "<br>";
 */
-
-
 
 
 ?>
