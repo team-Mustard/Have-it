@@ -135,25 +135,25 @@ $e_ID = $e_row['routineID']; // 처음 루틴 ID
                         else if($habbit[$dayNum] == 0){
                             switch($dayNum){
                                 case 1:
-                                    echo '<p class="wday" style="margin-top:7px; margin-left:-11.5px; color:'.$color.';">MON</p>';
+                                    echo '<p class="wday" style="margin-top:7px; margin-left:-12px; color:'.$color.';">MON</p>';
                                     break;
                                 case 2:
-                                    echo '<p class="wday" style="margin-top:7px; margin-left:-11.5px; color:'.$color.';">TUE</p>';
+                                    echo '<p class="wday" style="margin-top:7px; margin-left:-10.5px; color:'.$color.';">TUE</p>';
                                     break;
                                 case 3:
-                                    echo '<p class="wday" style="margin-top:7px; margin-left:-11.5px; color:'.$color.';">WED</p>';
+                                    echo '<p class="wday" style="margin-top:7px; margin-left:-12px; color:'.$color.';">WED</p>';
                                     break;
                                 case 4:
-                                    echo '<p class="wday" style="margin-top:7px; margin-left:-11.5px; color:'.$color.';">THU</p>';
+                                    echo '<p class="wday" style="margin-top:7px; margin-left:-10px; color:'.$color.';">THU</p>';
                                     break;
                                 case 5:
-                                    echo '<p class="wday" style="margin-top:7px; margin-left:-11.5px; color:'.$color.';">FRI</p>';
+                                    echo '<p class="wday" style="margin-top:7px; margin-left:-7.5px; color:'.$color.';">FRI</p>';
                                     break;
                                 case 6:
-                                    echo '<p class="wday" style="margin-top:7px; margin-left:-11.5px; color:'.$color.';">SAT</p>';
+                                    echo '<p class="wday" style="margin-top:7px; margin-left:-9px; color:'.$color.';">SAT</p>';
                                     break;
                                 case 0:
-                                    echo '<p class="wday" style="margin-top:7px; margin-left:-11.5px; color:'.$color.';">SUN</p>';
+                                    echo '<p class="wday" style="margin-top:7px; margin-left:-11px; color:'.$color.';">SUN</p>';
                                     break;
                             }
                         }
