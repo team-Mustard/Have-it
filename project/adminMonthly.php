@@ -273,11 +273,11 @@ if($goalIDCount){
             }
 
         }
-        $achieveTimeSql = "insert into monthly_achieve_Time(goalID,monthlyID,achieveTime)
+        $achieveTimeSql = "insert into monthly_achieve_time(goalID,monthlyID,achieveTime)
                             values($goalID,$monthlyID,'$hourAchieve')";
-        $achieveWeekSql = "insert into monthly_achieve_Week(goalID,monthlyID,achieveWeek)
+        $achieveWeekSql = "insert into monthly_achieve_week(goalID,monthlyID,achieveWeek)
                             values($goalID,$monthlyID,'$weekAchieve')";
-        $achieveDayWeekSql = "insert into monthly_achieve_Dayofweek(goalID,monthlyID,achieveDayofWeek)
+        $achieveDayWeekSql = "insert into monthly_achieve_dayofweek(goalID,monthlyID,achieveDayofWeek)
                             values($goalID,$monthlyID,'$dayweekAchieve')";
         mysqli_query($conn, $achieveTimeSql);
         mysqli_query($conn, $achieveWeekSql);
@@ -287,11 +287,11 @@ if($goalIDCount){
     
     
 }else{
-        $achieveTimeSql = "insert into monthly_achieve_Time(monthlyID,achieveTime)
+        $achieveTimeSql = "insert into monthly_achieve_time(monthlyID,achieveTime)
                             values($monthlyID,'0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0')";
-        $achieveWeekSql = "insert into monthly_achieve_Week(monthlyID,achieveWeek)
+        $achieveWeekSql = "insert into monthly_achieve_week(monthlyID,achieveWeek)
                             values($monthlyID,'0;0;0;0')";
-        $achieveDayWeekSql = "insert into monthly_achieve_Dayofweek(monthlyID,achieveDayofWeek)
+        $achieveDayWeekSql = "insert into monthly_achieve_dayofweek(monthlyID,achieveDayofWeek)
                             values($monthlyID,'0;0;0;0;0;0;0')";
         mysqli_query($conn, $achieveTimeSql);
         mysqli_query($conn, $achieveWeekSql);

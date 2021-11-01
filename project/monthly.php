@@ -13,6 +13,8 @@
     $monthlyRow = mysqli_fetch_array($monthlyResult, MYSQLI_ASSOC);
     if($monthlyRow){
         $monthlyDate = $monthlyRow['date'];
+        $month = date("n",strtotime($monthlyDate));
+        $preMonth = $month -1;
         $highestRoutine = $monthlyRow['highestRoutine'];
         $lowestRoutine = $monthlyRow['lowestRoutine'];
         $monthlyTotalAchieve = $monthlyRow['totalAchieve'];
@@ -36,9 +38,9 @@
             
         }
         
-        $achieveTimeSql = "select * from monthly_achieve_Time where monthlyID = $monthlyID order by goalID ASC";
-        $achieveWeekSql = "select * from monthly_achieve_Week where monthlyID = $monthlyID order by goalID ASC";
-        $achieveDayofWeekSql = "select * from monthly_achieve_Dayofweek where monthlyID = $monthlyID order by goalID ASC";
+        $achieveTimeSql = "select * from monthly_achieve_time where monthlyID = $monthlyID order by goalID ASC";
+        $achieveWeekSql = "select * from monthly_achieve_week where monthlyID = $monthlyID order by goalID ASC";
+        $achieveDayofWeekSql = "select * from monthly_achieve_dayofweek where monthlyID = $monthlyID order by goalID ASC";
         $timeResult = mysqli_query($conn, $achieveTimeSql);
         $weekResult = mysqli_query($conn,$achieveWeekSql);
         $dayofweekResult = mysqli_query($conn,$achieveDayofWeekSql);
@@ -174,7 +176,7 @@
     <div class="main col-md-8 col-md-offset-2">
         <div class="monthlyTop" style="display:grid;">
             <div class="monthlyName">
-                <b style="font-size:25px; text-align:center; float:left;">10월 품질 보증서</b>
+                <b style="font-size:25px; text-align:center; float:left;"><?=$preMonth?>월 품질 보증서</b>
             </div>
         </div>
         <hr style="border:0; height:3px; background: #04005E;">
@@ -188,15 +190,15 @@
             </div>
             <div class="col-md-1"></div>
         </div>
-        <div class= "col-md-12 monthlyContent">
+        <div class= "col-md-12 monthlyContent" style="margin: 0 auto;">
             <div class="col-md-1"></div>
             <div class="addedRoutine col-md-5">
                 <p style="text-align:center; font-size:18px;">이번 달 수행한 루틴</p>
-                <canvas id="addedRoutineChart"></canvas>
+                <canvas id="addedRoutineChart" width="400" height="200"style="margin: 0 auto;"></canvas>
             </div>
             <div class="totalAchievement col-md-5">
                 <p style="text-align:center; font-size:18px;">이번 달 총 성취도</p>
-                <canvas id="totalAchievementChart"></canvas>
+                <canvas id="totalAchievementChart"width="350" height="200"style="margin: 0 auto;"></canvas>
             </div>
             <div class="col-md-1"></div>
                     
@@ -205,11 +207,16 @@
         
         <div class="col-md-1"></div>
         <div id="routineChartBtn" class="col-md-10">
+            <br>
+            <b style="font-size: 18px;"> 시간/주차/요일 목표 성취도</b>
+            <br>
+            <div style="float:right;">
             <a onclick="showRoutineTime();">시간</a>
             <span>|</span>
             <a onclick="showRoutineWeek();">주차</a>
             <span>|</span>
             <a onclick="showRoutineDayofweek();">요일</a>
+            </div>
         </div>
         
         <div class="col-md-1"></div>
@@ -399,8 +406,11 @@
                 <?php 
                 for($i=0;$i<$timeGoalIDCount;$i++){
                     $goalID = $timeGoalIDArr[$i];
+                    $goalSql = "select goalName from goal where goalID=$goalID"; $goalRow=mysqli_fetch_array(mysqli_query($conn,$goalSql));
+                    $goalName = $goalRow['goalName'];
                 
                echo " {
+                    label:['$goalName'],
                     data: [$hour[$goalID]],
                     backgroundColor: '$timeGoalColor[$goalID]'
                 },";
@@ -414,7 +424,8 @@
 
         options: {
             legend: {
-                display: false
+                display: true,
+                position: 'right'
             },
 
             scales: {
@@ -473,11 +484,14 @@
                     <?php 
                 for($i=0;$i<$weekGoalIDCount;$i++){
                     $goalID = $weekGoalIDArr[$i];
-                
-               echo "{
-                    data: [$week[$goalID]],
-                    backgroundColor: '$weekGoalColor[$goalID]'
-                },";
+                    $goalSql = "select goalName from goal where goalID=$goalID"; $goalRow=mysqli_fetch_array(mysqli_query($conn,$goalSql));
+                    $goalName = $goalRow['goalName'];
+
+                   echo "{
+                        label: ['$goalName'],
+                        data: [$week[$goalID]],
+                        backgroundColor: '$weekGoalColor[$goalID]'
+                    },";
             }
               
                 ?>
@@ -486,7 +500,8 @@
 
             options: {
                 legend: {
-                    display: false
+                    display: true,
+                    position: 'right'
                 },
 
                 scales: {
@@ -501,6 +516,7 @@
 
                 }
             },
+            
         }
         var chartWeek = new Chart(ctxWeek, weekData);
     }
@@ -518,8 +534,11 @@
                     <?php 
                 for($i=0;$i<$dayofweekGoalIDCount;$i++){
                     $goalID = $dayofweekGoalIDArr[$i];
+                    $goalSql = "select goalName from goal where goalID=$goalID"; $goalRow=mysqli_fetch_array(mysqli_query($conn,$goalSql));
+                    $goalName = $goalRow['goalName'];
                 
                echo " {
+                    label:['$goalName'],
                     data: [$dayofweek[$goalID]],
                     backgroundColor: '$dayofweekGoalColor[$goalID]'
                 },";
@@ -531,7 +550,8 @@
 
             options: {
                 legend: {
-                    display: false
+                    display: true,
+                    position: 'right'
                 },
 
                 scales: {
@@ -767,6 +787,7 @@
     
 
 ?>
+    
     var ctxAdded = document.getElementById("addedRoutineChart");
     var addedRoutineData = { 
         type: 'doughnut',    
@@ -813,12 +834,20 @@
             ?>
             }]},
         options: {
+            responsive: false,
             legend: {
-                position: 'right'
-            }
+
+                display: true,
+                position: 'right',
+
+            },
+            //legendCallback: customLegend,
         },
     }
-    var addedRoutineChart = new Chart(ctxAdded, addedRoutineData);
+    var addedRoutineChart = new Chart(ctxAdded, addedRoutineData); //document.getElementById('addedCustomLegend').innerHTML = window.addedRoutineChart.generateLegend();
+    
+    
+    
     
     var ctxTotal = document.getElementById("totalAchievementChart");
     var totalAchievementData = {
@@ -846,14 +875,98 @@
         options: {
             legend:{
                 display: false
+            },
+            responsive: false,
+            elements: {
+            center: {
+              text: '<?=$monthlyTotalAchieve?>%',
+              color: '#000000', // Default is #000000
+              fontStyle: 'Arial', // Default is Arial
+              sidePadding: 30, // Default is 20 (as a percentage)
+              minFontSize: 20, // Default is 20 (in px), set to false and text will not wrap.
+              lineHeight: 25 // Default is 25 (in px), used for when text wraps
             }
+          }
 
         },
     }
-    var addedRoutineChar = new Chart(ctxTotal, totalAchievementData);
+    var totalAchieveChart = new Chart(ctxTotal, totalAchievementData);
     
     
-    
+    Chart.pluginService.register({
+      beforeDraw: function(chart) {
+        if (totalAchieveChart.config.options.elements.center) {
+          var ctx = totalAchieveChart.chart.ctx;
+
+          var centerConfig = totalAchieveChart.config.options.elements.center;
+          var fontStyle = centerConfig.fontStyle || 'Arial';
+          var txt = centerConfig.text;
+          var color = centerConfig.color || '#000';
+          var maxFontSize = centerConfig.maxFontSize || 75;
+          var sidePadding = centerConfig.sidePadding || 20;
+          var sidePaddingCalculated = (sidePadding / 100) * (totalAchieveChart.innerRadius * 2)
+          ctx.font = "40px " + fontStyle;
+
+          var stringWidth = ctx.measureText(txt).width;
+          var elementWidth = (totalAchieveChart.innerRadius * 2) - sidePaddingCalculated;
+
+          var widthRatio = elementWidth / stringWidth;
+          var newFontSize = Math.floor(30 * widthRatio);
+          var elementHeight = (totalAchieveChart.innerRadius * 2);
+
+          var fontSizeToUse = Math.min(newFontSize, elementHeight, maxFontSize);
+          var minFontSize = centerConfig.minFontSize;
+          var lineHeight = centerConfig.lineHeight || 25;
+          var wrapText = false;
+
+          if (minFontSize === undefined) {
+            minFontSize = 20;
+          }
+
+          if (minFontSize && fontSizeToUse < minFontSize) {
+            fontSizeToUse = minFontSize;
+            wrapText = true;
+          }
+
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          var centerX = ((totalAchieveChart.chartArea.left + totalAchieveChart.chartArea.right) / 2);
+          var centerY = ((totalAchieveChart.chartArea.top + totalAchieveChart.chartArea.bottom) / 2);
+          ctx.font = fontSizeToUse + "px " + fontStyle;
+          ctx.fillStyle = color;
+
+          if (!wrapText) {
+            ctx.fillText(txt, centerX, centerY);
+            return;
+          }
+
+          var words = txt.split(' ');
+          var line = '';
+          var lines = [];
+
+          for (var n = 0; n < words.length; n++) {
+            var testLine = line + words[n] + ' ';
+            var metrics = ctx.measureText(testLine);
+            var testWidth = metrics.width;
+            if (testWidth > elementWidth && n > 0) {
+              lines.push(line);
+              line = words[n] + ' ';
+            } else {
+              line = testLine;
+            }
+          }
+
+          centerY -= (lines.length / 2) * lineHeight;
+
+          for (var n = 0; n < lines.length; n++) {
+            ctx.fillText(lines[n], centerX, centerY);
+            centerY += lineHeight;
+          }
+          ctx.fillText(line, centerX, centerY);
+        }
+      }
+});
+
 
     
     
