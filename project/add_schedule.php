@@ -3,7 +3,7 @@
     <?php
     $time = time();
     $today = date("Y-m-d", $time);
-    //$today = '2021-09-06';
+    //$today = '2021-03-22';
     echo '<h4 class="right-header" style="float: right;">'.$today.'</h4>';
 ?>
 
