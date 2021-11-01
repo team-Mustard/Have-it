@@ -2,31 +2,18 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
-
-</head>
-<div class="col-md-1"></div>
-<div class="main col-md-8 col-md-offset-2">
-    <div class="weeklyTop">
-        <div class="weeklyName">
-            <b style="font-size:25px; text-align:center; float:left;">10월 4주차 품질보증서</b>
-        </div>
-        <div  id="weekButton">
-            <a class="glyphicon glyphicon-ok-circle" aria-hidden="true" onclick="document.getElementById('weeklyform').submit();"></a>
-        </div>
-  
-    </div>
-    <hr style="border:0; height:3px; background: #04005E;">
-    <div class="clear"></div>
-
-    
-    <?php 
+<?php 
         include "db/dbconn.php";
         ini_set('error_reporting','E_ALL ^ E_NOTICE');
         if(isset($_GET['weeklyID'])) $weeklyID = $_GET['weeklyID'];
         $selectWeeklySql = "select * from WeeklyReport where weeklyID = $weeklyID";
         $weeklyResult = mysqli_query($conn,$selectWeeklySql);
         $weeklyRow = mysqli_fetch_array($weeklyResult, MYSQLI_ASSOC);
-        
+        function toWeekNum($get_year, $get_month, $get_day){
+             $timestamp = mktime(0, 0, 0, $get_month, $get_day, $get_year);
+             $w = date('w',mktime(0,0,0,date('n',$timestamp),1,date('Y',$timestamp)));
+             return ceil(($w + date('j',$timestamp) - 1)/7);
+        }
      
         if($weeklyRow){
 
@@ -38,12 +25,15 @@
             $routineCount = $weeklyRow['routineCnt'];
             $hourCount = $weeklyRow['hourCnt'];
             $checkCount = $weeklyRow['checkCnt'];
-            $preDate = date("Y-m-d",strtotime($date.'-7 days'));
+            $preDate = date("Y-n-d",strtotime($date.'-7 days'));
             $preRoutineDf = $routineCount;
             $preHourDf = $hourCount;
             $preCheckDf = $checkCount;
+            $preYear = date("Y",strtotime($preDate));
+            $preMonth = date("n",strtotime($preDate));
+            $preDay = date("d",strtotime($preDate));
             
-            
+            $preWeek = toWeekNum($preYear,$preMonth,$preDay);
             $preWeeklySql = "select * from WeeklyReport where userid = $userid and date = '$preDate'";
             $preWeeklyRow = mysqli_fetch_array(mysqli_query($conn,$preWeeklySql),MYSQLI_ASSOC);
             
@@ -84,8 +74,26 @@
             }
             
 
+
         
 ?>
+</head>
+<div class="col-md-1"></div>
+<div class="main col-md-8 col-md-offset-2">
+    <div class="weeklyTop">
+        <div class="weeklyName">
+            <b style="font-size:25px; text-align:center; float:left;"><?=$preMonth?>월 <?=$preWeek?>주차 품질보증서</b>
+        </div>
+        <div  id="weekButton">
+            <a class="glyphicon glyphicon-ok-circle" aria-hidden="true" onclick="document.getElementById('weeklyform').submit();"></a>
+        </div>
+  
+    </div>
+    <hr style="border:0; height:3px; background: #04005E;">
+    <div class="clear"></div>
+
+    
+    
     <form action="adminWeekly.php?mode=2" method="POST" id="weeklyform" enctype="multipart/form-data">
 
         <div class="container col-md-12">
@@ -97,7 +105,7 @@
                 </div>
                 <div id="image" class="col-md-3">
                     <input type="file" name="inputImg" id = "inputImg" style='display: none;' accept="image/*">
-                    <img src='<?=$image?>' width="150px"height="160px" id = 'weeklyImg' onclick='document.all.inputImg.click();'>
+                    <img src='<?=$image?>' width="190px"height="190px" style="margin: 0 auto;"id = 'weeklyImg' onclick='document.all.inputImg.click();'>
                 </div>
                 <div id="score" class="col-md-3">
                     <span class="mScore">이번 주 나의 점수
@@ -140,9 +148,7 @@
         </div>
         <div class="col-md-12 text-center" style="margin-bottom:20px;">
             <b style="font-size:20px;">위와 같이, 이번 주 <?=$weeklyAchievement?>%의 보석 품질을 보증합니다💎</b>
-            <br>
-            <hr>
-            임시선
+            <br><br>
         </div>
         <div class="col-md-1"></div>
         <div class="col-md-10">
@@ -256,8 +262,11 @@
                     $dayofweekGoalIDCount = count($goalIDArr);
                     for($i=0;$i<$dayofweekGoalIDCount;$i++){
                         $goalID = $goalIDArr[$i];
+                        $goalSql = "select goalName from goal where goalID=$goalID"; $goalRow=mysqli_fetch_array(mysqli_query($conn,$goalSql));
+                        $goalName = $goalRow['goalName'];
 
                        echo " {
+                            label: ['$goalName'],
                             data: [$dayofweek[$goalID]],
                             backgroundColor: '$goalColor[$goalID]'
 
@@ -267,6 +276,7 @@
                 
             }else{
                         echo " {
+                            label:['데이터 없음'],
                             data: [],
                             backgroundColor: []
 
@@ -287,7 +297,8 @@
         data: chartData, // 옵션 
         options: {
             legend: {
-                display: false
+                display: true,
+                position: 'right',
             },
 			scales: {
 				yAxes: [{
@@ -303,8 +314,8 @@
 
     const date = new Date();
 
-    const viewYear = <?=$year?>;
-    const viewMonth = <?=$month?> - 1;
+    const viewYear = <?=$preYear?>;
+    const viewMonth = <?=$month?>-1;
 
     document.querySelector('.year-month').textContent = `${viewMonth + 1}月`;
     const prevLast = new Date(viewYear, viewMonth, 0);
@@ -354,14 +365,12 @@
     var z = 1;
     for(var i=1; i <8;i++){  
         var w = 0;
-        
         for (let date of document.querySelectorAll('.date')) {
             w++;
             if (+date.innerText === term.getDate() - i) {
                 if(+date.innerText >=22 && w<7){
                     break;
                 }
-                
                 date.classList.add('term');
                 break;
               }
@@ -411,7 +420,7 @@
             'display': 'none'
         });
     }
-    
+ 
     
 </script>
 
