@@ -119,14 +119,16 @@
         for($w=$count-1;$w>=0;$w--){
             
             if($reportKind[$w]==1){
+                $tmpDate =  date("Y-m-d",strtotime($reportDate[$w].'-1 days'));
                 echo "<li class='active'>
-                <a href='?page=weekly&weeklyID=$reportID[$w]'>[주] $reportDate[$w] 리포트</a>
+                <a href='?page=weekly&weeklyID=$reportID[$w]'>[주] $tmpDate 리포트</a>
                 </li>";
                
             }
             if($reportKind[$w]==2){
+                $tmpDate =  date("Y-m-d",strtotime($reportDate[$w].'-1 days'));
                 echo "<li class='active'>
-                <a href='?page=monthly&monthlyID=$reportID[$w]'>[월] $reportDate[$w] 리포트</a>
+                <a href='?page=monthly&monthlyID=$reportID[$w]'>[월] $tmpDate 리포트</a>
                 </li>";
                
             }
