@@ -588,9 +588,7 @@ hr {
 }
 #routineChartBtn{
     float: left;
-    margin-bottom: 10px;
-    margin-left: 10px;
-    
+    margin: 20px 0px 10px 10px;
     
 }
 #routineChartBtn a, routineChartBtn span{
@@ -617,7 +615,7 @@ hr {
 
 }
 
-#customLegend {
+#customLegend{
     position: absolute;
     top: 62px;
     left: 600px;
@@ -644,11 +642,12 @@ hr {
 
 .monthlyContent{
     
-    margin: 30px 0px 30px 0px;
+    margin: 0px 0px 0px 0px;
 }
 
 
 /* Monthly Report css end */
+
 
 
 /* goal css start */
