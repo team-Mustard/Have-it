@@ -160,6 +160,7 @@ startTime time,
 endTime time,
 trackerID int,
 color char(7),
+checkSchedule boolean default 0,
 constraint schedule_scheduleID_PK primary key (scheduleID),
 constraint schedule_trackerID_FK Foreign Key (trackerID) references timetracker(trackerID) on delete cascade
 );
@@ -194,7 +195,7 @@ constraint MonthlyReport_userID_FK Foreign Key (userID) references userinfo(user
 
 );
 
-create table monthly_achieve_Time(
+create table monthly_achieve_time(
 monthlyTimeID int auto_increment,
 goalID int,
 monthlyID int,
@@ -204,7 +205,7 @@ constraint monthly_achieveTime_goalID_FK Foreign Key (goalID) references goal(go
 constraint monthly_achieveTime_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
 );
 
-create table monthly_achieve_Week(
+create table monthly_achieve_week(
 monthlyWeekID int auto_increment,
 goalID int,
 monthlyID int,
@@ -214,7 +215,7 @@ constraint monthly_achieveWeek_goalID_FK Foreign Key (goalID) references goal(go
 constraint monthly_achieveWeek_monthlyID_FK Foreign Key (monthlyID) references monthlyreport(monthlyID) on delete cascade
 );
 
-create table monthly_achieve_Dayofweek(
+create table monthly_achieve_dayofweek(
 monthlyDayofweekID int auto_increment,
 goalID int,
 monthlyID int, 
@@ -242,7 +243,7 @@ constraint WeeklyReport_userID_FK Foreign Key (userID) references userinfo(userI
 
 );
 
-create table weekly_achieve_Dayofweek(
+create table weekly_achieve_dayofweek(
 weeklyDayofweekID int auto_increment,
 goalID int,
 weeklyID int, 
