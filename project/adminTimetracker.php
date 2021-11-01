@@ -5,7 +5,7 @@ session_start();
 if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
 $time = time();
 $today = date("Y-m-d", $time);
-//$today = '2021-09-06';
+//$today = '2021-03-22';
 
 
 
@@ -125,9 +125,7 @@ if((!empty($_POST['goal']))&&(!empty($_POST['routine']))&&(!empty($_POST['startT
         
 }
 if(!empty($_POST['routineID']) && !empty($_POST['startTime']) || !empty($_POST['checkScheduleID']) && !empty($_POST['startTime'])){
-    //TODO: trackerID를 같이 넘겨서
-    //코드 중복 줄이기
-    $trackerSql = "select * from timetracker where date = '$today' userid = '$userid'";
+    $trackerSql = "select * from timetracker where date = '$today' and userid = '$userid'";
     $trackerRow = mysqli_fetch_array(mysqli_query($conn,$trackerSql),MYSQLI_ASSOC);
     $trackerID = $trackerRow['trackerID'];
     if(isset($_POST['routineID'])){ 
@@ -199,29 +197,65 @@ if(!empty($_POST['routineID']) && !empty($_POST['startTime']) || !empty($_POST['
     echo "<script> alert('해당 루틴이 타임트레커에서 제거되었습니다.'); </script>";
 }
 
-if(!empty($_POST['routineID']) && !empty($_POST['t_routineID']) && isset(($_POST['checked']))){
+if(!empty($_POST['routineID']) && !empty($_POST['t_routineID']) && isset(($_POST['checked'])) && isset(($_POST['trackerID']))){
    
     $t_routineID = $_POST['t_routineID'];
+    $trackerID = $_POST['trackerID'];
     $checked = $_POST['checked'];
     $routineID = $_POST['routineID'];
+    $troutineCount = 0;
+    $troutineChecked = null;
     $updateSql = "update t_routine set checkRoutine = '$checked' where t_routineID = '$t_routineID'";
+    mysqli_query($conn,$updateSql); 
+    
     $routineSql = "select * from routine where routineID = '$routineID'";
+    
+    $troutineSql = "select checkRoutine from t_routine where routineID = $routineID and trackerID = $trackerID";
+    
+    $troutineResult = mysqli_query($conn,$troutineSql);
+    while($troutineRow = mysqli_fetch_array($troutineResult,MYSQLI_ASSOC)){
+        $troutineChecked[$troutineCount++] = $troutineRow['checkRoutine']; 
+    }
+    
     $routineRow = mysqli_fetch_array(mysqli_query($conn,$routineSql),MYSQLI_ASSOC);
     if($routineRow){
+        $habitTracker = $routineRow['habbitTracker'];
+        $habitTracker = explode(';',$habitTracker);
+        $dayofweek = date('w',strtotime($today));
+        
         if($checked == 1){
-            $updateRoutineSql = "update routine set habbitTracker = habbitTracker+1 where routineID = '$routineID'";
-            mysqli_query($conn,$updateRoutineSql);
+            if($troutineCount == 1){
+                $habitTracker[$dayofweek] = 1;
+                $habitTracker = implode(';',$habitTracker);
+                $updateRoutineSql = "update routine set habbitTracker = '$habitTracker' where routineID = '$routineID'";
+                mysqli_query($conn,$updateRoutineSql);
+                
+            }else{
+                $falseCheck = 1;
+                for($i=0;$i<$troutineCount;$i++){
+                    if(!$troutineChecked[$i]){
+                        $falseCheck = 0;
+                    }
+                }
+                if($falseCheck){
+                    $habitTracker[$dayofweek] = 1;
+                    $habitTracker = implode(';',$habitTracker);
+                    $updateRoutineSql = "update routine set habbitTracker = '$habitTracker' where routineID = '$routineID'";
+                    mysqli_query($conn,$updateRoutineSql);
+                }
+            }
             
         }else{
-            $updateRoutineSql = "update routine set habbitTracker = habbitTracker-1 where routineID = '$routineID'";
+            $habitTracker[$dayofweek] = 0;
+            $habitTracker = implode(';',$habitTracker);
+            $updateRoutineSql = "update routine set habbitTracker = '$habitTracker' where routineID = '$routineID'";
             mysqli_query($conn,$updateRoutineSql);
             
         }
         
         
     }
-    
-    mysqli_query($conn,$updateSql);    
+       
 }
 
 if((!empty($_POST['scheduleID']))&&isset(($_POST['checked']))){
@@ -238,7 +272,7 @@ if((!empty($_POST['scheduleName'])) && (!empty($_POST['startTime'])) && (!empty(
 (!empty($_POST['scheduleColor']))){
     
     
-    $trackerSql = "select * from timetracker where date = '$today'";
+    $trackerSql = "select * from timetracker where date = '$today' and userid = '$userid'";
         
     $trackerRow = mysqli_fetch_array(mysqli_query($conn,$trackerSql),MYSQLI_ASSOC);
     if($trackerRow){
@@ -247,7 +281,7 @@ if((!empty($_POST['scheduleName'])) && (!empty($_POST['startTime'])) && (!empty(
 
         $insertTrackerSql = "insert into Timetracker(date,userid) values('$today','$userid')";
          mysqli_query($conn,$insertTrackerSql);
-        $trackerSql = "select * from timetracker where date = '$today'";
+        $trackerSql = "select * from timetracker where date = '$today' and userid = $userid";
         $trackerRow = mysqli_fetch_array(mysqli_query($conn,$trackerSql),MYSQLI_ASSOC);
         $trackerID = $trackerRow['trackerID'];
         
@@ -313,10 +347,6 @@ if((!empty($_POST['scheduleName'])) && (!empty($_POST['startTime'])) && (!empty(
         }
 
 }
-
-
-
-
 
 
 

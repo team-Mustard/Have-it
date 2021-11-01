@@ -1,17 +1,52 @@
 <?php
 if(session_status() === PHP_SESSION_NONE){
     session_start();
-    
+}
+    include "./db/dbconn.php";
+    if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
     $time = time();
     $today = date("Y-m-d",$time);
-    //$today = '2021-09-06';
-}
+    //$today = '2021-03-22';
+    $selectDate = $today;
+    if(isset($_GET['date'])){
+        $selectDate = $_GET['date'];
+    }
+    $existTracker = 1;
+    if(isset($_GET['exist'])){
+        $existTracker = $_GET['exist'];
+    }
+
 ?>
         <!--<div class="col-xs-12 col-sm-7 col-md-4 sidebar sidebar-right sidebar-animate text-center">-->
-          <div><h2 class="right-header" style="float: left;"><i class="fas fa-dolly-flatbed"></i>광산수레</h2>
+          <div class="trackerTop" style="height:50px;">
+            <div><h2 class="right-header" style="float:left;"><i class="fas fa-dolly-flatbed"></i> 시간표</h2></div>
             
-            <h4 class="right-header" style="float:right;"><?=$today?></h4>
-          </div>
+              
+              
+        <div class="dateSelect" data-role="selectBox" style="float:right; z-index:3;" >
+              <h4 date-value="selectDate" class="selectDate right-header"></h4>
+            <ul class="hide">
+            <li class="<?=$today?>"><?=$today?></li>    
+                
+<?php 
+    //$trackerflag = 0;
+    for($i=1;$i<=7;$i++){
+        
+        $datetmp = date("Y-m-d",strtotime($today."-$i days"));
+        $tmpSql = "select * from timetracker where date = '$datetmp' and userid = $userid";
+        $tmpRow = mysqli_fetch_array(mysqli_query($conn,$tmpSql),MYSQLI_ASSOC);
+        if($tmpRow){
+            $trackerDate = $tmpRow['date'];
+            echo "<li class='$trackerDate'>$trackerDate</li>";
+            //$trackerflag= 1;
+        }
+    }  
+?>
+              </ul>
+        
+              </div>
+              
+            </div>
 <div>
 </div>
              <div class = "chartWrapper">
@@ -61,15 +96,23 @@ function drawNumber(ctx, radius) {
    }
     
 }
-    
 drawNumber(ctx2,165);
+function checkDisable(){
+    
+    var routineCheck = document.getElementsByClassName('checkRoutine');
+    for(var i = 0; i<routineCheck.length;i++){
+        routineCheck[i].disabled = true;
+        
+    }
+    
+    
+}
 </script>
 
             <?php
         
-            include "./db/dbconn.php";
-            if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
-            $selectTrackerSql = "select * from timetracker where date = '$today' and userid = $userid";
+            
+            $selectTrackerSql = "select * from timetracker where date = '$selectDate' and userid = $userid";
             $trackerRow = mysqli_fetch_array(mysqli_query($conn,$selectTrackerSql), MYSQLI_ASSOC);
             $trackerID = $trackerRow['trackerID'];
             $selectT_RoutineSql = "select * from t_routine WHERE trackerID='$trackerID'";
@@ -169,13 +212,13 @@ drawNumber(ctx2,165);
             $time_s_to_e .= '<div class="checks"> <label> '.$routineStart[$z].' - '.$routineEnd[$z].' </label></div>';
 
             if($routineKind[$z] == 1){
-                $r_name .= '<div id = "checks" class="checks"> <input type="checkbox" onchange="changeRoutineCheck('.$routineID[$z].','.$troutineID[$z].');" id="checkRoutine" name="routine'.$troutineID[$z].'" value="'.$troutineID[$z].'"';
+                $r_name .= '<div id = "checks" class="checks"> <input type="checkbox" onchange="changeRoutineCheck('.$routineID[$z].','.$troutineID[$z].','.$trackerID.');" class = "checkRoutine" id="checkRoutine" name="routine'.$troutineID[$z].'" value="'.$troutineID[$z].'"';
                 if($routineCheck[$z] == 1){
                         $r_name .= 'checked';
                 }        
             }else{
                 
-                $r_name .= '<div id = "checks" class="checks"> <input type="checkbox" onchange="changeScheduleCheck('.$troutineID[$z].');" id="checkRoutine" name="schedule'.$troutineID[$z].'" value="'.$troutineID[$z].'"';
+                $r_name .= '<div id = "checks" class="checks"> <input type="checkbox" onchange="changeScheduleCheck('.$troutineID[$z].');" class = "checkRoutine" id="checkRoutine" name="schedule'.$troutineID[$z].'" value="'.$troutineID[$z].'"';
                 if($routineCheck[$z] == 1){
                         $r_name .= 'checked';
                 }  
@@ -186,60 +229,20 @@ drawNumber(ctx2,165);
         }
         $print_legend .= $time_s_to_e . '</div>' . $r_name . '</div> </div>';
         echo $print_legend;
+        if($selectDate != $today){
+            echo "<script>checkDisable();</script>";
+        }else{
+            echo "<h4 style='margin-top: 60px; text-align: center;'><i class='fas fa-plus-circle schedule_add' onclick='add_schedule()'> 일정 추가하기</i></h4>
+            ";
+        }
 
             ?>
                 
             
-            <!--<div class="chart_content">
-                <div class="checks" id="time">
-                <input type="checkbox" class="checkbox1">
-                <label for="">12:30 ~ 14:00</label> <br>
-                <input type="checkbox" class="checkbox1">
-                <label for="">09:30 ~ 10:00 </label> <br>
-                <input type="checkbox" class="checkbox1">
-                <label for="">18:20 ~ 18:30 </label>
-            </div>-->
-               
-           <!-- <div class="checks" id="routine">
-                <input type="checkbox" id="ex_chk" class="checkbox1" name="tracker" value="value1">
-                <label for="ex_chk" style="color: #ff0000">12:30 - 14:00 &emsp; 운동 가기</label> <br>
-                <input type="checkbox" id="ex_chk2" class="checkbox1" name="tracker" value="value1">
-                <label for="ex_chk2" style="color: #800000">09:30 - 10:00 &emsp; 아침밥 먹기</label> <br>
-                <input type="checkbox" id="ex_chk3" class="checkbox1" name="tracker" value="value1">
-                <label for="ex_chk3" style="color: #ffff00">18:20 - 18:30 &emsp; 영양제 먹기</label>
-            </div>
-            </div>-->
-            
-            <h4 style="margin-top: 60px; text-align: center;"><i class="fas fa-plus-circle schedule_add" onclick="add_schedule()"> 일정 추가하기</i></h4>
-               
+           
             <script>
                 <?php
-                //for($q=0;$q<24;$q++){
-                //    $label[$q] = "\"$q\"";
-                //}
-                //$data = array_fill(0,24,"\"1\"");
-                //$color = array_fill(0,24,"\"#04005E\"");
-                
-                // 배열 크기가 24이상이 될 수도 있음
-                // 합이 1이면 됨.
-                // 빈곳은 1이여야됨.
-                /*
-                while{
-                count++ []배열안
-                합 -> 계속구하기
-                24면 break;
-                24 아니면 count늘리기
-                routine에 맞는게 있으면 루틴대로
-                없으면 1
-                }
-                
-                //$routineStart[$routineCount];
-                //$routineEnd[$routineCount];
-                //$routineID[$routineCount];
-                //$routineName[$routineCount];
-                //$routineColor[$routineCount];
-                
-                */
+               
                 $label = null;
                 $data = null;
                 $color = null;
@@ -342,48 +345,6 @@ drawNumber(ctx2,165);
                     
                 }
                 
-                
-                
-                /*while($tempSum >= 24){
-                    if($tempRoutineID != $routineCount){
-                        $nextStartHour = date('G',strtotime($routineStart[$tempRoutineID+1]));
-                        $nextEndHour = date('G',strtotime($routineEnd[$tempRoutineID+1]));
-                    }else{
-                        $nextStartHour = -1;
-                        $nextEndHour = -1;
-                    }
-                    */
-                   
-                
-                
-                    
-                    
-                //}
-                /*for($i=0;$i<$routineCount;$i++){
-                    $startHour = date('G',strtotime($routineStart[$i]));
-                    $endHour = date('G',strtotime($routineEnd[$i]));
-                    
-                    for($z=0;$z<24;$z++){
-                        if($z == $startHour){
-                            if($startHour==$endHour){
-                                $color[$z] = "\"$routineColor[$i]\"";
-                                break;
-                            }else{
-                                $temp = $endHour - $startHour;
-                                //$label[$z] = "\"$z\"";
-                                $data[$z] = "\"$temp\"";
-                                $color[$z] = "\"$routineColor[$i]\"";
-                                $label[$z] = "\"$routineName[$i]\"";
-                                for($w=$z+1; $w< $z + $temp; $w++){
-                                    $label[$w] = null;
-                                    $data[$w] = null;
-                                    $color[$w] = null;
-                                }
-                            }
-                        }
-                    }
-                        
-                }*/
   
                 $chartLabel = implode(',',$label);
                 $chartData = implode(',',$data);
@@ -423,6 +384,8 @@ drawNumber(ctx2,165);
             
             <!-- 이 div는 지우면 right side bar가 밀립니다. 지우지 마세요 -->
             <div style="margin-top: 51px;"></div>
+<div id='test'></div>
+
         </div>
 
 <script>
@@ -431,7 +394,7 @@ drawNumber(ctx2,165);
         $(".sidebar-right").load("add_schedule.php");
     }
     
-    function changeRoutineCheck(routineID, t_routineID) {
+    function changeRoutineCheck(routineID, t_routineID, trackerID) {
         var checked = 0;
         var tmp = 'routine' + t_routineID;
        
@@ -444,13 +407,13 @@ drawNumber(ctx2,165);
             checked = 0;
 
             }
-            var ajaxDate = {"routineID":routineID, "t_routineID":t_routineID,"checked":checked};
+            var ajaxDate = {"routineID":routineID, "t_routineID":t_routineID,"checked":checked,"trackerID":trackerID};
             $.ajax({
                 type: 'POST',
                 url: 'adminTimetracker.php',
                 data: ajaxDate,
                 success: function(html) {
-
+                    $('#test').html(html);
                 }
 
             });
@@ -479,7 +442,75 @@ drawNumber(ctx2,165);
 
             });
     }
+const body = document.querySelector('body');
+const select = document.querySelector(`[data-role="selectBox"]`);
+const values = select.querySelector(`[date-value="selectDate"]`);
+const option = select.querySelector('ul');
+const opts = option.querySelectorAll('li');
+
+function selects(e){
+    e.stopPropagation();
+
+    option.setAttribute('style',`top:${select.offsetHeight}px`)
+    if(option.classList.contains('hide')){
+        option.classList.remove('hide');
+        option.classList.add('show');
+        
+    }else{
+        option.classList.add('hide');
+        option.classList.remove('show');
+    }
+    selectDate();
+}
+
+function selectDate(){
+    opts.forEach(opt=>{
+        const innerValue = opt.innerHTML;
+        function changeValue(){
+            if(innerValue !=values.innerHTML){
+                values.innerHTML = innerValue;
+                trackerPrint(innerValue);
+                
+            }
+        }
+        opt.addEventListener('click',changeValue);
+        
+    });
     
+}
+function trackerPrint(v){
+    const todayDate = '<?=$today?>';
+    if(<?=$existTracker?>){
+        $(".sidebar-right").load("timetracker.php?date="+v);
+    }
+    else{
+        if(todayDate==v){
+            $(".sidebar-right").load("no-tracker.php");
+        }else{
+            $(".sidebar-right").load("timetracker.php?date="+v+"&exist=0");
+        }
+    }
+    
+}
+
+function selectFirst(){
+    const tdate = '<?=$selectDate?>';
+    values.innerHTML = `${tdate}`
+    
+}
+
+function hideSelect(){
+    if(option.classList.contains('show')){
+        option.classList.add('hide');
+        option.classList.remove('show');
+    }
+}
+
+selectFirst();
+select.addEventListener('click',selects);
+body.addEventListener('click',hideSelect);
+
+
     
 </script>
 
