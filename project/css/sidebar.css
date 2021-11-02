@@ -33,6 +33,9 @@
 
 .sidebar-left {
   left: 0;
+
+  min-width: 195px;
+  max-width: 250px;
 }
 
 .sidebar-right {
