@@ -86,7 +86,7 @@
             <b style="font-size:25px; text-align:center; float:left;"><?=$preMonth?>월 <?=$preWeek?>주차 품질보증서</b>
         </div>
         <div  id="weekButton">
-            <a class="glyphicon glyphicon-ok-circle" aria-hidden="true" onclick="document.getElementById('weeklyform').submit();"></a>
+            <a class="bg_purple_btn round_btn word_2_btn" onclick="document.getElementById('weeklyform').submit();">저장</a>
         </div>
   
     </div>
