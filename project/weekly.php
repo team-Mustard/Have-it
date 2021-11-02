@@ -5,6 +5,7 @@
 <?php 
         include "db/dbconn.php";
         ini_set('error_reporting','E_ALL ^ E_NOTICE');
+    
         if(isset($_GET['weeklyID'])) $weeklyID = $_GET['weeklyID'];
         $selectWeeklySql = "select * from WeeklyReport where weeklyID = $weeklyID";
         $weeklyResult = mysqli_query($conn,$selectWeeklySql);
@@ -234,7 +235,7 @@
                 $goalIDArr[0] = $dayofweekGoalID;
                 
             }
-            for($i = 0; $i <7; $i++){
+            for($i = 1; $i <7; $i++){
                 
                 if(isset($dayofweek[$dayofweekGoalID])){
                     $dayofweek[$dayofweekGoalID] = "$dayofweek[$dayofweekGoalID],$achieveDayofWeek[$i]";
@@ -242,8 +243,13 @@
                 }else {
                    $dayofweek[$dayofweekGoalID] = "$achieveDayofWeek[$i]";
                 }
+                
+                if($i == 6){
+                    $dayofweek[$dayofweekGoalID] = "$dayofweek[$dayofweekGoalID],$achieveDayofWeek[0]";
+                }
                                 
-            } 
+            }
+            
             $selectRoutineSql = "select color from routine where goalID = $dayofweekGoalID";
             $routineRow = mysqli_fetch_array(mysqli_query($conn,$selectRoutineSql),MYSQLI_ASSOC);
             
@@ -254,7 +260,7 @@
 <script>
     var chBar = document.getElementById("myChart");
     var chartData = {
-        labels: ["일", "월", "화", "수", "목", "금", "토"],
+        labels: ["월", "화", "수", "목", "금", "토","일"],
         datasets: [
             <?php 
                 // $goalIDArr예외처리 하기
@@ -271,8 +277,10 @@
                             backgroundColor: '$goalColor[$goalID]'
 
                         },";
+                        
 
                 }
+                    
                 
             }else{
                         echo " {
