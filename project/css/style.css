@@ -266,41 +266,7 @@ hr {
     padding: 0px;
 }
 
-.hide{
-    display: none;
-}
-.show{
-    display: block;
-}
-
-.dateSelect{
-    position: relative;
-    background-color: #04005E;
-    background-position:right;
-    background-repeat: no-repeat;
-    cursor: pointer;
-    padding-right: 10px;
-}
-
-.dateSelect ul{
-    position: absolute;
-    width: 100%;
-    background-color: #04005E;
-    cursor: pointer;
-    list-style:none;
-    margin: 0;
-    padding:0;
-}
-.dateSelect ul li{
-    padding: 10px 10px 10px 18px;
-    font-size: 18px 
-}
-
-.dateSelect ul li:hover{
-    color: #04005E;
-    background-color: white;
-}
-
+/* scrollbar design */
 
 .goal::-webkit-scrollbar, .report::-webkit-scrollbar, .sidebar.sidebar-right::-webkit-scrollbar {
   width: 6px;
@@ -320,15 +286,19 @@ hr {
 
 /* weekly Report Css start */
 
-#weekButton a {
-    font-size: 30px;
-    color: black;
-    text-decoration:none
-}
-
 #weekButton {
+    padding-top:10px;
+    font-size: 1.2em;
     text-align: right;
 }
+
+#weekButton a:hover {
+    text-decoration: none;
+    color: white;
+    cursor:pointer;
+}
+
+
 #calender {
     padding: 15px;
     height: 210px;
@@ -530,7 +500,6 @@ hr {
 /* Weekly Report css end */
 
 
-
 /* Monthly Report css start */
 
 
@@ -623,7 +592,9 @@ hr {
 }
 #routineChartBtn{
     float: left;
-    margin: 20px 0px 10px 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    
     
 }
 #routineChartBtn a, routineChartBtn span{
@@ -650,7 +621,7 @@ hr {
 
 }
 
-#customLegend{
+#customLegend {
     position: absolute;
     top: 62px;
     left: 600px;
@@ -677,12 +648,11 @@ hr {
 
 .monthlyContent{
     
-    margin: 0px 0px 0px 0px;
+    margin: 30px 0px 30px 0px;
 }
 
 
 /* Monthly Report css end */
-
 
 
 /* goal css start */
@@ -880,11 +850,24 @@ hr {
     -ms-user-select: none; -moz-user-select: -moz-none; -webkit-user-select: none; -khtml-user-select: none; user-select:none;
 }
 
+.example-img hr + p, .example-img h4 + p {
+    margin-left: 15px;
+}
+
+.goal-content h4, .schedule-content h4, .eval-content h4 {
+    margin-top: 30px;
+}
+
+.example-img h5 {
+    margin-left: 50px;
+}
+
+.example-img h5 + p, .example-goal img, .example-schedule img, .example-eval img{
+    margin-left: 65px;
+}
 
 
-
-
-.schedule-content, .goal-content, .eval-content, .mode-content, .logout-content {
+.schedule-content, .goal-content, .eval-content {
     display:none;
 }
 
@@ -895,7 +878,7 @@ hr {
 #logout-manual:checked + .logout-content{
     
     display: block;   
-
+    margin-left: 30px;
 }
 
 /* example css end */
