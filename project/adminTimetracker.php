@@ -45,17 +45,16 @@ if((!empty($_POST['goal']))&&(!empty($_POST['routine']))&&(!empty($_POST['startT
                 echo "<script> alert('시작시간이 끝나는 시간과 같거나 클 수 없습니다.'); </script>";
 
             }else {
-                /*중복 처리*/
                 while($troutineRow = mysqli_fetch_array($troutineResult,MYSQLI_ASSOC)){
-                    if($startTime >= $troutineRow['startTime'] && $startTime <= $troutineRow['endTime'] && $routineID == $troutineRow['routineID'] || $endTime >= $troutineRow['startTime'] && $endTime <= $troutineRow['endTime'] && $routineID == $troutineRow['routineID']){
-                    echo "<script> alert('기존 등록된 해당 루틴과 시간이 겹칠 수 없습니다.'); </script>";
+                    if(($startTime >= $troutineRow['startTime'] && $startTime < $troutineRow['endTime']) || ($endTime >= $troutineRow['startTime'] && $endTime <= $troutineRow['endTime'])){
+                    echo "<script> alert('기존 등록된 루틴과 시간이 겹칠 수 없습니다.'); </script>";
                     return;
 
                     }
                 }
                 while($scheduleRow = mysqli_fetch_array($scheduleResult,MYSQLI_ASSOC)){
-                    if($startTime >= $scheduleRow['startTime'] && $startTime <= $scheduleRow['endTime'] || $endTime >= $scheduleRow['startTime'] && $endTime <= $scheduleRow['endTime']){
-                    echo "<script> alert('기존 등록된 해당 루틴과 시간이 겹칠 수 없습니다.'); </script>";
+                    if($startTime >= $scheduleRow['startTime'] && $startTime < $scheduleRow['endTime'] || $endTime >= $scheduleRow['startTime'] && $endTime <= $scheduleRow['endTime']){
+                    echo "<script> alert('기존 등록된 루틴과 시간이 겹칠 수 없습니다.'); </script>";
                     return;
 
                     }
@@ -312,14 +311,14 @@ if((!empty($_POST['scheduleName'])) && (!empty($_POST['startTime'])) && (!empty(
      }else {
         /* 중복처리 */
         while($troutineRow = mysqli_fetch_array($troutineResult,MYSQLI_ASSOC)){
-            if($startTime >= $troutineRow['startTime'] && $startTime <= $troutineRow['endTime']  || $endTime >= $troutineRow['startTime'] && $endTime <= $troutineRow['endTime']){
+            if($startTime >= $troutineRow['startTime'] && $startTime < $troutineRow['endTime']  || $endTime >= $troutineRow['startTime'] && $endTime <= $troutineRow['endTime']){
             echo "<script> alert('기존 등록된 루틴과 시간이 겹칠 수 없습니다.'); </script>";
             return;
 
                 }
             }
         while($scheduleRow = mysqli_fetch_array($scheduleResult,MYSQLI_ASSOC)){
-            if($startTime >= $scheduleRow['startTime'] && $startTime <= $scheduleRow['endTime'] || $endTime >= $scheduleRow['startTime'] && $endTime <= $scheduleRow['endTime']){
+            if($startTime >= $scheduleRow['startTime'] && $startTime < $scheduleRow['endTime'] || $endTime >= $scheduleRow['startTime'] && $endTime <= $scheduleRow['endTime']){
             echo "<script> alert('기존 등록된 루틴과 시간이 겹칠 수 없습니다.'); </script>";
             return;
                 
