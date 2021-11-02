@@ -11,6 +11,8 @@
             <a id="bg_mode" href="javascript:void(0);" onclick="bg_mode_change(this)">[다크모드]</a>
             　|　
             <a class="logout" href="logout.php">[로그아웃]</a>
+            　|　
+            <a class="logout" href="delAccount.php">[회원탈퇴]</a>
         </div>
         
         <div class="text-left">
