@@ -14,7 +14,8 @@
     if($monthlyRow){
         $monthlyDate = $monthlyRow['date'];
         $month = date("n",strtotime($monthlyDate));
-        $preMonth = $month -1;
+        $preDate = date("Y-n-d",strtotime($monthlyDate.'-1 months'));
+        $preMonth = date("n",strtotime($preDate));
         $highestRoutine = $monthlyRow['highestRoutine'];
         $lowestRoutine = $monthlyRow['lowestRoutine'];
         $monthlyTotalAchieve = $monthlyRow['totalAchieve'];
@@ -126,7 +127,7 @@
                 }else{
                     $dayofweekGoalIDArr[0] = $dayofweekGoalID;
                 }
-                for($i=0;$i < 7;$i++){
+                for($i=1;$i < 7;$i++){
 
                     if(isset($dayofweek[$dayofweekGoalID])){
                         $dayofweek[$dayofweekGoalID] = "$dayofweek[$dayofweekGoalID],$achieveDayofWeek[$i]";
@@ -139,6 +140,15 @@
                     $selectRoutineSql = "select color from routine where goalID = $dayofweekGoalID";        
                     $routineRow = mysqli_fetch_array(mysqli_query($conn,$selectRoutineSql),MYSQLI_ASSOC);  
                     $dayofweekGoalColor[$dayofweekGoalID] = $routineRow['color'];
+                    if($i == 6){
+                        
+                        $dayofweek[$dayofweekGoalID] = "$dayofweek[$dayofweekGoalID],$achieveDayofWeek[0]";
+                        $selectRoutineSql = "select color from routine where goalID = $dayofweekGoalID";        
+                        $routineRow = mysqli_fetch_array(mysqli_query($conn,$selectRoutineSql),MYSQLI_ASSOC);  
+                        $dayofweekGoalColor[$dayofweekGoalID] = $routineRow['color'];
+                        
+                        
+                    }
 
 
                 }
@@ -528,7 +538,7 @@
         var dayofweekData = {
             type: 'horizontalBar',
             data: {
-                labels: ["일", "월", "화", "수", "목", "금", "토"],
+                labels: ["월", "화", "수", "목", "금", "토","일"],
 
                 datasets: [
                     <?php 
