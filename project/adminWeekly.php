@@ -9,23 +9,30 @@ switch($mode){
     case 1:{
         
         $today = date("Y-m-d");   
-        //$today = '2021-12-10';    
-        $year = date("Y",strtotime($today));
-        $month = date("m",strtotime($today));
-        $day = date("d",strtotime($today));
-        $preLastday = date('t',mktime(0, 0, 1, $month-1, $day, $year));
-
+        //$today = '2021-12-01'; 
+        $tmpDate = $today;
+        $dayofweek = date('w',strtotime($tmpDate));
+        while($dayofweek != 1){
+            $tmpDate =  date("Y-m-d",strtotime($tmpDate.'-1 days'));
+            $dayofweek = date('w',strtotime($tmpDate));
+        }
+        $year = date("Y",strtotime($tmpDate));
+        $month = date("m",strtotime($tmpDate));
+        $day = date("d",strtotime($tmpDate));
+        $preDate = date("Y-m-d",strtotime($tmpDate.'-1 months'));
+        $preMonth = date("m",strtotime($preDate));
+        $preLastday = date('t',mktime(0, 0, 1, $preMonth, $day, $year));
         if($day > 7){
             $startTerm = date('Y-m-d',mktime(0,0,0,$month,$day - 7,$year));
         }else{
-            $startTerm = date('Y-m-d',mktime(0,0,0,$month-1,$preLastday + $day - 7,$year));
+            $startTerm = date('Y-m-d',mktime(0,0,0,$preMonth,$preLastday + $day - 7,$year));
         }
         if($day > 1)
         {
             $endTerm =  date('Y-m-d',mktime(0,0,0,$month,$day - 1,$year));
 
         }else {
-            $endTerm = date('Y-m-d',mktime(0,0,0,$month-1,$preLastday,$year));
+            $endTerm = date('Y-m-d',mktime(0,0,0,$preMonth,$preLastday,$year));
         }
         
      
@@ -55,7 +62,8 @@ switch($mode){
                         $endHour = date('G',strtotime($t_routineRow['endTime']));
                         $minuteDf = (int)((strtotime($t_routineRow['endTime']) -strtotime($t_routineRow['startTime'])) / 60);
                         $hourDf = $endHour - $startHour;
-                        
+                        $hourCount += $hourDf;
+                        $minuteCount += $minuteDf;
                         
                         $routineSql = "select goalID from routine where routineID = $routineID";
                         $routineResult = mysqli_query($conn,$routineSql);
@@ -95,17 +103,17 @@ switch($mode){
 
         }
         
-        /*$hourCount += floor($minuteCount/60);
-        echo "$checkCount<br>";
+        $hourCount += floor($minuteCount/60);
+        /*echo "$checkCount<br>";
         echo "$routineCount<br>";
         echo "$hourCount<br>";*/
 
         
         
         $insertWeeklySql = "insert into WeeklyReport (userID, date,hourCnt,routineCnt,checkCnt) 
-                    values($userid,'$today',$hourCount,$routineCount,$checkCount)";
+                    values($userid,'$tmpDate',$hourCount,$routineCount,$checkCount)";
         mysqli_query($conn, $insertWeeklySql);
-        $selectWeeklySql = "select weeklyID from weeklyreport where date = '$today' and userid = $userid";
+        $selectWeeklySql = "select weeklyID from weeklyreport where date = '$tmpDate' and userid = $userid";
         $weeklyResult = mysqli_query($conn, $selectWeeklySql);
         $weeklyRow = mysqli_fetch_array($weeklyResult, MYSQLI_ASSOC);
         $weeklyID = $weeklyRow['weeklyID'];
@@ -162,7 +170,23 @@ switch($mode){
             
             
         }   
-        
+        $tmpday = date('d',strtotime($today));
+        $tmpMonthlyDate= $today;
+        while($tmpday != 1){
+            $tmpMonthlyDate =  date("Y-m-d",strtotime($tmpMonthlyDate.'-1 days'));
+            $tmpday = date('d',strtotime($tmpMonthlyDate));
+        }
+                
+        $monthlySql = "select date from monthlyreport where userid = '$userid' and date = '$tmpMonthlyDate'";
+        $monthlyResult = mysqli_query($conn,$monthlySql);
+        $monthlyRow = mysqli_fetch_array($monthlyResult,MYSQLI_ASSOC);
+        if($monthlyRow == null){
+            echo("
+                <script>
+                    location.href='./adminMonthly.php';
+                </script>"
+                 );
+        }
         
         
         
