@@ -170,7 +170,7 @@ switch($mode){
             
             
         }   
-        $tmpday = date('d',strtotime($today));
+        /*$tmpday = date('d',strtotime($today));
         $tmpMonthlyDate= $today;
         while($tmpday != 1){
             $tmpMonthlyDate =  date("Y-m-d",strtotime($tmpMonthlyDate.'-1 days'));
@@ -186,7 +186,7 @@ switch($mode){
                     location.href='./adminMonthly.php';
                 </script>"
                  );
-        }
+        }*/
         
         
         
