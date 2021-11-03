@@ -139,12 +139,12 @@
                 <img src="img/example_report_month_graph.png" alt="시간, 주차, 요일별 목표 성취도 그래프 전환" width="500px">
                 <h5>2. 계획 대비 실행률이 가장 낮은 루틴 확인하기</h5>
                 <p style="font-size:0.8em; margin-bottom:25px;"> 
-                    루틴 바로가기 버튼을 클릭하여 해당 목표 페이지로 이동하고,<br>
+                    <img src="img/go_routine1.png" alt="루틴 바로가기 버튼" width="100px" style="margin:0px 3px">클릭하여 해당 목표 페이지로 이동하고,<br>
                     좀 더 지키기 쉬운 루틴을 계획합니다.
                 </p>
                 <h5>3. 계획 대비 실행률이 가장 높은 루틴 확인하기</h5>
                 <p style="font-size:0.8em; margin-bottom:25px;"> 
-                    새로운 루틴 생성하기 버튼을 클릭하여 해당 목표 페이지로 이동하고,<br>
+                    <img src="img/go_routine2.png" alt="새로운 루틴 생성하기 버튼" width="100px" style="margin:0px 3px">클릭하여 해당 목표 페이지로 이동하고,<br>
                     목표를 이루기 위해 더 발전된 루틴을 계획합니다.
                 </p>
         </div>
