@@ -690,7 +690,7 @@
         $monthResult = mysqli_query($conn,$select5monthSql);
         $countMonth = 0;
         while($monthRow = mysqli_fetch_array($monthResult,MYSQLI_ASSOC)){
-            $month[$countMonth] = $monthRow['totalAchieve'];
+            $monthAchieve[$countMonth] = $monthRow['totalAchieve'];
             $monthDate[$countMonth] = $monthRow['date'];
             $countMonth++;
         }
@@ -705,9 +705,8 @@
             labels: [
                 <?php 
             for($h=0;$h<$countMonth;$h++){
-                $tmp = date('m',strtotime($monthDate[$h]));
-                $tmp2 = preg_replace('/(0)(\d)/','$2', $tmp);
-                echo "\"$tmp2 월\"";
+                $tmp = date('n',strtotime($monthDate[$h].'-1 months'));
+                echo "\"$tmp 월\"";
                 if($h!=$countMonth){
                     echo ",";
                 }
@@ -724,7 +723,7 @@
         
             echo "data:[";
             for($q=0;$q<$countMonth;$q++){
-                echo "\"$month[$q]\"";
+                echo "\"$monthAchieve[$q]\"";
                 if($q!=$countMonth){
                     echo ",";
                 }
@@ -848,6 +847,9 @@
             legend: {
 
                 display: true,
+                labels: {
+                    "fontSize": 9
+                },
                 position: 'right',
 
             },
