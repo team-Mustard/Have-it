@@ -11,7 +11,7 @@ $selectDate = $today;
 
 ?>
     <div class="trackerTop" style="height:50px;">
-            <div><h2 class="right-header" style="float: left;"><i class="fas fa-dolly-flatbed"></i>광산수레</h2></div>
+            <div><h2 class="right-header" style="float: left;"><i class="fas fa-dolly-flatbed"></i> 시간표</h2></div>
             
               
               
