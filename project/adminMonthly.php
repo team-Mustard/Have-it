@@ -4,17 +4,23 @@ if(isset($_SESSION['userid'])) $userid = $_SESSION['userid'];
 include "db/dbconn.php";
 $today = date("Y-m-d");
 //$today = '2021-12-01';
-$year = date("Y",strtotime($today));
-$month = date("m",strtotime($today));
-$day = date("d",strtotime($today));
+$tmpMonthlyDate= $today;
+$tmpDay = date('d',strtotime($tmpMonthlyDate));
+while($tmpDay != 1){
+    $tmpMonthlyDate =  date("Y-m-d",strtotime($tmpMonthlyDate.'-1 days'));
+    $tmpDay = date('d',strtotime($tmpMonthlyDate));
+}
+$year = date("Y",strtotime($tmpMonthlyDate));
+$month = date("m",strtotime($tmpMonthlyDate));
+$day = date("d",strtotime($tmpMonthlyDate));
 
-
-$preLastDay = date('t',mktime(0,0,1,$month-1,$day,$year));
-$preMonth = $month -1;
+$preDate = date("Y-m-d",strtotime($tmpMonthlyDate.'-1 months'));
+$preMonth = date("m",strtotime($preDate));
+$preLastDay = date('t',mktime(0,0,1,$preMonth,$day,$year));
 $preLastWeek = toWeekNum($year,$preMonth,$preLastDay);
 
-$startTerm = date('Y-m-d',mktime(0,0,0,$month-1,1,$year));
-$endTerm = date('Y-m-d', mktime(0,0,0,$month-1,$preLastDay,$year));
+$startTerm = date('Y-m-d',mktime(0,0,0,$preMonth,1,$year));
+$endTerm = date('Y-m-d', mktime(0,0,0,$preMonth,$preLastDay,$year));
 
 
 function toWeekNum($get_year, $get_month, $get_day){
@@ -25,9 +31,9 @@ function toWeekNum($get_year, $get_month, $get_day){
 
 
 
-$insertMonthlySql = "insert into monthlyreport(date,userID) values('$today',$userid)";
+$insertMonthlySql = "insert into monthlyreport(date,userID) values('$tmpMonthlyDate',$userid)";
 mysqli_query($conn,$insertMonthlySql);
-$selectMonthlySql = "select monthlyID from monthlyReport where date = '$today' and userid = $userid";
+$selectMonthlySql = "select monthlyID from monthlyReport where date = '$tmpMonthlyDate' and userid = $userid";
 
 $monthlyResult = mysqli_query($conn,$selectMonthlySql);
 $monthlyRow = mysqli_fetch_array($monthlyResult,MYSQLI_ASSOC);
