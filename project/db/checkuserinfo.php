@@ -11,8 +11,8 @@ ini_set("display_errors", 1);
 $email = $_POST['email'];
 $password = $_POST['password'];
 $time = time();
-//$today = '2021-10-01';
 $today = date("Y-m-d", $time);
+//$today = '2021-12-01';
     
 include "dbconn.php";
 if($email != null){
@@ -29,33 +29,39 @@ if($email != null){
                 $_SESSION['userid'] = $row['userID']; 
                 
                 $userid = $_SESSION['userid'];
-                $todayWeek = date('w',strtotime($today));
-                $todayDay = date('d',strtotime($today));
-                if($todayWeek == 1){
-                    $weeklySql = "select date from weeklyreport where userid = '$userid' and date = '$today'";
-                    $weeklyResult = mysqli_query($conn,$weeklySql);
-                    $weeklyRow = mysqli_fetch_array($weeklyResult,MYSQLI_ASSOC);
-                    if($weeklyRow == null){
-                        echo("
+                $dayofweek = date('w',strtotime($today));
+                $day = date('d',strtotime($today));
+                $tmpWeeklyDate = $today;
+                $tmpMonthlyDate= $today;
+                while($dayofweek != 1){
+                    $tmpWeeklyDate =  date("Y-m-d",strtotime($tmpWeeklyDate.'-1 days'));
+                    $dayofweek = date('w',strtotime($tmpWeeklyDate));
+                }
+                $weeklySql = "select date from weeklyreport where userid = '$userid' and date = '$tmpWeeklyDate'";
+                $weeklyRow = mysqli_fetch_array(mysqli_query($conn,$weeklySql),MYSQLI_ASSOC);
+                if($weeklyRow==null){
+                    echo("
                             <script>
                                 location.href='../adminWeekly.php?mode=1';
                             </script>"
-                            );
-                   }
-                    
+                        );   
                 }
-                if($todayDay == 1){
-                    $monthlySql = "select date from monthlyreport where userid = '$userid' and date = '$today'";
-                    $monthlyResult = mysqli_query($conn,$monthlySql);
-                    $monthlyRow = mysqli_fetch_array($monthlyResult,MYSQLI_ASSOC);
-                    if($monthlyRow == null){
-                        echo("
-                            <script>
-                                location.href='../adminMonthly.php';
-                            </script>"
-                            );
-                   }
+                while($day != 1){
+                    $tmpMonthlyDate =  date("Y-m-d",strtotime($tmpMonthlyDate.'-1 days'));
+                    $day = date('d',strtotime($tmpMonthlyDate));
                 }
+                
+                $monthlySql = "select date from monthlyreport where userid = '$userid' and date = '$tmpMonthlyDate'";
+                $monthlyResult = mysqli_query($conn,$monthlySql);
+                $monthlyRow = mysqli_fetch_array($monthlyResult,MYSQLI_ASSOC);
+                if($monthlyRow == null){
+                    echo("
+                        <script>
+                            location.href='../adminMonthly.php';
+                        </script>"
+                        );
+                 }
+                
                 echo("
                     <script>
                         location.href='../index.php';
