@@ -20,7 +20,7 @@
         $term_e_date = date("Y-m-d", strtotime("+1 year", $time));
     }
     
-    $gcheck = "SELECT * FROM goal";
+    $gcheck = "SELECT * FROM goal WHERE userID = '$userid'";
     $check_result = mysqli_query($conn, $gcheck);
     $check1 = "true";
 
@@ -36,7 +36,13 @@
     }
     
     if($check1 == "true"){
-        $sql = "INSERT INTO goal(goalName, startTerm, endTerm, achievement, userID) VALUES('$goal_name', '$term_s_date', '$term_e_date', '0', '$userid')";    
+        $gID_sql = "SELECT * FROM goal ORDER BY goalID DESC LIMIT 1"; 
+        $g_result = mysqli_query($conn, $gID_sql);
+        
+        $g_row = mysqli_fetch_array($g_result);
+        $last_goalID = $g_row['goalID'] + 1;
+          
+        $sql = "INSERT INTO goal(goalID, goalName, startTerm, endTerm, userID) VALUES('$last_goalID', '$goal_name', '$term_s_date', '$term_e_date', '$userid')";    
         $result = $conn->query($sql);
     /*if($result){
         echo "등록완료";
@@ -96,14 +102,8 @@
         echo("<script>history.back();</script>");
         
         }
-            
-            
-    $goal = "SELECT * FROM goal WHERE goalName = '$goal_name'";
-    $result2 = mysqli_query($conn, $goal);
-    $row = mysqli_fetch_array($result2);
-    $goalID = $row['goalID'];
-            
-    $sql3 = "INSERT INTO routine(routineName, color, rInterval, goalID) VALUES('$routine_name[$i]', '$colors', '$Interval', '$goalID')";
+          
+    $sql3 = "INSERT INTO routine(routineName, color, rInterval, goalID) VALUES('$routine_name[$i]', '$colors', '$Interval', '$last_goalID')";
         
     $result3 = $conn->query($sql3); 
             
@@ -112,8 +112,8 @@
         
     $arr = array("0", "0", "0", "0", "0", "0", "0");
     }
+    echo "<script>document.location.href='../index.php?page=goal&goalID=".$last_goalID."'</script>";
 }
-
-echo "<script>document.location.href='../index.php?page=goal&goalID=".$goalID."'</script>";        
+        
 
 ?>
