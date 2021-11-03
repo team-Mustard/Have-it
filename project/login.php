@@ -25,9 +25,6 @@
             <p style="margin-bottom:0px;">회원이 아니신가요?
                 <a href="javascript:location.replace('./signup.php')"> 회원가입하기</a>
             </p>
-            <p>어플로 시작하려면?
-                <a href="#"> 　　다운로드</a>
-            </p>
         </div>
     </div>
   </body>
