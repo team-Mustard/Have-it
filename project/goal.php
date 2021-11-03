@@ -113,7 +113,7 @@ $e_ID = $e_row['routineID']; // 처음 루틴 ID
                 
                 if($today_yoli == 1 && $term_s != $today){
                     //지금이 월요일이고 && 지금이 시작일이 아니라면
-                    $up = "update routine set habbitTracker='0' where routineID = '$routineID'";
+                    $up = "update routine set habbitTracker='0;0;0;0;0;0;0' where routineID = '$routineID'";
                     $upresult = $conn->query($up); }
             
                 $check = $row2['habbitTracker'];
