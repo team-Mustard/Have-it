@@ -33,7 +33,7 @@ if($email != null){
                 $day = date('d',strtotime($today));
                 $tmpWeeklyDate = $today;
                 $tmpMonthlyDate= $today;
-                while($dayofweek != 1){
+                /*while($dayofweek != 1){
                     $tmpWeeklyDate =  date("Y-m-d",strtotime($tmpWeeklyDate.'-1 days'));
                     $dayofweek = date('w',strtotime($tmpWeeklyDate));
                 }
@@ -45,8 +45,8 @@ if($email != null){
                                 location.href='../adminWeekly.php?mode=1';
                             </script>"
                         );   
-                }
-                while($day != 1){
+                }*/
+                /*while($day != 1){
                     $tmpMonthlyDate =  date("Y-m-d",strtotime($tmpMonthlyDate.'-1 days'));
                     $day = date('d',strtotime($tmpMonthlyDate));
                 }
@@ -61,7 +61,7 @@ if($email != null){
                         </script>"
                         );
                  }
-                
+                */
                 echo("
                     <script>
                         location.href='../index.php';
